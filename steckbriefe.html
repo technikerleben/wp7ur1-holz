@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Holzberatung – HBG</title>
+<style>
+:root{
+--col-slate-dark:#2C3D4C;--col-slate:#3E5668;--col-slate-mid:#6A8599;--col-slate-pale:#D0DCE6;--col-slate-ghost:#EEF3F7;
+--col-rust-dark:#9E4E22;--col-rust:#D97A4A;--col-rust-mid:#EBA882;--col-rust-pale:#F5DDD1;--col-rust-ghost:#FBF0EB;
+--col-sage-dark:#4D8B3F;--col-sage:#7DBB6F;--col-sage-pale:#DDF0D8;--col-sage-ghost:#F0FAF0;
+--col-warning:#C17B00;--col-warning-pale:#FFF3CC;--col-warning-text:#5C4400;
+--col-error:#C0392B;--col-error-pale:#FDECEA;--col-error-text:#7A1B14;
+--col-bg:#F5F4F1;--col-white:#FFFFFF;--col-text:#1E2A35;--col-text-muted:#5A6A78;
+--col-border:#D4D0C8;--col-disabled-bg:#EBEBEA;--col-disabled-text:#7A7672;
+--col-focus:#3E5668;--col-shadow:rgba(62,86,104,0.10);
+--text-xs:0.694rem;--text-sm:0.833rem;--text-base:1rem;--text-md:1.2rem;--text-lg:1.44rem;--text-xl:1.728rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;background:var(--col-bg);color:var(--col-text);
+font-size:var(--text-base);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;}
+:focus-visible{outline:3px solid var(--col-focus);outline-offset:3px;border-radius:4px;}
+header{background:var(--col-slate);color:#fff;padding:12px 0;}
+header h1{font-size:var(--text-lg);font-weight:700;line-height:1.2;}
+.header-meta{font-size:var(--text-xs);color:var(--col-slate-pale);text-transform:uppercase;letter-spacing:.06em;}
+.hbg-wordmark{display:inline-flex;align-items:flex-end;gap:5px;}
+.hbg-wordmark__main{font-size:var(--text-lg);font-weight:800;color:#fff;}
+.hbg-wordmark__sub{font-size:var(--text-sm);color:var(--col-rust-mid);margin-bottom:2px;}
+.container{max-width:960px;margin:0 auto;padding:14px 22px;width:100%;}
+main{flex:1;padding-bottom:40px;}
+.card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);}
+.task-card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);border-left:5px solid var(--col-rust);}
+h2{font-size:var(--text-lg);margin-bottom:6px;}
+h3{font-size:var(--text-md);margin:0 0 4px;}
+h4{font-size:var(--text-base);margin:12px 0 4px;}
+p{margin-bottom:8px;}
+ol,ul{margin:0 0 8px 20px;}
+li{margin-bottom:3px;}
+.muted{color:var(--col-text-muted);font-size:var(--text-sm);}
+.btn-primary{background:var(--col-rust-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:var(--text-base);font-weight:600;min-height:44px;min-width:44px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-primary:hover{background:#B55E2A;}
+.btn-primary:disabled{background:var(--col-disabled-bg);color:var(--col-disabled-text);cursor:not-allowed;}
+.btn-success{background:var(--col-sage-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;font-size:var(--text-base);}
+.btn-success:hover{background:#3D7032;}
+.btn-secondary{background:transparent;color:var(--col-slate);border:2px solid var(--col-slate);padding:9px 16px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;font-size:var(--text-sm);transition:background .2s;}
+.btn-secondary:hover{background:var(--col-slate-ghost);}
+.btn-secondary[aria-pressed="true"]{background:var(--col-slate);color:#fff;}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;line-height:1.4;}
+.badge--slate{background:var(--col-slate);color:#fff;}
+.badge--rust{background:var(--col-rust-dark);color:#fff;}
+.badge--success{background:var(--col-sage-dark);color:#fff;}
+.badge--warning{background:var(--col-warning);color:#fff;}
+.badge--pale-slate{background:var(--col-slate-pale);color:var(--col-slate);}
+.kopf{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.feedback-richtig{background:var(--col-sage-pale);border-left:4px solid var(--col-sage-dark);border-radius:0 8px 8px 0;padding:12px 16px;color:#2D5C25;margin-top:10px;}
+.feedback-richtig::before{content:'\2713 ';font-weight:700;color:var(--col-sage-dark);}
+.feedback-falsch{background:var(--col-error-pale);border-left:4px solid var(--col-error);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-error-text);margin-top:10px;}
+.feedback-falsch::before{content:'\2717 ';font-weight:700;color:var(--col-error);}
+.feedback-tipp{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:10px;}
+.feedback-tipp::before{content:'\2139 ';font-weight:700;color:var(--col-slate);}
+.feedback-warnung{background:var(--col-warning-pale);border-left:4px solid var(--col-warning);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-warning-text);margin-top:10px;}
+.feedback-warnung::before{content:'\26A0 ';font-weight:700;}
+.tipp-details{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0;}
+.tipp-details summary{cursor:pointer;font-weight:600;font-size:var(--text-sm);color:var(--col-slate);list-style:none;user-select:none;}
+.tipp-details summary::-webkit-details-marker{display:none;}
+.tipp-details p{margin-top:8px;font-size:var(--text-sm);margin-bottom:0;}
+input[type=text],input[type=number],textarea,select{font-size:var(--text-base);font-family:inherit;padding:10px 14px;border:2px solid var(--col-border);border-radius:8px;width:100%;background:#fff;color:var(--col-text);}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;border-color:var(--col-slate);box-shadow:0 0 0 3px var(--col-slate-pale);}
+textarea{resize:vertical;min-height:72px;}
+label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
+.check{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer;font-size:var(--text-sm);}
+.check input{width:26px;height:26px;flex:0 0 auto;accent-color:var(--col-sage-dark);margin-top:1px;}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;}
+.progress-bar{height:8px;background:var(--col-slate-pale);border-radius:4px;overflow:hidden;margin:6px 0;}
+.progress-bar__fill{height:100%;background:var(--col-rust);border-radius:4px;transition:width .4s ease;}
+.progress-bar__fill--done{background:var(--col-sage);}
+.progress-label{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--col-text-muted);}
+.zurueck{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:var(--text-sm);font-weight:600;
+border:2px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 12px;min-height:38px;}
+.zurueck:hover{background:rgba(255,255,255,.12);}
+table.tab{width:100%;border-collapse:collapse;}
+table.tab th,table.tab td{border:1px solid var(--col-border);padding:6px;text-align:left;font-size:var(--text-sm);vertical-align:top;}
+table.tab th{background:var(--col-slate-ghost);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.05em;}
+[hidden]{display:none !important;}
+@media print{header,.no-print{display:none !important;}.card,.task-card{box-shadow:none;border:1px solid #999;}body{background:#fff;}}
+
+.auftraege{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:760px){.auftraege{grid-template-columns:repeat(2,1fr);}}
+.auftrag-btn{background:#fff;border:2px solid var(--col-border);border-radius:10px;padding:12px 10px;cursor:pointer;
+font-family:inherit;font-size:var(--text-sm);font-weight:600;min-height:64px;color:var(--col-text);}
+.auftrag-btn[aria-pressed="true"]{border-color:var(--col-rust-dark);background:var(--col-rust-ghost);}
+.karten{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:760px){.karten{grid-template-columns:repeat(2,1fr);}}
+.holzkarte{background:#fff;border:2px solid var(--col-border);border-radius:12px;padding:12px;cursor:pointer;box-shadow:0 2px 8px var(--col-shadow);}
+.holzkarte[data-markiert="true"]{border-color:var(--col-sage-dark);box-shadow:0 0 0 3px var(--col-sage-pale);}
+.holzkarte h4{margin:6px 0 2px;font-size:var(--text-md);}
+.holzkarte .art{font-size:var(--text-xs);color:var(--col-text-muted);text-transform:uppercase;letter-spacing:.05em;}
+.muster{height:56px;border-radius:6px;border:1px solid var(--col-border);}
+.werte{font-size:var(--text-sm);margin-top:6px;}
+.werte div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid var(--col-border);padding:2px 0;}
+.werte div:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
+    <div>
+      <h1>Die Holzberatung</h1>
+      <div class="header-meta">HBG Dortmund · WP Technik · Klasse 7</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a class="zurueck no-print" href="lernweg.html">&#8592; Lernweg</a>
+      <div class="hbg-wordmark"><span class="hbg-wordmark__main">HBG</span><span class="hbg-wordmark__sub">SRL</span></div>
+    </div>
+  </div>
+</header>
+<main><div class="container">
+
+<div class="task-card">
+  <div class="kopf">
+    <h2 style="margin:0;">A9 · Die Holzberatung</h2>
+    <span class="badge badge--rust">Auftrag A9</span>
+  </div>
+  <p><strong>&#127919; Mein Ziel:</strong> Ich kann ein Holz für ein Produkt auswählen und begründen.</p>
+  <p class="muted">Lies deinen Kundenauftrag. Vergleiche die Steckbriefe. Entscheide dich und begründe.</p>
+</div>
+
+<div class="card">
+  <h3>1. Dein Kundenauftrag</h3>
+  <div class="auftraege" id="auftraege"></div>
+  <div id="auftrag-detail" hidden></div>
+</div>
+
+<div class="card">
+  <h3>2. Die Steckbriefe</h3>
+  <p class="muted">Tippe auf eine Karte für alle Angaben. Für den Vergleich kannst du zwei Karten markieren.</p>
+  <div class="karten" id="karten"></div>
+  <div class="row no-print">
+    <button class="btn-secondary" id="btn-vgl" onclick="vergleichen()">&#11088; Zwei markierte vergleichen</button>
+    <button class="btn-secondary" onclick="markierungWeg()">Markierung löschen</button>
+  </div>
+  <div id="vergleich" hidden></div>
+</div>
+
+<div class="task-card">
+  <h3>3. Meine Empfehlung</h3>
+  <label for="wahl">Ich empfehle dieses Holz:</label>
+  <input type="text" id="wahl" placeholder="Name der Holzart">
+  <label for="e1" style="margin-top:10px;">Diese drei Eigenschaften passen:</label>
+  <input type="text" id="e1" placeholder="1. Eigenschaft">
+  <input type="text" id="e2" placeholder="2. Eigenschaft" style="margin-top:6px;">
+  <input type="text" id="e3" placeholder="3. Eigenschaft" style="margin-top:6px;">
+  <label for="nachteil" style="margin-top:10px;">Ein Nachteil meiner Wahl:</label>
+  <input type="text" id="nachteil" placeholder="Nachteil">
+  <label for="begruendung" style="margin-top:10px;">Meine Begründung für die Kundin oder den Kunden:</label>
+  <textarea id="begruendung" placeholder="Ich empfehle …, weil …"></textarea>
+</div>
+
+<div class="task-card">
+  <h3>&#9989; Ergebnis kontrollieren</h3>
+  <label class="check"><input type="checkbox" id="ck1"><span>Ich habe drei Eigenschaften genannt.</span></label>
+  <label class="check"><input type="checkbox" id="ck2"><span>Ich habe einen Nachteil genannt.</span></label>
+  <div class="row no-print"><button class="btn-secondary" onclick="window.print()">&#128424; Ausdrucken</button></div>
+</div>
+
+</div></main>
+<script>
+
+function mkStore(key){
+  let d;
+  try{ d = JSON.parse(localStorage.getItem(key)) || {}; }catch(e){ d = {}; }
+  return {
+    daten:d,
+    get(k,f){ return (this.daten[k]!==undefined)?this.daten[k]:f; },
+    set(k,v){ this.daten[k]=v; try{localStorage.setItem(key,JSON.stringify(this.daten));}catch(e){} },
+    reset(){ this.daten={}; try{localStorage.removeItem(key);}catch(e){} }
+  };
+}
+function bindeFelder(store){
+  let t;
+  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{
+    if(!el.id) return;
+    const v = store.get('f_'+el.id);
+    if(v!==undefined) el.value=v;
+    el.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>store.set('f_'+el.id,el.value),350);});
+  });
+  document.querySelectorAll('input[type=checkbox]').forEach(el=>{
+    if(!el.id) return;
+    if(store.get('c_'+el.id)) el.checked=true;
+    el.addEventListener('change',()=>store.set('c_'+el.id,el.checked));
+  });
+}
+
+const HOELZER=[
+ {id:'fichte',name:'Fichte',art:'Nadelholz',farbe:'#F0DFC0',streifen:'#D9BE92',
+  eig:'hell und gleichmäßig',haerte:'weich',gewicht:'leicht (ca. 470 kg/m³)',
+  vorteil:'leicht zu bearbeiten, günstig, überall zu bekommen',
+  nachteil:'weich, bekommt schnell Diebstellen, viele Äste',
+  verwendung:'Bauholz, Dachstuhl, Regalböden, Verpackungen'},
+ {id:'kiefer',name:'Kiefer',art:'Nadelholz',farbe:'#EFCFA0',streifen:'#C89A5E',
+  eig:'hell mit rötlichem Kern, deutliche Ringe',haerte:'mittelweich',gewicht:'leicht (ca. 520 kg/m³)',
+  vorteil:'gut zu bearbeiten, schöne Maserung, haltbarer als Fichte',
+  nachteil:'harzt, dunkelt am Licht nach',
+  verwendung:'Möbel, Fenster, Fußböden, Zäune'},
+ {id:'buche',name:'Buche',art:'Laubholz',farbe:'#E3C3A0',streifen:'#C39468',
+  eig:'hellbraun bis rötlich, sehr feine Poren',haerte:'hart',gewicht:'schwer (ca. 720 kg/m³)',
+  vorteil:'hart, glatte Oberfläche, gut zu reinigen, lässt sich biegen',
+  nachteil:'arbeitet stark bei Feuchtigkeit, nicht für draußen',
+  verwendung:'Schneidebretter, Stühle, Spielzeug, Küchenmöbel'},
+ {id:'eiche',name:'Eiche',art:'Laubholz',farbe:'#D8B87E',streifen:'#A98040',
+  eig:'hellbraun, grobe Poren, markante Maserung',haerte:'sehr hart',gewicht:'schwer (ca. 700 kg/m³)',
+  vorteil:'sehr haltbar, hält Nässe aus, hochwertige Optik',
+  nachteil:'teuer, schwer zu bearbeiten, verfärbt sich an Eisen dunkel',
+  verwendung:'Fußboden, Tischplatte, Gartenmöbel, Treppen, Fässer'},
+ {id:'birke',name:'Birke',art:'Laubholz',farbe:'#F2E4CE',streifen:'#D3BE9C',
+  eig:'fast weiß, sehr feine gleichmäßige Maserung',haerte:'mittelhart',gewicht:'mittel (ca. 650 kg/m³)',
+  vorteil:'zäh, biegsam, helle freundliche Optik',
+  nachteil:'verrottet draußen schnell, nicht witterungsfest',
+  verwendung:'Sperrholz, Spielzeug, Möbel, Innenausbau'}
+];
+const AUFTRAEGE=[
+ {id:'schneidebrett',titel:'Schneidebrett',text:'Ich koche viel. Ich brauche ein Brett zum Schneiden. Es muss oft abgewaschen werden und darf nicht sofort stumpfe Messer machen.',
+  tipp:'Denke an: Wird nass. Messer schneiden darauf. Muss glatt und dicht sein.'},
+ {id:'gartenbank',titel:'Gartenbank',text:'Die Bank steht das ganze Jahr im Garten, auch im Regen. Sie soll viele Jahre halten.',
+  tipp:'Denke an: Steht draußen. Regen, Sonne, Frost. Muss Gewicht tragen.'},
+ {id:'regal',titel:'Regal fürs Kinderzimmer',text:'Ein leichtes Regal für Bücher. Es soll nicht viel kosten und hell aussehen.',
+  tipp:'Denke an: Muss Bücher tragen, aber nicht nass werden. Preis ist wichtig.'},
+ {id:'griff',titel:'Werkzeuggriff',text:'Ein Griff für einen Hammer. Er bekommt bei jedem Schlag Stöße ab und darf nicht brechen.',
+  tipp:'Denke an: Muss Stöße aushalten, zäh sein und darf nicht splittern.'},
+ {id:'dachstuhl',titel:'Dachstuhl',text:'Für ein Haus werden lange, gerade Balken gebraucht. Es werden sehr viele Meter benötigt.',
+  tipp:'Denke an: Sehr große Menge. Preis und Gewicht sind wichtig. Liegt trocken unter dem Dach.'},
+ {id:'spielzeug',titel:'Spielzeugauto',text:'Ein Auto für ein zweijähriges Kind. Es wird angefasst, fallen gelassen und in den Mund genommen.',
+  tipp:'Denke an: Keine Splitter. Glatte Oberfläche. Muss Stöße aushalten.'}
+];
+const store=mkStore('hbg_a9_beratung');
+let gewaehlterAuftrag=store.get('auftrag',null);
+let markiert=store.get('markiert',[]);
+let offen=null;
+
+function baueAuftraege(){
+  document.getElementById('auftraege').innerHTML=AUFTRAEGE.map(a=>
+    `<button class="auftrag-btn" aria-pressed="${gewaehlterAuftrag===a.id}" onclick="waehleAuftrag('${a.id}')">${a.titel}</button>`).join('');
+  const d=document.getElementById('auftrag-detail');
+  const a=AUFTRAEGE.find(x=>x.id===gewaehlterAuftrag);
+  if(a){ d.hidden=false;
+    d.innerHTML=`<div class="feedback-tipp"><strong>${a.titel}:</strong> ${a.text}</div>
+      <details class="tipp-details"><summary>&#128161; Hilfe: Worauf kommt es an?</summary><p>${a.tipp}</p></details>`;
+  } else d.hidden=true;
+}
+function waehleAuftrag(id){ gewaehlterAuftrag=(gewaehlterAuftrag===id)?null:id; store.set('auftrag',gewaehlterAuftrag); baueAuftraege(); }
+
+function muster(h){
+  return `<svg class="muster" viewBox="0 0 100 40" preserveAspectRatio="none" style="width:100%;">
+   <rect width="100" height="40" fill="${h.farbe}"/>
+   ${[6,13,20,27,34].map(y=>`<path d="M0 ${y} Q25 ${y-3} 50 ${y} T100 ${y}" fill="none" stroke="${h.streifen}" stroke-width="1.6"/>`).join('')}
+  </svg>`;
+}
+function baueKarten(){
+  document.getElementById('karten').innerHTML=HOELZER.map(h=>`
+   <div class="holzkarte" data-markiert="${markiert.includes(h.id)}" onclick="karteKlick('${h.id}')">
+     ${muster(h)}
+     <h4>${h.name}</h4><div class="art">${h.art}</div>
+     ${offen===h.id?`<div class="werte">
+       <div><span>Aussehen</span><strong>${h.eig}</strong></div>
+       <div><span>Härte</span><strong>${h.haerte}</strong></div>
+       <div><span>Gewicht</span><strong>${h.gewicht}</strong></div>
+       <div><span>Stark bei</span><strong>${h.vorteil}</strong></div>
+       <div><span>Nachteil</span><strong>${h.nachteil}</strong></div>
+       <div><span>Typisch für</span><strong>${h.verwendung}</strong></div>
+     </div>`:'<p class="muted" style="margin:6px 0 0;">Tippen für Details</p>'}
+     <div class="row no-print" style="margin-top:8px;">
+       <button class="btn-secondary" style="padding:6px 10px;min-height:38px;"
+        onclick="event.stopPropagation();markiere('${h.id}')">${markiert.includes(h.id)?'markiert &#10003;':'&#11088; markieren'}</button>
+     </div>
+   </div>`).join('');
+}
+function karteKlick(id){ offen=(offen===id)?null:id; baueKarten(); }
+function markiere(id){
+  if(markiert.includes(id)) markiert=markiert.filter(x=>x!==id);
+  else { markiert.push(id); if(markiert.length>2) markiert.shift(); }
+  store.set('markiert',markiert); baueKarten();
+}
+function markierungWeg(){ markiert=[]; store.set('markiert',markiert);
+  document.getElementById('vergleich').hidden=true; baueKarten(); }
+function vergleichen(){
+  const v=document.getElementById('vergleich');
+  if(markiert.length<2){ v.hidden=false; v.innerHTML='<div class="feedback-tipp">Markiere zuerst zwei Holzarten.</div>'; return; }
+  const a=HOELZER.find(h=>h.id===markiert[0]), b=HOELZER.find(h=>h.id===markiert[1]);
+  const zeile=(t,k)=>`<tr><th>${t}</th><td>${a[k]}</td><td>${b[k]}</td></tr>`;
+  v.hidden=false;
+  v.innerHTML=`<table class="tab" style="margin-top:12px;">
+   <tr><th></th><th>${a.name}</th><th>${b.name}</th></tr>
+   ${zeile('Art','art')}${zeile('Härte','haerte')}${zeile('Gewicht','gewicht')}
+   ${zeile('Stark bei','vorteil')}${zeile('Nachteil','nachteil')}${zeile('Typisch für','verwendung')}</table>
+   <div class="feedback-richtig">Entscheide jetzt: Welches der beiden passt besser zu deinem Auftrag? Schreibe deine Begründung unten auf.</div>`;
+}
+window.addEventListener('DOMContentLoaded',()=>{ baueAuftraege(); baueKarten(); bindeFelder(store); });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Holzfehler – HBG</title>
+<style>
+:root{
+--col-slate-dark:#2C3D4C;--col-slate:#3E5668;--col-slate-mid:#6A8599;--col-slate-pale:#D0DCE6;--col-slate-ghost:#EEF3F7;
+--col-rust-dark:#9E4E22;--col-rust:#D97A4A;--col-rust-mid:#EBA882;--col-rust-pale:#F5DDD1;--col-rust-ghost:#FBF0EB;
+--col-sage-dark:#4D8B3F;--col-sage:#7DBB6F;--col-sage-pale:#DDF0D8;--col-sage-ghost:#F0FAF0;
+--col-warning:#C17B00;--col-warning-pale:#FFF3CC;--col-warning-text:#5C4400;
+--col-error:#C0392B;--col-error-pale:#FDECEA;--col-error-text:#7A1B14;
+--col-bg:#F5F4F1;--col-white:#FFFFFF;--col-text:#1E2A35;--col-text-muted:#5A6A78;
+--col-border:#D4D0C8;--col-disabled-bg:#EBEBEA;--col-disabled-text:#7A7672;
+--col-focus:#3E5668;--col-shadow:rgba(62,86,104,0.10);
+--text-xs:0.694rem;--text-sm:0.833rem;--text-base:1rem;--text-md:1.2rem;--text-lg:1.44rem;--text-xl:1.728rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;background:var(--col-bg);color:var(--col-text);
+font-size:var(--text-base);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;}
+:focus-visible{outline:3px solid var(--col-focus);outline-offset:3px;border-radius:4px;}
+header{background:var(--col-slate);color:#fff;padding:12px 0;}
+header h1{font-size:var(--text-lg);font-weight:700;line-height:1.2;}
+.header-meta{font-size:var(--text-xs);color:var(--col-slate-pale);text-transform:uppercase;letter-spacing:.06em;}
+.hbg-wordmark{display:inline-flex;align-items:flex-end;gap:5px;}
+.hbg-wordmark__main{font-size:var(--text-lg);font-weight:800;color:#fff;}
+.hbg-wordmark__sub{font-size:var(--text-sm);color:var(--col-rust-mid);margin-bottom:2px;}
+.container{max-width:960px;margin:0 auto;padding:14px 22px;width:100%;}
+main{flex:1;padding-bottom:40px;}
+.card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);}
+.task-card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);border-left:5px solid var(--col-rust);}
+h2{font-size:var(--text-lg);margin-bottom:6px;}
+h3{font-size:var(--text-md);margin:0 0 4px;}
+h4{font-size:var(--text-base);margin:12px 0 4px;}
+p{margin-bottom:8px;}
+ol,ul{margin:0 0 8px 20px;}
+li{margin-bottom:3px;}
+.muted{color:var(--col-text-muted);font-size:var(--text-sm);}
+.btn-primary{background:var(--col-rust-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:var(--text-base);font-weight:600;min-height:44px;min-width:44px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-primary:hover{background:#B55E2A;}
+.btn-primary:disabled{background:var(--col-disabled-bg);color:var(--col-disabled-text);cursor:not-allowed;}
+.btn-success{background:var(--col-sage-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;font-size:var(--text-base);}
+.btn-success:hover{background:#3D7032;}
+.btn-secondary{background:transparent;color:var(--col-slate);border:2px solid var(--col-slate);padding:9px 16px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;font-size:var(--text-sm);transition:background .2s;}
+.btn-secondary:hover{background:var(--col-slate-ghost);}
+.btn-secondary[aria-pressed="true"]{background:var(--col-slate);color:#fff;}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;line-height:1.4;}
+.badge--slate{background:var(--col-slate);color:#fff;}
+.badge--rust{background:var(--col-rust-dark);color:#fff;}
+.badge--success{background:var(--col-sage-dark);color:#fff;}
+.badge--warning{background:var(--col-warning);color:#fff;}
+.badge--pale-slate{background:var(--col-slate-pale);color:var(--col-slate);}
+.kopf{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.feedback-richtig{background:var(--col-sage-pale);border-left:4px solid var(--col-sage-dark);border-radius:0 8px 8px 0;padding:12px 16px;color:#2D5C25;margin-top:10px;}
+.feedback-richtig::before{content:'\2713 ';font-weight:700;color:var(--col-sage-dark);}
+.feedback-falsch{background:var(--col-error-pale);border-left:4px solid var(--col-error);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-error-text);margin-top:10px;}
+.feedback-falsch::before{content:'\2717 ';font-weight:700;color:var(--col-error);}
+.feedback-tipp{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:10px;}
+.feedback-tipp::before{content:'\2139 ';font-weight:700;color:var(--col-slate);}
+.feedback-warnung{background:var(--col-warning-pale);border-left:4px solid var(--col-warning);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-warning-text);margin-top:10px;}
+.feedback-warnung::before{content:'\26A0 ';font-weight:700;}
+.tipp-details{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0;}
+.tipp-details summary{cursor:pointer;font-weight:600;font-size:var(--text-sm);color:var(--col-slate);list-style:none;user-select:none;}
+.tipp-details summary::-webkit-details-marker{display:none;}
+.tipp-details p{margin-top:8px;font-size:var(--text-sm);margin-bottom:0;}
+input[type=text],input[type=number],textarea,select{font-size:var(--text-base);font-family:inherit;padding:10px 14px;border:2px solid var(--col-border);border-radius:8px;width:100%;background:#fff;color:var(--col-text);}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none;border-color:var(--col-slate);box-shadow:0 0 0 3px var(--col-slate-pale);}
+textarea{resize:vertical;min-height:72px;}
+label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
+.check{display:flex;align-items:flex-start;gap:10px;padding:8px 0;cursor:pointer;font-size:var(--text-sm);}
+.check input{width:26px;height:26px;flex:0 0 auto;accent-color:var(--col-sage-dark);margin-top:1px;}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;}
+.progress-bar{height:8px;background:var(--col-slate-pale);border-radius:4px;overflow:hidden;margin:6px 0;}
+.progress-bar__fill{height:100%;background:var(--col-rust);border-radius:4px;transition:width .4s ease;}
+.progress-bar__fill--done{background:var(--col-sage);}
+.progress-label{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--col-text-muted);}
+.zurueck{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:var(--text-sm);font-weight:600;
+border:2px solid rgba(255,255,255,.5);border-radius:8px;padding:6px 12px;min-height:38px;}
+.zurueck:hover{background:rgba(255,255,255,.12);}
+table.tab{width:100%;border-collapse:collapse;}
+table.tab th,table.tab td{border:1px solid var(--col-border);padding:6px;text-align:left;font-size:var(--text-sm);vertical-align:top;}
+table.tab th{background:var(--col-slate-ghost);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.05em;}
+[hidden]{display:none !important;}
+@media print{header,.no-print{display:none !important;}.card,.task-card{box-shadow:none;border:1px solid #999;}body{background:#fff;}}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:999px;border:2px solid var(--col-slate);
+background:#fff;color:var(--col-slate);font-weight:600;font-size:var(--text-sm);min-height:44px;cursor:pointer;font-family:inherit;}
+.chip[aria-pressed="true"]{background:var(--col-slate);color:#fff;}
+.chip.geloest{background:var(--col-sage-pale);border-color:var(--col-sage-dark);color:#2D5C25;cursor:default;}
+.galerie{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+@media(max-width:760px){.galerie{grid-template-columns:repeat(2,1fr);}}
+.probe{background:#fff;border:2px solid var(--col-border);border-radius:12px;padding:10px;cursor:pointer;box-shadow:0 2px 8px var(--col-shadow);}
+.probe svg{width:100%;height:96px;display:block;}
+.probe.geloest{border-color:var(--col-sage-dark);background:var(--col-sage-ghost);cursor:default;}
+.probe .name{font-weight:700;font-size:var(--text-sm);text-align:center;margin-top:6px;color:#2D5C25;min-height:20px;}
+.probe .erkl{font-size:var(--text-xs);color:var(--col-text-muted);text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
+    <div>
+      <h1>Holzfehler finden</h1>
+      <div class="header-meta">HBG Dortmund · WP Technik · Klasse 7</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a class="zurueck no-print" href="lernweg.html">&#8592; Lernweg</a>
+      <div class="hbg-wordmark"><span class="hbg-wordmark__main">HBG</span><span class="hbg-wordmark__sub">SRL</span></div>
+    </div>
+  </div>
+</header>
+<main><div class="container">
+
+<div class="task-card">
+  <div class="kopf">
+    <h2 style="margin:0;">A8 · Holzfehler finden</h2>
+    <span class="badge badge--rust">Auftrag A8</span>
+  </div>
+  <p><strong>&#127919; Mein Ziel:</strong> Ich kann typische Holzfehler erkennen und benennen.</p>
+  <p class="muted">Wähle einen Begriff. Tippe dann das passende Bild an. Drei Begriffe sind Pflicht, drei sind für Entdecker.</p>
+  <div class="chips" id="chips"></div>
+  <div class="progress-label"><span>Zugeordnet</span><span id="stand">0 von 6</span></div>
+  <div class="progress-bar"><div class="progress-bar__fill" id="balken" style="width:0%"></div></div>
+  <div id="fb" hidden role="status" aria-live="polite"></div>
+</div>
+
+<div class="galerie" id="galerie"></div>
+
+<details class="tipp-details"><summary>&#128161; Hilfe 1: Die drei Pflichtbegriffe</summary>
+<p>Riss = das Holz ist aufgerissen. Ast = Stelle, wo ein Zweig saß. Verwerfen = das Brett ist krumm geworden.</p></details>
+<details class="tipp-details"><summary>&#128161; Hilfe 2: Für Entdecker</summary>
+<p>Schüsseln = das Brett wölbt sich quer wie eine Schale. Verdrehen = die Ecken stehen unterschiedlich hoch. Harzgalle = eine Tasche mit Harz im Holz.</p></details>
+
+<div class="task-card">
+  <h3>Erkläre einen Fehler</h3>
+  <label for="erklaerung">Wähle ein Brett aus. Warum macht dieses Brett Probleme?</label>
+  <textarea id="erklaerung" placeholder="Das Brett mit … macht Probleme, weil …"></textarea>
+</div>
+
+<div class="task-card" style="border-left-color:var(--col-sage);">
+  <span class="badge badge--success">&#11088; Für Entdecker</span>
+  <label for="regal" style="margin-top:8px;">Wie baut man ein Regal, damit sich das Holz nicht verzieht?</label>
+  <textarea id="regal" placeholder="Deine Idee."></textarea>
+</div>
+
+<div class="task-card">
+  <h3>&#9989; Ergebnis kontrollieren</h3>
+  <label class="check"><input type="checkbox" id="ck1"><span>Ich habe mindestens die drei Pflichtbegriffe zugeordnet.</span></label>
+  <label class="check"><input type="checkbox" id="ck2"><span>Ich habe einen Fehler erklärt.</span></label>
+  <div class="row no-print"><button class="btn-secondary" onclick="neu()">Neu starten</button>
+  <button class="btn-secondary" onclick="window.print()">&#128424; Ausdrucken</button></div>
+</div>
+
+</div></main>
+<script>
+
+function mkStore(key){
+  let d;
+  try{ d = JSON.parse(localStorage.getItem(key)) || {}; }catch(e){ d = {}; }
+  return {
+    daten:d,
+    get(k,f){ return (this.daten[k]!==undefined)?this.daten[k]:f; },
+    set(k,v){ this.daten[k]=v; try{localStorage.setItem(key,JSON.stringify(this.daten));}catch(e){} },
+    reset(){ this.daten={}; try{localStorage.removeItem(key);}catch(e){} }
+  };
+}
+function bindeFelder(store){
+  let t;
+  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{
+    if(!el.id) return;
+    const v = store.get('f_'+el.id);
+    if(v!==undefined) el.value=v;
+    el.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>store.set('f_'+el.id,el.value),350);});
+  });
+  document.querySelectorAll('input[type=checkbox]').forEach(el=>{
+    if(!el.id) return;
+    if(store.get('c_'+el.id)) el.checked=true;
+    el.addEventListener('change',()=>store.set('c_'+el.id,el.checked));
+  });
+}
+
+const HZ='#E8D3B0', H='#8B6B4A', D='#6B4A32';
+const FEHLER=[
+ {id:'riss',name:'Riss',stern:false,erkl:'Beim Trocknen schwindet das Holz außen schneller als innen. Dann reißt es auf.',
+  svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M150 34 L118 42 L128 52 L96 58 L106 66 L74 72" fill="none" stroke="${D}" stroke-width="4" stroke-linecap="round"/></svg>`},
+ {id:'ast',name:'Ast',stern:false,erkl:'Hier saß ein Zweig. Die Fasern laufen um den Ast herum. Die Stelle ist schwächer.',
+  svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><ellipse cx="80" cy="50" rx="18" ry="14" fill="${D}"/><ellipse cx="80" cy="50" rx="11" ry="8" fill="#4A331F"/><path d="M8 34 Q54 34 62 46" fill="none" stroke="${H}" stroke-width="2"/><path d="M8 66 Q54 66 62 54" fill="none" stroke="${H}" stroke-width="2"/><path d="M152 34 Q106 34 98 46" fill="none" stroke="${H}" stroke-width="2"/><path d="M152 66 Q106 66 98 54" fill="none" stroke="${H}" stroke-width="2"/></svg>`},
+ {id:'verwerfen',name:'Verwerfen',stern:false,erkl:'Das Brett wird längs krumm. Es liegt nicht mehr flach auf dem Tisch.',
+  svg:`<svg viewBox="0 0 160 100"><path d="M8 40 Q80 4 152 40 L152 62 Q80 26 8 62 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><line x1="8" y1="88" x2="152" y2="88" stroke="#C8BFA8" stroke-width="4"/></svg>`},
+ {id:'schuesseln',name:'Schüsseln',stern:true,erkl:'Das Brett wölbt sich quer wie eine Schale. Schuld sind die Jahresringe: außen schwindet das Holz stärker.',
+  svg:`<svg viewBox="0 0 160 100"><path d="M20 66 Q80 20 140 66 L140 82 Q80 40 20 82 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M28 62 Q80 24 132 62" fill="none" stroke="${H}" stroke-width="1.5"/><path d="M36 60 Q80 30 124 60" fill="none" stroke="${H}" stroke-width="1.5"/></svg>`},
+ {id:'verdrehen',name:'Verdrehen',stern:true,erkl:'Die vier Ecken liegen nicht mehr in einer Ebene. Das Brett ist in sich verdreht.',
+  svg:`<svg viewBox="0 0 160 100"><path d="M14 28 L146 44 L146 74 L14 56 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M14 28 L146 44" stroke="${D}" stroke-width="2" stroke-dasharray="5 4"/><circle cx="14" cy="28" r="4" fill="${D}"/><circle cx="146" cy="74" r="4" fill="${D}"/></svg>`},
+ {id:'harzgalle',name:'Harzgalle',stern:true,erkl:'Eine Tasche voll Harz im Holz. Beim Bearbeiten läuft das Harz aus und klebt.',
+  svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M52 50 Q80 34 108 50 Q80 66 52 50 Z" fill="#C17B00" stroke="${D}" stroke-width="2"/><path d="M8 32 Q52 32 68 42" fill="none" stroke="${H}" stroke-width="1.5"/><path d="M152 68 Q108 68 92 58" fill="none" stroke="${H}" stroke-width="1.5"/></svg>`}
+];
+const store=mkStore('hbg_a8_fehler');
+let geloest=store.get('geloest',{});
+let gewaehlt=null;
+let reihenfolge=store.get('reihenfolge',null);
+if(!reihenfolge){ reihenfolge=FEHLER.map(f=>f.id).sort(()=>Math.random()-0.5); store.set('reihenfolge',reihenfolge); }
+
+function render(){
+  document.getElementById('chips').innerHTML = FEHLER.map(f=>
+    `<button class="chip ${geloest[f.id]?'geloest':''}" aria-pressed="${gewaehlt===f.id}" onclick="waehle('${f.id}')">
+      ${f.stern?'<span>&#11088;</span>':''}${f.name}</button>`).join('');
+  document.getElementById('galerie').innerHTML = reihenfolge.map(id=>{
+    const f=FEHLER.find(x=>x.id===id); const ok=geloest[id];
+    return `<div class="probe ${ok?'geloest':''}" onclick="tippe('${id}')">${f.svg}
+      <div class="name">${ok?f.name:'?'}</div>${ok?'<div class="erkl">'+f.erkl+'</div>':''}</div>`;
+  }).join('');
+  const n=Object.keys(geloest).length;
+  document.getElementById('stand').textContent=n+' von 6';
+  const b=document.getElementById('balken');
+  b.style.width=(n/6*100)+'%'; b.classList.toggle('progress-bar__fill--done',n===6);
+  store.set('geloest',geloest);
+}
+function waehle(id){ if(geloest[id])return; gewaehlt=(gewaehlt===id)?null:id; render(); }
+function tippe(id){
+  const fb=document.getElementById('fb');
+  if(geloest[id]) return;
+  if(!gewaehlt){ fb.className='feedback-tipp'; fb.textContent='Wähle zuerst einen Begriff aus.'; fb.hidden=false; return; }
+  const f=FEHLER.find(x=>x.id===gewaehlt);
+  if(id===gewaehlt){
+    geloest[id]=true; gewaehlt=null;
+    fb.className='feedback-richtig'; fb.textContent='Richtig! '+f.erkl;
+  }else{
+    fb.className='feedback-falsch'; fb.textContent='Nicht ganz. Schau genau hin: Wo ist das Holz beschädigt, wo nur verformt?';
+  }
+  fb.hidden=false; render();
+}
+function neu(){ geloest={}; gewaehlt=null; document.getElementById('fb').hidden=true;
+  reihenfolge=FEHLER.map(f=>f.id).sort(()=>Math.random()-0.5); store.set('reihenfolge',reihenfolge); render(); }
+window.addEventListener('DOMContentLoaded',()=>{ render(); bindeFelder(store); });
+
+</script>
+</body>
+</html>
