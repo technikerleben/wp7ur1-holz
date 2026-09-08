@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Die Baumscheibe – HBG</title>
+<style>
+:root{
+--col-slate-dark:#2C3D4C;--col-slate:#3E5668;--col-slate-mid:#6A8599;--col-slate-pale:#D0DCE6;--col-slate-ghost:#EEF3F7;
+--col-rust-dark:#9E4E22;--col-rust:#D97A4A;--col-rust-pale:#F5DDD1;
+--col-sage-dark:#4D8B3F;--col-sage:#7DBB6F;--col-sage-pale:#DDF0D8;
+--col-warning:#C17B00;--col-warning-pale:#FFF3CC;--col-warning-text:#5C4400;
+--col-error:#C0392B;--col-error-pale:#FDECEA;--col-error-text:#7A1B14;
+--col-bg:#F5F4F1;--col-white:#FFFFFF;--col-text:#1E2A35;--col-text-muted:#5A6A78;
+--col-border:#D4D0C8;--col-disabled-bg:#EBEBEA;--col-disabled-text:#7A7672;
+--col-focus:#3E5668;--col-shadow:rgba(62,86,104,0.10);
+--text-xs:0.694rem;--text-sm:0.833rem;--text-base:1rem;--text-md:1.2rem;--text-lg:1.44rem;--text-xl:1.728rem;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;background:var(--col-bg);color:var(--col-text);
+font-size:var(--text-base);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-text-size-adjust:100%;}
+:focus-visible{outline:3px solid var(--col-focus);outline-offset:3px;border-radius:4px;}
+header{background:var(--col-slate);color:#fff;padding:14px 28px;}
+header h1{font-size:var(--text-xl);font-weight:700;line-height:1.2;}
+.header-meta{font-size:var(--text-xs);color:var(--col-slate-pale);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.hbg-wordmark{display:inline-flex;align-items:flex-end;gap:5px;}
+.hbg-wordmark__main{font-size:var(--text-lg);font-weight:800;color:#fff;}
+.hbg-wordmark__sub{font-size:var(--text-sm);color:#EBA882;margin-bottom:2px;}
+.container{max-width:960px;margin:0 auto;padding:16px 24px;width:100%;}
+main{flex:1;padding:8px 0 32px;}
+.card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);}
+.task-card{background:var(--col-white);border-radius:12px;padding:18px 22px;margin-bottom:16px;box-shadow:0 2px 8px var(--col-shadow);border-left:4px solid var(--col-rust);}
+h2{font-size:var(--text-lg);margin-bottom:6px;}
+h3{font-size:var(--text-md);margin-bottom:4px;}
+p{margin-bottom:8px;}
+.muted{color:var(--col-text-muted);font-size:var(--text-sm);}
+.btn-primary{background:var(--col-rust-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:var(--text-base);font-weight:600;min-height:44px;min-width:44px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.btn-primary:hover{background:#B55E2A;}
+.btn-primary:active{background:#7D3C18;}
+.btn-success{background:var(--col-sage-dark);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;}
+.btn-secondary{background:transparent;color:var(--col-slate);border:2px solid var(--col-slate);padding:10px 18px;border-radius:8px;font-weight:600;min-height:44px;cursor:pointer;font-family:inherit;font-size:var(--text-base);transition:background .2s;}
+.btn-secondary:hover{background:var(--col-slate-ghost);}
+.btn-secondary[aria-pressed="true"]{background:var(--col-slate);color:#fff;}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.feedback-richtig{background:var(--col-sage-pale);border-left:4px solid var(--col-sage-dark);border-radius:0 8px 8px 0;padding:12px 16px;color:#2D5C25;margin-top:10px;}
+.feedback-richtig::before{content:'✓ ';font-weight:700;color:var(--col-sage-dark);}
+.feedback-falsch{background:var(--col-error-pale);border-left:4px solid var(--col-error);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-error-text);margin-top:10px;}
+.feedback-falsch::before{content:'✗ ';font-weight:700;color:var(--col-error);}
+.feedback-tipp{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:12px 16px;color:var(--col-text);margin-top:10px;}
+.feedback-tipp::before{content:'ℹ ';font-weight:700;color:var(--col-slate);}
+.split{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.split__viz{flex:1 1 340px;min-width:300px;}
+.split__panel{flex:1 1 300px;min-width:280px;}
+svg.scheibe{width:100%;height:auto;display:block;touch-action:manipulation;}
+.zone{cursor:pointer;}
+.zone:hover{filter:brightness(1.08);}
+.zone.aktiv{stroke:#2C3D4C;stroke-width:4;}
+.marker{cursor:pointer;}
+.liste{display:flex;flex-direction:column;gap:8px;}
+.liste button{text-align:left;width:100%;}
+.chip{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;border:2px solid var(--col-slate);background:#fff;color:var(--col-slate);font-weight:600;font-size:var(--text-sm);min-height:44px;cursor:pointer;font-family:inherit;}
+.chip[aria-pressed="true"]{background:var(--col-slate);color:#fff;}
+.chip.geloest{background:var(--col-sage-pale);border-color:var(--col-sage-dark);color:#2D5C25;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+.badge--rust{background:var(--col-rust-dark);color:#fff;}
+.badge--slate{background:var(--col-slate);color:#fff;}
+.badge--success{background:var(--col-sage-dark);color:#fff;}
+input,textarea{font-size:var(--text-base);font-family:inherit;padding:10px 14px;border:2px solid var(--col-border);border-radius:8px;width:100%;background:#fff;color:var(--col-text);}
+input:focus-visible,textarea:focus-visible{outline:none;border-color:var(--col-slate);box-shadow:0 0 0 3px var(--col-slate-pale);}
+textarea{resize:vertical;min-height:80px;}
+label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
+.progress-bar{height:8px;background:var(--col-slate-pale);border-radius:4px;overflow:hidden;margin:8px 0;}
+.progress-bar__fill{height:100%;background:var(--col-rust);border-radius:4px;transition:width .4s ease;}
+.progress-bar__fill--done{background:var(--col-sage);}
+.tipp-details{background:var(--col-slate-pale);border-left:4px solid var(--col-slate-mid);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;}
+.tipp-details summary{cursor:pointer;font-weight:600;font-size:var(--text-sm);color:var(--col-slate);list-style:none;}
+.tipp-details summary::-webkit-details-marker{display:none;}
+.tipp-details p{margin-top:8px;font-size:var(--text-sm);}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+[hidden]{display:none !important;}
+</style>
+</head>
+<body>
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;">
+    <div><h1>Die Baumscheibe</h1><div class="header-meta">HBG Dortmund · WP Technik · Klasse 7</div></div>
+    <div class="hbg-wordmark"><span class="hbg-wordmark__main">HBG</span><span class="hbg-wordmark__sub">SRL</span></div>
+  </div>
+</header>
+
+<main><div class="container">
+
+  <div class="tabs" role="tablist">
+    <button class="btn-secondary" id="tab-entdecken" role="tab" aria-pressed="true" onclick="setzeModus('entdecken')">🔍 Entdecken</button>
+    <button class="btn-secondary" id="tab-beschriften" role="tab" aria-pressed="false" onclick="setzeModus('beschriften')">🏷️ Beschriften (A1)</button>
+    <button class="btn-secondary" id="tab-ringe" role="tab" aria-pressed="false" onclick="setzeModus('ringe')">📏 Jahresringe (A2)</button>
+  </div>
+
+  <div class="split">
+    <div class="split__viz card">
+      <svg class="scheibe" viewBox="0 0 400 400" id="svg" aria-label="Querschnitt durch einen Baumstamm"></svg>
+      <p class="muted" id="svg-hinweis" style="text-align:center;margin-top:6px;"></p>
+    </div>
+
+    <div class="split__panel">
+
+      <!-- MODUS ENTDECKEN -->
+      <div id="panel-entdecken">
+        <div class="task-card">
+          <span class="badge badge--slate">Entdecken</span>
+          <h2 style="margin-top:8px;">Was steckt im Stamm?</h2>
+          <p class="muted">Tippe auf einen Bereich in der Scheibe oder wähle ihn aus der Liste.</p>
+          <div class="liste" id="layer-liste"></div>
+        </div>
+        <div class="card" id="info-box">
+          <h3 id="info-titel">Noch nichts ausgewählt</h3>
+          <p id="info-text" class="muted">Tippe auf einen Bereich, um mehr zu erfahren.</p>
+        </div>
+      </div>
+
+      <!-- MODUS BESCHRIFTEN -->
+      <div id="panel-beschriften" hidden>
+        <div class="task-card">
+          <span class="badge badge--rust">Auftrag A1</span>
+          <h2 style="margin-top:8px;">Beschrifte die Baumscheibe</h2>
+          <p>Wähle ein Wort. Tippe dann die passende Zahl in der Scheibe an.</p>
+          <div class="chips" id="chips"></div>
+          <div class="progress-bar"><div class="progress-bar__fill" id="fortschritt" style="width:0%"></div></div>
+          <p class="muted"><span id="anz-geloest">0</span> von 6 richtig zugeordnet</p>
+          <div id="fb-beschriften" hidden role="status" aria-live="polite"></div>
+          <div class="row"><button class="btn-secondary" onclick="resetBeschriften()">Neu starten</button></div>
+        </div>
+        <details class="tipp-details"><summary>💡 Hilfe 1: Wo liegt was?</summary>
+          <p>Von außen nach innen: Borke → Bast → Kambium → Splintholz → Kernholz → Mark.</p></details>
+        <details class="tipp-details"><summary>💡 Hilfe 2: Merksatz</summary>
+          <p>Außen schützt die Rinde. Innen ist das Holz am ältesten und am dunkelsten.</p></details>
+      </div>
+
+      <!-- MODUS RINGE -->
+      <div id="panel-ringe" hidden>
+        <div class="task-card">
+          <span class="badge badge--rust">Auftrag A2</span>
+          <h2 style="margin-top:8px;">Jahresringe lesen</h2>
+          <p><strong>1.</strong> Zähle die Ringe. Wie alt war der Baum?</p>
+          <div class="row">
+            <label for="alter" class="sr-only" style="margin:0;">Alter in Jahren</label>
+            <input id="alter" type="number" min="1" max="60" inputmode="numeric" style="max-width:130px;" placeholder="Jahre">
+            <button class="btn-primary" onclick="pruefeAlter()">Prüfen</button>
+          </div>
+          <div id="fb-alter" hidden role="status" aria-live="polite"></div>
+          <p style="margin-top:14px;"><strong>2.</strong> Tippe den <em>breitesten</em> Ring in der Scheibe an.</p>
+          <div id="fb-ring" hidden role="status" aria-live="polite"></div>
+          <p style="margin-top:14px;"><strong>3.</strong> Was vermutest du?</p>
+          <label for="vermutung">In einem Jahr mit breitem Ring …</label>
+          <textarea id="vermutung" placeholder="Schreibe deine Vermutung auf."></textarea>
+        </div>
+        <details class="tipp-details"><summary>💡 Hilfe: Was heißt breit?</summary>
+          <p>Ein breiter Ring bedeutet: In diesem Jahr ist der Baum stark gewachsen. Er hatte viel Wasser, Licht und Wärme.</p></details>
+        <div class="task-card" style="border-left-color:var(--col-sage);">
+          <span class="badge badge--success">⭐ Für Entdecker</span>
+          <p style="margin-top:8px;">Warum kann man das Alter <em>nicht</em> bei jedem Holzstück an den Ringen ablesen?</p>
+          <textarea id="experte" placeholder="Deine Erklärung."></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div></main>
+
+<script>
+/* ---------- Speicher ---------- */
+const KEYS={form:'hbg_baumscheibe_formular',fortschritt:'hbg_baumscheibe_fortschritt'};
+function save(k,d){try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}}
+function load(k){try{const r=localStorage.getItem(k);return r?JSON.parse(r):null;}catch(e){return null;}}
+
+/* ---------- Daten ---------- */
+const CX=200,CY=200;
+const LAYERS=[
+ {id:'borke',   name:'Borke (Rinde)', r:190, fill:'#6B4A32', nr:2, mAng:-90, mR:185,
+  info:'Die Borke ist die äußere Rinde. Sie schützt den Baum vor Kälte, Hitze, Tieren und Feuer. Sie ist tot und reißt beim Wachsen auf.'},
+ {id:'bast',    name:'Bast',          r:180, fill:'#A9713F', nr:5, mAng:-40, mR:176,
+  info:'Der Bast liegt unter der Borke. Er transportiert Zucker aus den Blättern nach unten in den ganzen Baum.'},
+ {id:'kambium', name:'Kambium',       r:172, fill:'#D8B24A', nr:6, mAng:8, mR:168,
+  info:'Das Kambium ist eine hauchdünne Wachstumsschicht. Nur hier wird der Stamm dicker. Nach innen bildet es Holz, nach außen Bast.'},
+ {id:'splint',  name:'Splintholz',    r:166, fill:'#E8D3B0', nr:1, mAng:55, mR:130,
+  info:'Das Splintholz ist das junge, helle Holz. Es leitet Wasser von den Wurzeln zu den Blättern. Es ist feuchter und weicher als das Kernholz.'},
+ {id:'kern',    name:'Kernholz',      r:95,  fill:'#C9A67A', nr:4, mAng:165, mR:58,
+  info:'Das Kernholz ist das ältere Holz in der Mitte. Es leitet kein Wasser mehr. Es ist dunkler, härter und haltbarer – deshalb ist es für Möbel besonders wertvoll.'},
+ {id:'mark',    name:'Mark',          r:13,  fill:'#8B6B4A', nr:3, mAng:0, mR:0,
+  info:'Das Mark ist der Kern in der Mitte. Hier hat der Baum als dünner Trieb angefangen zu wachsen. Es ist weich und wird beim Sägen oft ausgeschnitten.'}
+];
+const RINGBREITEN=[7,9,12,6,4,11,13,8,5,9,15,7,6,10]; // 14 Ringe, breitester = Nr. 11
+const ANZ_RINGE=RINGBREITEN.length;
+const R_INNEN=15, R_AUSSEN=166;
+const ringRadien=(()=>{const s=RINGBREITEN.reduce((a,b)=>a+b,0);const f=(R_AUSSEN-R_INNEN)/s;
+  let r=R_INNEN;const arr=[];RINGBREITEN.forEach(w=>{r+=w*f;arr.push(r);});return arr;})();
+const BREITESTER=RINGBREITEN.indexOf(Math.max(...RINGBREITEN)); // 0-basiert
+
+let modus='entdecken', gewaehlt=null, geloest={};
+
+/* ---------- SVG bauen ---------- */
+function zeichne(){
+  const s=document.getElementById('svg');
+  let h='';
+  // Grundflächen von außen nach innen
+  LAYERS.forEach(l=>{
+    h+=`<circle class="zone" data-id="${l.id}" cx="${CX}" cy="${CY}" r="${l.r}" fill="${l.fill}" stroke="#6B4A32" stroke-width="1"/>`;
+  });
+  // Jahresringe (in Kern + Splint)
+  h+='<g id="ringe-gruppe">';
+  for(let i=ANZ_RINGE-1;i>=0;i--){
+    const r=ringRadien[i];
+    const basis = r<=95 ? '#C9A67A' : '#E8D3B0';
+    const ton = i%2===0 ? basis : schattiere(basis,-8);
+    h+=`<circle class="ring" data-ring="${i}" cx="${CX}" cy="${CY}" r="${r}" fill="${ton}" stroke="#8A6540" stroke-width="1.4"/>`;
+  }
+  h+=`<circle class="zone" data-id="mark" cx="${CX}" cy="${CY}" r="13" fill="#8B6B4A" stroke="#6B4A32"/>`;
+  h+='</g>';
+  // Nummern-Marker
+  h+='<g id="marker-gruppe">';
+  LAYERS.forEach(l=>{
+    const a=l.mAng*Math.PI/180;
+    const x=CX+Math.cos(a)*l.mR, y=CY+Math.sin(a)*l.mR;
+    h+=`<g class="marker" data-nr="${l.nr}" data-id="${l.id}">
+        <circle cx="${x}" cy="${y}" r="17" fill="#FFFFFF" stroke="#2C3D4C" stroke-width="2.5"/>
+        <text x="${x}" y="${y+6}" text-anchor="middle" font-size="19" font-weight="700" fill="#2C3D4C">${l.nr}</text>
+        <text class="marker-loesung" x="${x}" y="${y-24}" text-anchor="middle" font-size="15" font-weight="700" fill="#2D5C25"></text>
+      </g>`;
+  });
+  h+='</g>';
+  s.innerHTML=h;
+
+  s.querySelectorAll('.zone').forEach(z=>z.addEventListener('click',()=>{
+    if(modus==='entdecken') zeigeInfo(z.dataset.id);
+  }));
+  s.querySelectorAll('.ring').forEach(z=>z.addEventListener('click',()=>{
+    if(modus==='ringe') pruefeRing(parseInt(z.dataset.ring,10));
+  }));
+  s.querySelectorAll('.marker').forEach(m=>m.addEventListener('click',()=>{
+    if(modus==='beschriften') pruefeZuordnung(m.dataset.id);
+  }));
+}
+function schattiere(hex,p){
+  const n=parseInt(hex.slice(1),16);let r=(n>>16)+p,g=((n>>8)&255)+p,b=(n&255)+p;
+  r=Math.max(0,Math.min(255,r));g=Math.max(0,Math.min(255,g));b=Math.max(0,Math.min(255,b));
+  return '#'+((r<<16)|(g<<8)|b).toString(16).padStart(6,'0');
+}
+
+/* ---------- Modus ---------- */
+function setzeModus(m){
+  modus=m;
+  ['entdecken','beschriften','ringe'].forEach(k=>{
+    document.getElementById('tab-'+k).setAttribute('aria-pressed', String(k===m));
+    document.getElementById('panel-'+k).hidden = (k!==m);
+  });
+  const ringe=document.getElementById('ringe-gruppe');
+  const marker=document.getElementById('marker-gruppe');
+  const hinweis=document.getElementById('svg-hinweis');
+  ringe.style.pointerEvents = (m==='ringe')?'auto':'none';
+  ringe.style.opacity = (m==='entdecken')?'0.35':'1';
+  marker.style.display = (m==='beschriften')?'block':'none';
+  document.querySelectorAll('.zone').forEach(z=>z.style.pointerEvents=(m==='entdecken')?'auto':'none');
+  hinweis.textContent = m==='entdecken' ? 'Tippe auf einen Bereich der Scheibe.'
+                      : m==='beschriften' ? 'Erst ein Wort wählen, dann die Zahl antippen.'
+                      : 'Tippe einen Ring an.';
+}
+
+/* ---------- Entdecken ---------- */
+function baueListe(){
+  const c=document.getElementById('layer-liste');
+  c.innerHTML=LAYERS.map(l=>`<button class="btn-secondary" onclick="zeigeInfo('${l.id}')">${l.name}</button>`).join('');
+}
+function zeigeInfo(id){
+  const l=LAYERS.find(x=>x.id===id);if(!l)return;
+  document.getElementById('info-titel').textContent=l.name;
+  const t=document.getElementById('info-text');t.textContent=l.info;t.className='';
+  document.querySelectorAll('.zone').forEach(z=>z.classList.toggle('aktiv',z.dataset.id===id));
+}
+
+/* ---------- Beschriften ---------- */
+function baueChips(){
+  const c=document.getElementById('chips');
+  const mix=[...LAYERS].sort((a,b)=>a.name.localeCompare(b.name));
+  c.innerHTML=mix.map(l=>`<button class="chip ${geloest[l.id]?'geloest':''}" data-id="${l.id}" aria-pressed="false"
+    onclick="waehleChip('${l.id}')">${l.name}</button>`).join('');
+  aktualisiereFortschritt();
+}
+function waehleChip(id){
+  if(geloest[id])return;
+  gewaehlt = (gewaehlt===id)?null:id;
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.id===gewaehlt)));
+}
+function pruefeZuordnung(zielId){
+  const fb=document.getElementById('fb-beschriften');
+  if(!gewaehlt){fb.className='feedback-tipp';fb.textContent='Wähle zuerst ein Wort aus.';fb.hidden=false;return;}
+  const l=LAYERS.find(x=>x.id===gewaehlt);
+  if(zielId===gewaehlt){
+    geloest[gewaehlt]=true;
+    const g=document.querySelector(`.marker[data-id="${zielId}"] .marker-loesung`);
+    if(g)g.textContent=l.name;
+    fb.className='feedback-richtig';fb.textContent=`Richtig! ${l.name} sitzt an dieser Stelle.`;
+    gewaehlt=null;baueChips();
+    save(KEYS.fortschritt,geloest);
+  }else{
+    const ziel=LAYERS.find(x=>x.id===zielId);
+    fb.className='feedback-falsch';
+    fb.textContent=`Nicht ganz. Zahl ${ziel.nr} liegt weiter ${ziel.r>l.r?'außen':'innen'}. Versuch es nochmal.`;
+  }
+  fb.hidden=false;
+}
+function aktualisiereFortschritt(){
+  const n=Object.keys(geloest).length;
+  document.getElementById('anz-geloest').textContent=n;
+  const f=document.getElementById('fortschritt');
+  f.style.width=(n/6*100)+'%';
+  f.classList.toggle('progress-bar__fill--done',n===6);
+  if(n===6){const fb=document.getElementById('fb-beschriften');fb.className='feedback-richtig';
+    fb.textContent='Alle sechs Bereiche sitzen. Du kannst A1 abhaken.';fb.hidden=false;}
+}
+function resetBeschriften(){
+  geloest={};gewaehlt=null;save(KEYS.fortschritt,{});
+  document.querySelectorAll('.marker-loesung').forEach(t=>t.textContent='');
+  document.getElementById('fb-beschriften').hidden=true;baueChips();
+}
+
+/* ---------- Ringe ---------- */
+function pruefeAlter(){
+  const v=parseInt(document.getElementById('alter').value,10);
+  const fb=document.getElementById('fb-alter');fb.hidden=false;
+  if(isNaN(v)){fb.className='feedback-tipp';fb.textContent='Trage zuerst eine Zahl ein.';return;}
+  if(v===ANZ_RINGE){fb.className='feedback-richtig';fb.textContent=`Richtig! Der Baum hatte ${ANZ_RINGE} Jahresringe, war also etwa ${ANZ_RINGE} Jahre alt.`;}
+  else if(Math.abs(v-ANZ_RINGE)<=2){fb.className='feedback-falsch';fb.textContent='Fast! Zähle die Ringe noch einmal langsam von innen nach außen.';}
+  else{fb.className='feedback-falsch';fb.textContent='Noch nicht. Tipp: Jeder dunkle Kreis ist eine Ringgrenze. Zähle die Bänder dazwischen.';}
+  speichereForm();
+}
+function pruefeRing(i){
+  const fb=document.getElementById('fb-ring');fb.hidden=false;
+  if(i===BREITESTER){fb.className='feedback-richtig';fb.textContent=`Richtig! Ring ${i+1} von innen ist der breiteste. In diesem Jahr ist der Baum am stärksten gewachsen.`;
+    const s=document.querySelector(`.ring[data-ring="${i}"]`);if(s){s.setAttribute('stroke','#4D8B3F');s.setAttribute('stroke-width','4');}}
+  else{fb.className='feedback-falsch';fb.textContent='Das ist nicht der breiteste Ring. Suche das breiteste Band zwischen zwei Linien.';}
+}
+
+/* ---------- Formular ---------- */
+function speichereForm(){
+  save(KEYS.form,{alter:val('alter'),vermutung:val('vermutung'),experte:val('experte')});
+}
+function val(id){const e=document.getElementById(id);return e?e.value:'';}
+let t;document.addEventListener('input',e=>{if(e.target.matches('input,textarea')){clearTimeout(t);t=setTimeout(speichereForm,400);}});
+
+/* ---------- Start ---------- */
+window.addEventListener('DOMContentLoaded',()=>{
+  zeichne();baueListe();
+  geloest=load(KEYS.fortschritt)||{};
+  baueChips();
+  Object.keys(geloest).forEach(id=>{
+    const l=LAYERS.find(x=>x.id===id);
+    const g=document.querySelector(`.marker[data-id="${id}"] .marker-loesung`);
+    if(g&&l)g.textContent=l.name;
+  });
+  const f=load(KEYS.form);
+  if(f){['alter','vermutung','experte'].forEach(k=>{const e=document.getElementById(k);if(e&&f[k])e.value=f[k];});}
+  setzeModus('entdecken');
+});
+</script>
+</body>
+</html>
