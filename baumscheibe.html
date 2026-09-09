@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Die Baumscheibe – HBG</title>
 <style>
 :root{
@@ -80,7 +80,7 @@ label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;}
 [hidden]{display:none !important;}
 </style>
-</head>
+<link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;">
@@ -134,7 +134,7 @@ label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
         <details class="tipp-details"><summary>💡 Hilfe 1: Wo liegt was?</summary>
           <p>Von außen nach innen: Borke → Bast → Kambium → Splintholz → Kernholz → Mark.</p></details>
         <details class="tipp-details"><summary>💡 Hilfe 2: Merksatz</summary>
-          <p>Außen schützt die Rinde. Innen ist das Holz am ältesten und am dunkelsten.</p></details>
+          <p>Außen schützt die Rinde. Das ältere Holz liegt weiter innen. Nicht jede Holzart hat einen dunkleren Kern.</p></details>
       </div>
 
       <!-- MODUS RINGE -->
@@ -151,17 +151,11 @@ label{display:block;font-weight:600;font-size:var(--text-sm);margin-bottom:4px;}
           <div id="fb-alter" hidden role="status" aria-live="polite"></div>
           <p style="margin-top:14px;"><strong>2.</strong> Tippe den <em>breitesten</em> Ring in der Scheibe an.</p>
           <div id="fb-ring" hidden role="status" aria-live="polite"></div>
-          <p style="margin-top:14px;"><strong>3.</strong> Was vermutest du?</p>
-          <label for="vermutung">In einem Jahr mit breitem Ring …</label>
-          <textarea id="vermutung" placeholder="Schreibe deine Vermutung auf."></textarea>
+          <p>📁 Schreibe deine Beobachtung und Vermutung auf A2.2.</p>
         </div>
         <details class="tipp-details"><summary>💡 Hilfe: Was heißt breit?</summary>
-          <p>Ein breiter Ring bedeutet: In diesem Jahr ist der Baum stark gewachsen. Er hatte viel Wasser, Licht und Wärme.</p></details>
-        <div class="task-card" style="border-left-color:var(--col-sage);">
-          <span class="badge badge--success">⭐ Für Entdecker</span>
-          <p style="margin-top:8px;">Warum kann man das Alter <em>nicht</em> bei jedem Holzstück an den Ringen ablesen?</p>
-          <textarea id="experte" placeholder="Deine Erklärung."></textarea>
-        </div>
+          <p>Ein breiter Ring bedeutet: In diesem Jahr ist der Baum stark gewachsen. Wasser, Licht, Temperatur und Konkurrenz können das Wachstum beeinflussen. Eine genaue Ursache kannst du nicht sicher ablesen.</p></details>
+
       </div>
 
     </div>
@@ -179,17 +173,17 @@ function load(k){try{const r=localStorage.getItem(k);return r?JSON.parse(r):null
 const CX=200,CY=200;
 const LAYERS=[
  {id:'borke',   name:'Borke (Rinde)', r:190, fill:'#6B4A32', nr:2, mAng:-90, mR:185,
-  info:'Die Borke ist die äußere Rinde. Sie schützt den Baum vor Kälte, Hitze, Tieren und Feuer. Sie ist tot und reißt beim Wachsen auf.'},
+  info:'Die Borke ist die äußere Rinde. Sie schützt den Baum vor äußeren Einflüssen und Verletzungen. Sie ist tot und reißt beim Wachsen auf.'},
  {id:'bast',    name:'Bast',          r:180, fill:'#A9713F', nr:5, mAng:-40, mR:176,
-  info:'Der Bast liegt unter der Borke. Er transportiert Zucker aus den Blättern nach unten in den ganzen Baum.'},
+  info:'Der Bast liegt unter der Borke. Er transportiert Zucker aus den Blättern zu anderen Teilen des Baumes.'},
  {id:'kambium', name:'Kambium',       r:172, fill:'#D8B24A', nr:6, mAng:8, mR:168,
   info:'Das Kambium ist eine hauchdünne Wachstumsschicht. Nur hier wird der Stamm dicker. Nach innen bildet es Holz, nach außen Bast.'},
  {id:'splint',  name:'Splintholz',    r:166, fill:'#E8D3B0', nr:1, mAng:55, mR:130,
-  info:'Das Splintholz ist das junge, helle Holz. Es leitet Wasser von den Wurzeln zu den Blättern. Es ist feuchter und weicher als das Kernholz.'},
+  info:'Das Splintholz ist das junge, helle Holz. Es leitet Wasser von den Wurzeln zu den Blättern. Es enthält lebende Zellen zur Speicherung. Seine Eigenschaften hängen von der Holzart ab.'},
  {id:'kern',    name:'Kernholz',      r:95,  fill:'#C9A67A', nr:4, mAng:165, mR:58,
-  info:'Das Kernholz ist das ältere Holz in der Mitte. Es leitet kein Wasser mehr. Es ist dunkler, härter und haltbarer – deshalb ist es für Möbel besonders wertvoll.'},
+  info:'Das Kernholz ist das ältere Holz in der Mitte. Es leitet kein Wasser mehr. Bei manchen Holzarten ist es dunkler und widerstandsfähiger gegen Pilze. Es ist nicht grundsätzlich härter als Splintholz.'},
  {id:'mark',    name:'Mark',          r:13,  fill:'#8B6B4A', nr:3, mAng:0, mR:0,
-  info:'Das Mark ist der Kern in der Mitte. Hier hat der Baum als dünner Trieb angefangen zu wachsen. Es ist weich und wird beim Sägen oft ausgeschnitten.'}
+  info:'Das Mark liegt ganz in der Mitte und ist nicht dasselbe wie Kernholz. Hier hat der Baum als dünner Trieb angefangen zu wachsen. Es ist weich und wird beim Sägen oft ausgeschnitten.'}
 ];
 const RINGBREITEN=[7,9,12,6,4,11,13,8,5,9,15,7,6,10]; // 14 Ringe, breitester = Nr. 11
 const ANZ_RINGE=RINGBREITEN.length;
@@ -333,7 +327,7 @@ function pruefeAlter(){
   if(v===ANZ_RINGE){fb.className='feedback-richtig';fb.textContent=`Richtig! Der Baum hatte ${ANZ_RINGE} Jahresringe, war also etwa ${ANZ_RINGE} Jahre alt.`;}
   else if(Math.abs(v-ANZ_RINGE)<=2){fb.className='feedback-falsch';fb.textContent='Fast! Zähle die Ringe noch einmal langsam von innen nach außen.';}
   else{fb.className='feedback-falsch';fb.textContent='Noch nicht. Tipp: Jeder dunkle Kreis ist eine Ringgrenze. Zähle die Bänder dazwischen.';}
-  speichereForm();
+
 }
 function pruefeRing(i){
   const fb=document.getElementById('fb-ring');fb.hidden=false;
@@ -341,13 +335,6 @@ function pruefeRing(i){
     const s=document.querySelector(`.ring[data-ring="${i}"]`);if(s){s.setAttribute('stroke','#4D8B3F');s.setAttribute('stroke-width','4');}}
   else{fb.className='feedback-falsch';fb.textContent='Das ist nicht der breiteste Ring. Suche das breiteste Band zwischen zwei Linien.';}
 }
-
-/* ---------- Formular ---------- */
-function speichereForm(){
-  save(KEYS.form,{alter:val('alter'),vermutung:val('vermutung'),experte:val('experte')});
-}
-function val(id){const e=document.getElementById(id);return e?e.value:'';}
-let t;document.addEventListener('input',e=>{if(e.target.matches('input,textarea')){clearTimeout(t);t=setTimeout(speichereForm,400);}});
 
 /* ---------- Start ---------- */
 window.addEventListener('DOMContentLoaded',()=>{
@@ -359,9 +346,9 @@ window.addEventListener('DOMContentLoaded',()=>{
     const g=document.querySelector(`.marker[data-id="${id}"] .marker-loesung`);
     if(g&&l)g.textContent=l.name;
   });
-  const f=load(KEYS.form);
-  if(f){['alter','vermutung','experte'].forEach(k=>{const e=document.getElementById(k);if(e&&f[k])e.value=f[k];});}
-  setzeModus('entdecken');
+  const m=new URLSearchParams(location.search).get('modus');
+  setzeModus(['entdecken','beschriften','ringe'].includes(m)?m:'entdecken');
+  if(m)document.querySelector('.tabs').hidden=true;
 });
 </script>
 </body>

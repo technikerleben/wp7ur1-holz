@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Holzberatung – HBG</title>
 <style>
 :root{
@@ -100,7 +100,7 @@ font-family:inherit;font-size:var(--text-sm);font-weight:600;min-height:64px;col
 .werte div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid var(--col-border);padding:2px 0;}
 .werte div:last-child{border-bottom:none;}
 </style>
-</head>
+<script src="kurs-daten.js"></script><link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
@@ -126,7 +126,7 @@ font-family:inherit;font-size:var(--text-sm);font-weight:600;min-height:64px;col
 </div>
 
 <div class="card">
-  <h3>1. Dein Kundenauftrag</h3>
+  <h3>Dein Kundenauftrag</h3>
   <div class="auftraege" id="auftraege"></div>
   <div id="auftrag-detail" hidden></div>
 </div>
@@ -142,27 +142,7 @@ font-family:inherit;font-size:var(--text-sm);font-weight:600;min-height:64px;col
   <div id="vergleich" hidden></div>
 </div>
 
-<div class="task-card">
-  <h3>3. Meine Empfehlung</h3>
-  <label for="wahl">Ich empfehle dieses Holz:</label>
-  <input type="text" id="wahl" placeholder="Name der Holzart">
-  <label for="e1" style="margin-top:10px;">Diese drei Eigenschaften passen:</label>
-  <input type="text" id="e1" placeholder="1. Eigenschaft">
-  <input type="text" id="e2" placeholder="2. Eigenschaft" style="margin-top:6px;">
-  <input type="text" id="e3" placeholder="3. Eigenschaft" style="margin-top:6px;">
-  <label for="nachteil" style="margin-top:10px;">Ein Nachteil meiner Wahl:</label>
-  <input type="text" id="nachteil" placeholder="Nachteil">
-  <label for="begruendung" style="margin-top:10px;">Meine Begründung für die Kundin oder den Kunden:</label>
-  <textarea id="begruendung" placeholder="Ich empfehle …, weil …"></textarea>
-</div>
-
-<div class="task-card">
-  <h3>&#9989; Ergebnis kontrollieren</h3>
-  <label class="check"><input type="checkbox" id="ck1"><span>Ich habe drei Eigenschaften genannt.</span></label>
-  <label class="check"><input type="checkbox" id="ck2"><span>Ich habe einen Nachteil genannt.</span></label>
-  <div class="row no-print"><button class="btn-secondary" onclick="window.print()">&#128424; Ausdrucken</button></div>
-</div>
-
+<div class="task-card"><p>📁 Schreibe deine Empfehlung, die Eigenschaften und einen Nachteil auf A9.2.</p></div>
 </div></main>
 <script>
 
@@ -195,11 +175,11 @@ const HOELZER=[
  {id:'fichte',name:'Fichte',art:'Nadelholz',farbe:'#F0DFC0',streifen:'#D9BE92',
   eig:'hell und gleichmäßig',haerte:'weich',gewicht:'leicht (ca. 470 kg/m³)',
   vorteil:'leicht zu bearbeiten, günstig, überall zu bekommen',
-  nachteil:'weich, bekommt schnell Diebstellen, viele Äste',
+  nachteil:'weich, bekommt schnell Druckstellen, viele Äste',
   verwendung:'Bauholz, Dachstuhl, Regalböden, Verpackungen'},
  {id:'kiefer',name:'Kiefer',art:'Nadelholz',farbe:'#EFCFA0',streifen:'#C89A5E',
   eig:'hell mit rötlichem Kern, deutliche Ringe',haerte:'mittelweich',gewicht:'leicht (ca. 520 kg/m³)',
-  vorteil:'gut zu bearbeiten, schöne Maserung, haltbarer als Fichte',
+  vorteil:'gut zu bearbeiten, schöne Maserung, Kernholz im Außenbereich widerstandsfähiger als das Splintholz',
   nachteil:'harzt, dunkelt am Licht nach',
   verwendung:'Möbel, Fenster, Fußböden, Zäune'},
  {id:'buche',name:'Buche',art:'Laubholz',farbe:'#E3C3A0',streifen:'#C39468',
@@ -208,8 +188,8 @@ const HOELZER=[
   nachteil:'arbeitet stark bei Feuchtigkeit, nicht für draußen',
   verwendung:'Schneidebretter, Stühle, Spielzeug, Küchenmöbel'},
  {id:'eiche',name:'Eiche',art:'Laubholz',farbe:'#D8B87E',streifen:'#A98040',
-  eig:'hellbraun, grobe Poren, markante Maserung',haerte:'sehr hart',gewicht:'schwer (ca. 700 kg/m³)',
-  vorteil:'sehr haltbar, hält Nässe aus, hochwertige Optik',
+  eig:'hellbraun, grobe Poren, markante Maserung',haerte:'hart',gewicht:'schwer (ca. 700 kg/m³)',
+  vorteil:'sehr haltbar, Kernholz ist bei geeigneter Konstruktion für draußen geeignet, hochwertige Optik',
   nachteil:'teuer, schwer zu bearbeiten, verfärbt sich an Eisen dunkel',
   verwendung:'Fußboden, Tischplatte, Gartenmöbel, Treppen, Fässer'},
  {id:'birke',name:'Birke',art:'Laubholz',farbe:'#F2E4CE',streifen:'#D3BE9C',
@@ -218,22 +198,10 @@ const HOELZER=[
   nachteil:'verrottet draußen schnell, nicht witterungsfest',
   verwendung:'Sperrholz, Spielzeug, Möbel, Innenausbau'}
 ];
-const AUFTRAEGE=[
- {id:'schneidebrett',titel:'Schneidebrett',text:'Ich koche viel. Ich brauche ein Brett zum Schneiden. Es muss oft abgewaschen werden und darf nicht sofort stumpfe Messer machen.',
-  tipp:'Denke an: Wird nass. Messer schneiden darauf. Muss glatt und dicht sein.'},
- {id:'gartenbank',titel:'Gartenbank',text:'Die Bank steht das ganze Jahr im Garten, auch im Regen. Sie soll viele Jahre halten.',
-  tipp:'Denke an: Steht draußen. Regen, Sonne, Frost. Muss Gewicht tragen.'},
- {id:'regal',titel:'Regal fürs Kinderzimmer',text:'Ein leichtes Regal für Bücher. Es soll nicht viel kosten und hell aussehen.',
-  tipp:'Denke an: Muss Bücher tragen, aber nicht nass werden. Preis ist wichtig.'},
- {id:'griff',titel:'Werkzeuggriff',text:'Ein Griff für einen Hammer. Er bekommt bei jedem Schlag Stöße ab und darf nicht brechen.',
-  tipp:'Denke an: Muss Stöße aushalten, zäh sein und darf nicht splittern.'},
- {id:'dachstuhl',titel:'Dachstuhl',text:'Für ein Haus werden lange, gerade Balken gebraucht. Es werden sehr viele Meter benötigt.',
-  tipp:'Denke an: Sehr große Menge. Preis und Gewicht sind wichtig. Liegt trocken unter dem Dach.'},
- {id:'spielzeug',titel:'Spielzeugauto',text:'Ein Auto für ein zweijähriges Kind. Es wird angefasst, fallen gelassen und in den Mund genommen.',
-  tipp:'Denke an: Keine Splitter. Glatte Oberfläche. Muss Stöße aushalten.'}
-];
-const store=mkStore('hbg_a9_beratung');
-let gewaehlterAuftrag=store.get('auftrag',null);
+const AUFTRAEGE=window.HOLZ_KURS.customers.map(c=>({id:c.id,titel:c.title,text:c.text,tipp:c.hint}));
+const store=mkStore('hbg_a9_beratung_hybrid');
+const requested=new URLSearchParams(location.search).get('auftrag');
+let gewaehlterAuftrag=AUFTRAEGE.some(a=>a.id===requested)?requested:store.get('auftrag',null);
 let markiert=store.get('markiert',[]);
 let offen=null;
 
@@ -292,9 +260,9 @@ function vergleichen(){
    <tr><th></th><th>${a.name}</th><th>${b.name}</th></tr>
    ${zeile('Art','art')}${zeile('Härte','haerte')}${zeile('Gewicht','gewicht')}
    ${zeile('Stark bei','vorteil')}${zeile('Nachteil','nachteil')}${zeile('Typisch für','verwendung')}</table>
-   <div class="feedback-richtig">Entscheide jetzt: Welches der beiden passt besser zu deinem Auftrag? Schreibe deine Begründung unten auf.</div>`;
+   <div class="feedback-richtig">Entscheide jetzt: Welches der beiden passt besser zu deinem Auftrag? Schreibe deine Begründung auf A9.2 in deine Mappe.</div>`;
 }
-window.addEventListener('DOMContentLoaded',()=>{ baueAuftraege(); baueKarten(); bindeFelder(store); });
+window.addEventListener('DOMContentLoaded',()=>{ baueAuftraege(); baueKarten(); });
 
 </script>
 </body>

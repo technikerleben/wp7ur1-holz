@@ -1,6 +1,6 @@
 # Verbindliche Leitlinien · WP Technik 7
 
-Gesamtschule NRW, etwa sechs Wochen, iPads und persönliche Papiermappe.
+Gesamtschule NRW, sechs Wochen, iPads und persönliche Papiermappe. Jede Woche Montag 45 Minuten und Mittwoch 90 Minuten, insgesamt 18 Unterrichtsstunden (810 Minuten).
 
 **Digital macht sichtbar, führt und unterstützt. Papier dokumentiert das Lernen.**
 
@@ -14,7 +14,7 @@ Gesamtschule NRW, etwa sechs Wochen, iPads und persönliche Papiermappe.
 6. Rückkehr zum aktuellen Schritt im Lernweg sicherstellen.
 7. Auf iPad, bei Vergrößerung und mit Tastatur prüfen. Bestehende Funktionen auf Regressionen prüfen.
 
-## Single-Step-Lernweg (Zielzustand)
+## Single-Step-Lernweg
 
 Anzeige: Auftrag, aktueller Schritt, Medium, eine konkrete Handlungsanweisung, höchstens ein Hauptbutton und ggf. ein Hilfebutton. Fortschritt bleibt sichtbar. Wochen- und Gesamtübersicht nur über „Lernweg ansehen“ öffnen.
 
@@ -37,7 +37,7 @@ Hilfekaskade: kleiner Denkanstoß → Wortspeicher → Satzanfang/Struktur → s
 
 ## Lernweg und Papier-IDs
 
-Die Unteraufgaben-IDs sind die Vorgabe für neue Vorlagen, noch keine verfügbaren Arbeitsblätter.
+Die Unteraufgaben-IDs sind in der 16-seitigen Holzforscher-Mappe und im Navigator umgesetzt.
 
 | Woche | Auftrag | Papier |
 |---|---|---|
@@ -65,11 +65,11 @@ Die feuchten Proben für A7 müssen in Woche 3 vorbereitet und gemessen werden. 
 - `steckbriefe.html`: fünf Holzarten Fichte/Kiefer/Buche/Eiche/Birke und Vergleich erhalten. Kundenberatung und Begründung auf Papier. Zielparameter z. B. `auftrag=schneidebrett`.
 - `kompetenzcheck.html`: Selbsteinschätzung darf digital bleiben. Konkrete Übung mit Papier-ID und Rückweg empfehlen.
 
-Die Parameter sind Planungsziele und bisher nicht implementiert.
+Die genannten Parameter sind implementiert; zusätzlich gibt es in der Baumscheibe den Modus beschriften und bei Holzfehlern den Modus vertiefung.
 
 ## Papiermaterialien und Lehrkraftbereich
 
-Benötigt: Deckblatt, Lernwegübersicht, A1–A8, sechs bis acht A9-Kundenkarten, A9-Beratungsbogen, A10-Produktkarte, Kompetenzcheck-Papieroption, Lernnachweis und Erwartungshorizont. Schüleraufträge in einfacher Sprache und Du-Form.
+Vorhanden: Deckblatt, Lernwegübersicht, A1–A8, acht A9-Kundenkarten, A9-Beratungsbogen, A10-Produktkarte, Kompetenzcheck-Papieroption sowie Übungs- und Vertiefungsblatt. Offen: Lernnachweis und Erwartungshorizont. Schüleraufträge in einfacher Sprache und Du-Form.
 
 Lehrkraft-Cockpit: vollständiger Ressourcenüberblick mit ehrlichem Verfügbarkeitsstatus, Vorbereitung, Themenwochen, kurzen Inputs, Haltepunkten und Berufeporträts. Keine offenen Aufgaben als vorhandene Dateien verlinken.
 

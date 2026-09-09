@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Der Schnittplan – HBG</title>
 <style>
 :root{
@@ -79,7 +79,7 @@ table.vgl{width:100%;border-collapse:collapse;font-size:var(--text-sm);margin-to
 table.vgl th,table.vgl td{border-bottom:1px solid var(--col-border);padding:6px 4px;text-align:left;}
 [hidden]{display:none !important;}
 </style>
-</head>
+<link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;">
@@ -130,7 +130,7 @@ table.vgl th,table.vgl td{border-bottom:1px solid var(--col-border);padding:6px 
       <p>Ganz oben und ganz unten bleibt ein rundes Stück übrig. Das ist die Schwarte. Sie ist auf einer Seite rund und wird nicht als Brett verwendet.</p></details>
 
     <div class="task-card">
-      <h3>Vergleiche zwei Pläne <span class="badge badge--success">⭐</span></h3>
+      <h3>Vergleiche zwei Pläne</h3>
       <p class="muted">Speichere deinen Plan, ändere ihn und vergleiche.</p>
       <div class="row">
         <button class="btn-success" onclick="planSpeichern('A')">Als Plan A</button>
@@ -145,13 +145,7 @@ table.vgl th,table.vgl td{border-bottom:1px solid var(--col-border);padding:6px 
         <button class="btn-secondary" onclick="planLaden('B')">Plan B zeigen</button></div>
     </div>
 
-    <div class="task-card">
-      <h3>Deine Auswertung</h3>
-      <label for="frage1">Wo entsteht bei dir der meiste Verschnitt?</label>
-      <textarea id="frage1" placeholder="Schreibe zwei Sätze."></textarea>
-      <label for="frage2" style="margin-top:10px;">Warum kann man nie den ganzen Stamm nutzen?</label>
-      <textarea id="frage2" placeholder="Schreibe zwei Sätze."></textarea>
-    </div>
+    <div class="task-card"><p>📁 Notiere beide Pläne auf A4.1. Schreibe deine Auswertung auf A4.2.</p></div>
   </div>
 </div>
 
@@ -289,8 +283,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   schnitte=load(KEYS.schnitte)||[];
   plaene=load(KEYS.plaene)||{A:null,B:null};
   zeigeVergleich();
-  const f=load(KEYS.form);
-  if(f){['frage1','frage2'].forEach(k=>{const e=document.getElementById(k);if(e&&f[k])e.value=f[k];});}
   zeichne();
 });
 function aktualisiere(){save(KEYS.schnitte,schnitte);zeichne();}
@@ -323,12 +315,6 @@ function zeigeVergleich(){
   });
 }
 
-/* ---------- Formular ---------- */
-let t;document.addEventListener('input',e=>{
-  if(e.target.matches('textarea')){clearTimeout(t);t=setTimeout(()=>{
-    save(KEYS.form,{frage1:document.getElementById('frage1').value,frage2:document.getElementById('frage2').value});
-  },400);}
-});
 </script>
 </body>
 </html>

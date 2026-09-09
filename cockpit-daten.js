@@ -1,4 +1,4 @@
-/* Ressourcenstand: 08.09.2026. Pfade nur für tatsächlich vorhandene Materialien. */
+/* Ressourcenstand: 09.09.2026 */
 window.HOLZ_COCKPIT = {
   "weeks": [
     {
@@ -20,12 +20,24 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Baumscheiben und Lupen bereitstellen.",
         "Darstellung mit deutlich unterscheidbaren Stammbereichen auswählen.",
-        "Mappen und Vorlagen A1/A2 vorbereiten."
+        "Mappen und Vorlagen A1/A2 ausdrucken und bereitlegen."
       ],
       "pitfall": "Nicht jeder Baum bildet einen farblich abgesetzten Kern. Ein breiter Ring zeigt stärkeres Dickenwachstum; die genaue Ursache ist am Ring allein nicht sicher erkennbar.",
       "job": "Forstwirt/in",
       "jobtext": "Pflanzt und pflegt Bäume, schützt den Wald und erntet Holz.",
-      "jobquestion": "Warum muss diese Person einen Baum beurteilen, bevor er gefällt wird?"
+      "jobquestion": "Warum muss diese Person einen Baum beurteilen, bevor er gefällt wird?",
+      "monday": [
+        "15 Min. Input: Ist Holz immer gleich?",
+        "25 Min. A1: Erkunden und Beschriften beginnen",
+        "5 Min. Lernstand und nächster Schritt"
+      ],
+      "wednesday": [
+        "5 Min. Ankommen und Blatt bereitlegen",
+        "30 Min. A1 abschließen und Partner-Haltepunkt",
+        "35 Min. A2: Jahresringe untersuchen und auswerten",
+        "10 Min. Prüfen oder freiwillige Vertiefung",
+        "10 Min. Mappe ordnen und Rückblick"
+      ]
     },
     {
       "n": 2,
@@ -46,12 +58,24 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Stammquerschnitt und Brett als Anschauung bereitlegen.",
         "Schnittplan-Simulation auf dem Schul-iPad ausprobieren.",
-        "Vorlagen A3/A4 vorbereiten."
+        "Vorlagen A3/A4 ausdrucken und bereitlegen."
       ],
       "pitfall": "Die Simulation ist ein vereinfachtes Modell. Auch gewünschte Brettmaße und Qualität bestimmen, welcher Schnittplan geeignet ist.",
       "job": "Holzbearbeitungsmechaniker/in",
       "jobtext": "Bedient Anlagen im Sägewerk, überwacht den Einschnitt und sortiert Schnittholz.",
-      "jobquestion": "Warum kontrolliert diese Person Maße und Qualität der Bretter?"
+      "jobquestion": "Warum kontrolliert diese Person Maße und Qualität der Bretter?",
+      "monday": [
+        "15 Min. Input: Im Sägewerk",
+        "25 Min. A3: Kette ordnen und dokumentieren",
+        "5 Min. Rückblick"
+      ],
+      "wednesday": [
+        "5 Min. Start",
+        "15 Min. A3 prüfen und abschließen",
+        "45 Min. A4: zwei Pläne und Auswertung",
+        "15 Min. Lehrkraft-Haltepunkt, Nacharbeit oder Vertiefung",
+        "10 Min. Abschluss"
+      ]
     },
     {
       "n": 3,
@@ -78,7 +102,20 @@ window.HOLZ_COCKPIT = {
       "pitfall": "Schwerer bedeutet bei gleicher Größe und vergleichbarer Feuchte höhere Dichte; Härte wird separat geprüft. Wasseraufnahme hängt auch von Oberfläche, Faserrichtung und Beobachtungszeit ab.",
       "job": "Holztechniker/in",
       "jobtext": "Plant technische Abläufe und prüft Material und Qualität in der Holzverarbeitung. Eine mögliche berufliche Weiterbildung.",
-      "jobquestion": "Wie sorgt diese Person dafür, dass Prüfergebnisse vergleichbar sind?"
+      "jobquestion": "Wie sorgt diese Person dafür, dass Prüfergebnisse vergleichbar sind?",
+      "monday": [
+        "15 Min. Input: Drei Proben, gleich groß",
+        "10 Min. Prüfregeln klären und Probensätze verteilen",
+        "15 Min. A5.1: Aussehen und Masse beginnen",
+        "5 Min. Sichern und aufräumen"
+      ],
+      "wednesday": [
+        "5 Min. Start",
+        "40 Min. Prüfstationen abschließen",
+        "15 Min. A7.1: feuchte Proben messen und Trocknung starten",
+        "20 Min. A6: Prüfbericht und Partnerkontrolle",
+        "10 Min. Abschluss und aufräumen"
+      ]
     },
     {
       "n": 4,
@@ -105,7 +142,19 @@ window.HOLZ_COCKPIT = {
       "pitfall": "Masseverlust zeigt Wasserabgabe, aber ohne Darrmasse keine genaue Holzfeuchte in Prozent. Äste sind natürliche Merkmale; ob sie stören, hängt vom Produkt und ihrer Beschaffenheit ab.",
       "job": null,
       "jobtext": "",
-      "jobquestion": ""
+      "jobquestion": "",
+      "monday": [
+        "15 Min. Input: Der Tisch mit dem Riss",
+        "25 Min. A7.1: Nachmessung und Vergleich",
+        "5 Min. Ergebnissicherung"
+      ],
+      "wednesday": [
+        "5 Min. Start",
+        "30 Min. A7.2: Auswertung und Haltepunkt",
+        "30 Min. A8: Fehler erkennen und Folgen erklären",
+        "15 Min. Nacharbeit oder freiwillige Vertiefung",
+        "10 Min. Abschluss"
+      ]
     },
     {
       "n": 5,
@@ -124,14 +173,26 @@ window.HOLZ_COCKPIT = {
       ],
       "check": "Haltepunkt: Ein Partner prüft die vier Bereiche. Die schriftliche Produktkarte bleibt für alle verbindlich; ein Video ist nur freiwillige Vertiefung.",
       "prep": [
-        "Sechs bis acht unterschiedliche Kundenkarten erstellen und zuweisen.",
+        "Acht Kundenkarten ausdrucken und passend zuweisen.",
         "Holzsteckbriefe und reale Proben bereithalten.",
-        "Beratungsbogen und Produktkarten-Vorlage vorbereiten."
+        "Beratungsbogen und Produktkarten-Vorlage ausdrucken und bereitlegen."
       ],
       "pitfall": "Eigenschaften immer mit einer Anforderung verbinden. Für Außenprodukte reichen pauschale Aussagen wie „hält Wasser aus“ nicht: Holzbereich, Konstruktion und Schutz spielen mit hinein.",
       "job": "Tischler/in · Schreiner/in",
       "jobtext": "Plant und baut zum Beispiel Möbel, Türen und Innenausbauten. Berät Kundinnen und Kunden bei der Materialwahl.",
-      "jobquestion": "Wie begründet diese Person eine Holzempfehlung gegenüber der Kundschaft?"
+      "jobquestion": "Wie begründet diese Person eine Holzempfehlung gegenüber der Kundschaft?",
+      "monday": [
+        "15 Min. Input: Der Kundenauftrag",
+        "25 Min. A9.1: Anforderungen und Steckbriefe",
+        "5 Min. Zwischenstand"
+      ],
+      "wednesday": [
+        "5 Min. Start",
+        "30 Min. A9.2: Materialwahl begründen",
+        "35 Min. A10.1: Produktkarte",
+        "10 Min. Partnerprüfung und Verbesserung",
+        "10 Min. Abschluss"
+      ]
     },
     {
       "n": 6,
@@ -157,7 +218,19 @@ window.HOLZ_COCKPIT = {
       "pitfall": "Lernnachweis und Erwartungshorizont liegen noch nicht vor. Im bestehenden Lernweg sind 60 Minuten vorgesehen; das passt nur in eine Doppelstunde.",
       "job": null,
       "jobtext": "",
-      "jobquestion": ""
+      "jobquestion": "",
+      "monday": [
+        "10 Min. Input: Was kann ich sicher?",
+        "10 Min. Kompetenzcheck",
+        "20 Min. eine gezielte Übung auf U.1",
+        "5 Min. Vorbereitung auf den Lernnachweis"
+      ],
+      "wednesday": [
+        "5 Min. Organisation",
+        "60 Min. Lernnachweis (noch zu erstellen)",
+        "15 Min. Abschlussreflexion",
+        "10 Min. Mappe ordnen und Ausblick"
+      ]
     }
   ],
   "resources": [
@@ -166,8 +239,8 @@ window.HOLZ_COCKPIT = {
       "title": "Lernweg",
       "week": 0,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "Bestehende Wochenansicht mit allen Aufgaben. Noch kein Single-Step-Navigator.",
+      "status": "Vorhanden",
+      "desc": "A1–A10: Ein Schritt nach dem anderen, gestufte Hilfen, Pflichtabschluss und freiwillige Vertiefung.",
       "path": "lernweg.html"
     },
     {
@@ -175,8 +248,8 @@ window.HOLZ_COCKPIT = {
       "title": "Baumscheibe",
       "week": 1,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A1/A2: Erkunden, Beschriften und Jahresringe. Schriftliche Vermutung und Expertenantwort noch digital.",
+      "status": "Vorhanden",
+      "desc": "A1/A2: Bereiche erkunden, Begriffe zuordnen und Jahresringe prüfen. Ergebnisse auf A1 und A2.",
       "path": "baumscheibe.html"
     },
     {
@@ -184,8 +257,8 @@ window.HOLZ_COCKPIT = {
       "title": "Produktionskette",
       "week": 2,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A3: Karten ordnen und prüfen. Satzfelder müssen in die Mappe verlagert werden.",
+      "status": "Vorhanden",
+      "desc": "A3: Produktionsschritte ordnen und prüfen. Die Dokumentation gehört auf A3.1.",
       "path": "produktionskette.html"
     },
     {
@@ -193,8 +266,8 @@ window.HOLZ_COCKPIT = {
       "title": "Schnittplan",
       "week": 2,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A4: Schnitte, Bretter, Ausbeute und Planvergleich. Schriftliche Auswertung noch digital.",
+      "status": "Vorhanden",
+      "desc": "A4: Simulation mit Schnittlinien, nutzbaren Brettern, Ausbeute und zwei Plänen. Auswertung auf A4.",
       "path": "schnittplan.html"
     },
     {
@@ -202,8 +275,8 @@ window.HOLZ_COCKPIT = {
       "title": "Prüflabor",
       "week": 3,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A5/A6: Noch digitale Ergebnistabellen und Berichte. Stationsanleitung ist der Zielzustand.",
+      "status": "Vorhanden",
+      "desc": "A5: Schrittweise Stationsanleitungen für Aussehen, Masse, Härte und Wasseraufnahme. Prüftabelle auf Papier.",
       "path": "pruefstation.html"
     },
     {
@@ -211,8 +284,8 @@ window.HOLZ_COCKPIT = {
       "title": "Holzfehler",
       "week": 4,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A8: Zuordnung und Visualisierungen vorhanden. Schriftliche Erklärungsfelder noch digital.",
+      "status": "Vorhanden",
+      "desc": "A8: Drei Pflichtbegriffe; Vertiefung separat. Skizzen und Erklärungen auf A8.",
       "path": "holzfehler.html"
     },
     {
@@ -220,8 +293,8 @@ window.HOLZ_COCKPIT = {
       "title": "Holzsteckbriefe und Kundenaufträge",
       "week": 5,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "A9: Fichte, Kiefer, Buche, Eiche und Birke. Digitale Empfehlung soll auf den Beratungsbogen wechseln.",
+      "status": "Vorhanden",
+      "desc": "A9: Fünf Holzarten, Vergleich und acht Kundenaufträge. Begründung auf Papier.",
       "path": "steckbriefe.html"
     },
     {
@@ -229,8 +302,8 @@ window.HOLZ_COCKPIT = {
       "title": "Kompetenzcheck",
       "week": 6,
       "kind": "Digital",
-      "status": "Umbau offen",
-      "desc": "Selbsteinschätzung und Übungsempfehlungen vorhanden. Konkrete Verweise auf Papieraufgaben und Lernweg fehlen noch.",
+      "status": "Vorhanden",
+      "desc": "Sieben Selbsteinschätzungen führen zu einer konkreten Übung auf U.1 und zum passenden Lernauftrag.",
       "path": "kompetenzcheck.html"
     },
     {
@@ -238,126 +311,126 @@ window.HOLZ_COCKPIT = {
       "title": "Deckblatt / Holzforscher-Mappe",
       "week": 0,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "Name, Klasse und gemeinsame Symbolsprache.",
-      "path": null
+      "path": "materialien/deckblatt.pdf"
     },
     {
       "id": "WEG",
       "title": "Lernwegübersicht",
       "week": 0,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A1 bis A10, Ziele, Haltepunkte und Platz zum Abhaken.",
-      "path": null
+      "path": "materialien/lernweg-uebersicht.pdf"
     },
     {
       "id": "A1",
       "title": "Baumscheibe",
       "week": 1,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A1.1: beschriftbare Stammskizze mit sechs Begriffen.",
-      "path": null
+      "path": "materialien/a1.pdf"
     },
     {
       "id": "A2",
       "title": "Jahresringe",
       "week": 1,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A2.1: Alter; A2.2: Ring, Beobachtung, Vermutung und Begründung.",
-      "path": null
+      "path": "materialien/a2.pdf"
     },
     {
       "id": "A3",
       "title": "Produktionskette",
       "week": 2,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A3.1: sechs Schritte mit je einem Satz.",
-      "path": null
+      "path": "materialien/a3.pdf"
     },
     {
       "id": "A4",
       "title": "Schnittplan",
       "week": 2,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A4.1: Werte für zwei Pläne; A4.2: Verschnitt und Vergleich.",
-      "path": null
+      "path": "materialien/a4.pdf"
     },
     {
       "id": "A5",
       "title": "Prüftabelle",
       "week": 3,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A5.1: Proben-IDs, Aussehen, Masse, Härte und Wasseraufnahme.",
-      "path": null
+      "path": "materialien/a5.pdf"
     },
     {
       "id": "A6",
       "title": "Prüfbericht mit Satzbausteinen",
       "week": 3,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A6.1: Ich beobachte … Also ist das Holz … Gut ist das für …",
-      "path": null
+      "path": "materialien/a6.pdf"
     },
     {
       "id": "A7",
       "title": "Messprotokoll Trockenversuch",
       "week": 4,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A7.1: Ausgangswerte schon in Woche 3; A7.2: Auswertung in Woche 4.",
-      "path": null
+      "path": "materialien/a7.pdf"
     },
     {
       "id": "A8",
       "title": "Holzfehler",
       "week": 4,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A8.1: Riss, Ast, Verwerfen; A8.2: Erklärung und technische Folge.",
-      "path": null
+      "path": "materialien/a8.pdf"
     },
     {
       "id": "A9K",
       "title": "Kundenaufträge · 6–8 Karten",
       "week": 5,
       "kind": "Papier",
-      "status": "Fehlt",
-      "desc": "Unterschiedliche Anforderungen und Schwierigkeitsgrade. Gedruckte Kundenkarten fehlen.",
-      "path": null
+      "status": "Vorhanden",
+      "desc": "Unterschiedliche Anforderungen und Schwierigkeitsgrade. Acht Karten, zwei pro Druckseite.",
+      "path": "materialien/kundenkarten.pdf"
     },
     {
       "id": "A9",
       "title": "Beratungsbogen",
       "week": 5,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A9.1: Anforderungen; A9.2: Wahl, drei Eigenschaften, Nachteil und Begründung.",
-      "path": null
+      "path": "materialien/a9.pdf"
     },
     {
       "id": "A10",
       "title": "Produktkarten-Vorlage",
       "week": 5,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "A10.1: Produkt, Holzart, Begründung und Nachteil in vier Bereichen.",
-      "path": null
+      "path": "materialien/a10.pdf"
     },
     {
       "id": "K-P",
       "title": "Kompetenzcheck · Papieroption",
       "week": 6,
       "kind": "Papier",
-      "status": "Fehlt",
+      "status": "Vorhanden",
       "desc": "Sieben Ich-kann-Aussagen mit konkreten Übungsempfehlungen.",
-      "path": null
+      "path": "materialien/kompetenzcheck-papier.pdf"
     },
     {
       "id": "LN",
@@ -457,6 +530,51 @@ window.HOLZ_COCKPIT = {
       "status": "Vorhanden",
       "desc": "Leitgedanke, Symbole und Qualitätskriterien.",
       "path": "#konzept"
+    },
+    {
+      "id": "MAPPE-PDF",
+      "title": "Komplette Holzforscher-Mappe · PDF",
+      "path": "materialien/holzforscher-mappe.pdf",
+      "kind": "Papier",
+      "week": 0,
+      "status": "Vorhanden",
+      "desc": "Druckvorlage für die persönliche Mappe."
+    },
+    {
+      "id": "MAPPE-DOCX",
+      "title": "Holzforscher-Mappe · bearbeitbare DOCX",
+      "path": "materialien/holzforscher-mappe.docx",
+      "kind": "Lehrkraft",
+      "week": 0,
+      "status": "Vorhanden",
+      "desc": "Zum Anpassen und Ausdrucken."
+    },
+    {
+      "id": "KARTEN-DOCX",
+      "title": "Kundenkarten · bearbeitbare DOCX",
+      "path": "materialien/kundenkarten.docx",
+      "kind": "Lehrkraft",
+      "week": 0,
+      "status": "Vorhanden",
+      "desc": "Zum Anpassen und Ausdrucken."
+    },
+    {
+      "id": "U",
+      "title": "Gezielte Übung U.1",
+      "path": "materialien/uebung.pdf",
+      "kind": "Papier",
+      "week": 0,
+      "status": "Vorhanden",
+      "desc": "Druckvorlage für die persönliche Mappe."
+    },
+    {
+      "id": "V",
+      "title": "Freiwillige Vertiefung V.1",
+      "path": "materialien/vertiefung.pdf",
+      "kind": "Papier",
+      "week": 0,
+      "status": "Vorhanden",
+      "desc": "Druckvorlage für die persönliche Mappe."
     }
   ]
 };

@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Produktionskette – HBG</title>
 <style>
 :root{
@@ -97,7 +97,7 @@ table.tab th{background:var(--col-slate-ghost);font-size:var(--text-xs);text-tra
 .slot.fehler{border-color:var(--col-error);background:var(--col-error-pale);}
 .satz{margin-bottom:12px;}
 </style>
-</head>
+<link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
@@ -142,18 +142,7 @@ table.tab th{background:var(--col-slate-ghost);font-size:var(--text-xs);text-tra
 <details class="tipp-details"><summary>&#128161; Hilfe 2: Die Kette</summary>
 <p>Baum &#8594; Fällen &#8594; Transport &#8594; Sägewerk &#8594; Einschnitt &#8594; Schnittholz</p></details>
 
-<div class="task-card">
-  <h3>Schreibe zu jedem Schritt einen Satz</h3>
-  <p class="muted">Nutze die Satzanfänge: Zuerst … Danach … Anschließend … Am Ende …</p>
-  <div id="saetze"></div>
-</div>
-
-<div class="task-card">
-  <h3>&#9989; Ergebnis kontrollieren</h3>
-  <label class="check"><input type="checkbox" id="ck1"><span>Meine Reihenfolge stimmt.</span></label>
-  <label class="check"><input type="checkbox" id="ck2"><span>Zu jedem Bild steht ein Satz.</span></label>
-  <div class="row no-print"><button class="btn-secondary" onclick="window.print()">&#128424; Ausdrucken</button></div>
-</div>
+<div class="task-card"><p>📁 Dokumentiere deine geordnete Kette und die Sätze auf A3.1. Kehre dazu zum Lernweg zurück.</p></div>
 
 </div></main>
 <script>
@@ -193,7 +182,7 @@ const STUFEN=[
  {id:6,name:'Schnittholz',svg:`<svg viewBox="0 0 120 80"><rect x="16" y="18" width="88" height="11" rx="2" fill="${HZ}" stroke="${H}" stroke-width="2"/><rect x="16" y="33" width="88" height="11" rx="2" fill="${HZ}" stroke="${H}" stroke-width="2"/><rect x="16" y="48" width="88" height="11" rx="2" fill="${HZ}" stroke="${H}" stroke-width="2"/><rect x="16" y="63" width="88" height="11" rx="2" fill="${HZ}" stroke="${H}" stroke-width="2"/></svg>`}
 ];
 const SATZ=['Zuerst …','Danach …','Anschließend …','Dann …','Danach …','Am Ende …'];
-const store=mkStore('hbg_a3_kette');
+const store=mkStore('hbg_a3_kette_hybrid');
 let belegt=store.get('belegt',[null,null,null,null,null,null]);
 let gewaehlt=null;
 
@@ -204,7 +193,7 @@ function render(){
     : '<p class="muted">Alle Karten sind gelegt. Prüfe jetzt deine Reihenfolge.</p>';
   document.getElementById('slots').innerHTML = belegt.map((id,i)=>{
     const s=STUFEN.find(x=>x.id===id);
-    return `<div class="slot ${s?'voll':''}" id="slot${i}" onclick="lege(${i})">
+    return `<div role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();lege(${i});}" class="slot ${s?'voll':''}" id="slot${i}" onclick="lege(${i})">
       <span class="nr">Schritt ${i+1}</span>
       ${s?s.svg+'<div style="font-weight:600;font-size:var(--text-sm)">'+s.name+'</div>':'<span class="muted">frei</span>'}</div>`;
   }).join('');
@@ -236,12 +225,7 @@ function zeigeFb(typ,text){
   const fb=document.getElementById('fb');
   fb.className='feedback-'+typ; fb.textContent=text; fb.hidden=false;
 }
-function baueSaetze(){
-  document.getElementById('saetze').innerHTML = STUFEN.map((s,i)=>
-    `<div class="satz"><label for="s${s.id}">${i+1}. ${s.name}</label>
-     <input type="text" id="s${s.id}" placeholder="${SATZ[i]}"></div>`).join('');
-}
-window.addEventListener('DOMContentLoaded',()=>{ baueSaetze(); render(); bindeFelder(store); });
+window.addEventListener('DOMContentLoaded',()=>{ render(); });
 
 </script>
 </body>

@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Holzfehler – HBG</title>
 <style>
 :root{
@@ -97,7 +97,7 @@ background:#fff;color:var(--col-slate);font-weight:600;font-size:var(--text-sm);
 .probe .name{font-weight:700;font-size:var(--text-sm);text-align:center;margin-top:6px;color:#2D5C25;min-height:20px;}
 .probe .erkl{font-size:var(--text-xs);color:var(--col-text-muted);text-align:center;}
 </style>
-</head>
+<link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
@@ -119,7 +119,7 @@ background:#fff;color:var(--col-slate);font-weight:600;font-size:var(--text-sm);
     <span class="badge badge--rust">Auftrag A8</span>
   </div>
   <p><strong>&#127919; Mein Ziel:</strong> Ich kann typische Holzfehler erkennen und benennen.</p>
-  <p class="muted">Wähle einen Begriff. Tippe dann das passende Bild an. Drei Begriffe sind Pflicht, drei sind für Entdecker.</p>
+  <p class="muted">Wähle einen Begriff. Tippe dann das passende Bild an. Bearbeite die hier angezeigten Begriffe. Deine Skizzen und Erklärungen gehören auf A8.</p>
   <div class="chips" id="chips"></div>
   <div class="progress-label"><span>Zugeordnet</span><span id="stand">0 von 6</span></div>
   <div class="progress-bar"><div class="progress-bar__fill" id="balken" style="width:0%"></div></div>
@@ -128,31 +128,9 @@ background:#fff;color:var(--col-slate);font-weight:600;font-size:var(--text-sm);
 
 <div class="galerie" id="galerie"></div>
 
-<details class="tipp-details"><summary>&#128161; Hilfe 1: Die drei Pflichtbegriffe</summary>
+<details class="tipp-details" id="pflicht-hilfe"><summary>&#128161; Hilfe 1: Die drei Pflichtbegriffe</summary>
 <p>Riss = das Holz ist aufgerissen. Ast = Stelle, wo ein Zweig saß. Verwerfen = das Brett ist krumm geworden.</p></details>
-<details class="tipp-details"><summary>&#128161; Hilfe 2: Für Entdecker</summary>
-<p>Schüsseln = das Brett wölbt sich quer wie eine Schale. Verdrehen = die Ecken stehen unterschiedlich hoch. Harzgalle = eine Tasche mit Harz im Holz.</p></details>
-
-<div class="task-card">
-  <h3>Erkläre einen Fehler</h3>
-  <label for="erklaerung">Wähle ein Brett aus. Warum macht dieses Brett Probleme?</label>
-  <textarea id="erklaerung" placeholder="Das Brett mit … macht Probleme, weil …"></textarea>
-</div>
-
-<div class="task-card" style="border-left-color:var(--col-sage);">
-  <span class="badge badge--success">&#11088; Für Entdecker</span>
-  <label for="regal" style="margin-top:8px;">Wie baut man ein Regal, damit sich das Holz nicht verzieht?</label>
-  <textarea id="regal" placeholder="Deine Idee."></textarea>
-</div>
-
-<div class="task-card">
-  <h3>&#9989; Ergebnis kontrollieren</h3>
-  <label class="check"><input type="checkbox" id="ck1"><span>Ich habe mindestens die drei Pflichtbegriffe zugeordnet.</span></label>
-  <label class="check"><input type="checkbox" id="ck2"><span>Ich habe einen Fehler erklärt.</span></label>
-  <div class="row no-print"><button class="btn-secondary" onclick="neu()">Neu starten</button>
-  <button class="btn-secondary" onclick="window.print()">&#128424; Ausdrucken</button></div>
-</div>
-
+<div class="task-card"><p id="papierauftrag">📁 Zeichne und erkläre auf A8.1 und A8.2. Freiwillige Vertiefungen öffnest du später im Lernweg.</p><button class="btn-secondary" onclick="neu()">Zuordnung neu starten</button></div>
 </div></main>
 <script>
 
@@ -182,21 +160,24 @@ function bindeFelder(store){
 }
 
 const HZ='#E8D3B0', H='#8B6B4A', D='#6B4A32';
-const FEHLER=[
+const ALLE_FEHLER=[
  {id:'riss',name:'Riss',stern:false,erkl:'Beim Trocknen schwindet das Holz außen schneller als innen. Dann reißt es auf.',
   svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M150 34 L118 42 L128 52 L96 58 L106 66 L74 72" fill="none" stroke="${D}" stroke-width="4" stroke-linecap="round"/></svg>`},
- {id:'ast',name:'Ast',stern:false,erkl:'Hier saß ein Zweig. Die Fasern laufen um den Ast herum. Die Stelle ist schwächer.',
+ {id:'ast',name:'Ast',stern:false,erkl:'Hier saß ein Zweig. Die Fasern laufen um den Ast herum. Das kann die Festigkeit beeinflussen. Nicht jeder Ast stört bei jedem Produkt.',
   svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><ellipse cx="80" cy="50" rx="18" ry="14" fill="${D}"/><ellipse cx="80" cy="50" rx="11" ry="8" fill="#4A331F"/><path d="M8 34 Q54 34 62 46" fill="none" stroke="${H}" stroke-width="2"/><path d="M8 66 Q54 66 62 54" fill="none" stroke="${H}" stroke-width="2"/><path d="M152 34 Q106 34 98 46" fill="none" stroke="${H}" stroke-width="2"/><path d="M152 66 Q106 66 98 54" fill="none" stroke="${H}" stroke-width="2"/></svg>`},
- {id:'verwerfen',name:'Verwerfen',stern:false,erkl:'Das Brett wird längs krumm. Es liegt nicht mehr flach auf dem Tisch.',
+ {id:'verwerfen',name:'Verwerfen',stern:false,erkl:'Verwerfen bedeutet: Das Brett verformt sich. Hier ist es längs gebogen und liegt nicht mehr flach.',
   svg:`<svg viewBox="0 0 160 100"><path d="M8 40 Q80 4 152 40 L152 62 Q80 26 8 62 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><line x1="8" y1="88" x2="152" y2="88" stroke="#C8BFA8" stroke-width="4"/></svg>`},
- {id:'schuesseln',name:'Schüsseln',stern:true,erkl:'Das Brett wölbt sich quer wie eine Schale. Schuld sind die Jahresringe: außen schwindet das Holz stärker.',
+ {id:'schuesseln',name:'Schüsseln',stern:true,erkl:'Das Brett wölbt sich quer wie eine Schale. Holz schwindet quer zu den Jahresringen anders als entlang der Jahresringe.',
   svg:`<svg viewBox="0 0 160 100"><path d="M20 66 Q80 20 140 66 L140 82 Q80 40 20 82 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M28 62 Q80 24 132 62" fill="none" stroke="${H}" stroke-width="1.5"/><path d="M36 60 Q80 30 124 60" fill="none" stroke="${H}" stroke-width="1.5"/></svg>`},
  {id:'verdrehen',name:'Verdrehen',stern:true,erkl:'Die vier Ecken liegen nicht mehr in einer Ebene. Das Brett ist in sich verdreht.',
   svg:`<svg viewBox="0 0 160 100"><path d="M14 28 L146 44 L146 74 L14 56 Z" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M14 28 L146 44" stroke="${D}" stroke-width="2" stroke-dasharray="5 4"/><circle cx="14" cy="28" r="4" fill="${D}"/><circle cx="146" cy="74" r="4" fill="${D}"/></svg>`},
  {id:'harzgalle',name:'Harzgalle',stern:true,erkl:'Eine Tasche voll Harz im Holz. Beim Bearbeiten läuft das Harz aus und klebt.',
   svg:`<svg viewBox="0 0 160 100"><rect x="8" y="20" width="144" height="60" rx="3" fill="${HZ}" stroke="${H}" stroke-width="2"/><path d="M52 50 Q80 34 108 50 Q80 66 52 50 Z" fill="#C17B00" stroke="${D}" stroke-width="2"/><path d="M8 32 Q52 32 68 42" fill="none" stroke="${H}" stroke-width="1.5"/><path d="M152 68 Q108 68 92 58" fill="none" stroke="${H}" stroke-width="1.5"/></svg>`}
 ];
-const store=mkStore('hbg_a8_fehler');
+const vertiefung=new URLSearchParams(location.search).get('modus')==='vertiefung';
+if(vertiefung){document.getElementById('pflicht-hilfe').hidden=true;document.getElementById('papierauftrag').textContent='📁 Notiere deine freiwillige Vertiefung auf V.1. Kehre danach zum Lernweg zurück.';}
+const FEHLER=ALLE_FEHLER.filter(f=>vertiefung?f.stern:!f.stern);
+const store=mkStore('hbg_a8_hybrid_'+(vertiefung?'extra':'pflicht'));
 let geloest=store.get('geloest',{});
 let gewaehlt=null;
 let reihenfolge=store.get('reihenfolge',null);
@@ -208,13 +189,13 @@ function render(){
       ${f.stern?'<span>&#11088;</span>':''}${f.name}</button>`).join('');
   document.getElementById('galerie').innerHTML = reihenfolge.map(id=>{
     const f=FEHLER.find(x=>x.id===id); const ok=geloest[id];
-    return `<div class="probe ${ok?'geloest':''}" onclick="tippe('${id}')">${f.svg}
+    return `<div role="button" tabindex="0" aria-label="Holzbild ${reihenfolge.indexOf(id)+1}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tippe('${id}');}" class="probe ${ok?'geloest':''}" onclick="tippe('${id}')">${f.svg}
       <div class="name">${ok?f.name:'?'}</div>${ok?'<div class="erkl">'+f.erkl+'</div>':''}</div>`;
   }).join('');
-  const n=Object.keys(geloest).length;
-  document.getElementById('stand').textContent=n+' von 6';
+  const n=FEHLER.filter(f=>geloest[f.id]).length;
+  document.getElementById('stand').textContent=n+' von '+FEHLER.length;
   const b=document.getElementById('balken');
-  b.style.width=(n/6*100)+'%'; b.classList.toggle('progress-bar__fill--done',n===6);
+  b.style.width=(n/FEHLER.length*100)+'%'; b.classList.toggle('progress-bar__fill--done',n===FEHLER.length);
   store.set('geloest',geloest);
 }
 function waehle(id){ if(geloest[id])return; gewaehlt=(gewaehlt===id)?null:id; render(); }
@@ -233,7 +214,7 @@ function tippe(id){
 }
 function neu(){ geloest={}; gewaehlt=null; document.getElementById('fb').hidden=true;
   reihenfolge=FEHLER.map(f=>f.id).sort(()=>Math.random()-0.5); store.set('reihenfolge',reihenfolge); render(); }
-window.addEventListener('DOMContentLoaded',()=>{ render(); bindeFelder(store); });
+window.addEventListener('DOMContentLoaded',()=>{ render(); });
 
 </script>
 </body>

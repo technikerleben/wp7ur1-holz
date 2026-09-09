@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kompetenzcheck – HBG</title>
 <style>
 :root{
@@ -95,7 +95,7 @@ cursor:pointer;font-family:inherit;font-size:var(--text-sm);font-weight:600;min-
 .stufe[aria-pressed="true"][data-w="2"]{background:var(--col-sage-pale);border-color:var(--col-sage-dark);color:#2D5C25;}
 .uebung{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 8px var(--col-shadow);border-left:5px solid var(--col-rust);}
 </style>
-</head>
+<link rel="stylesheet" href="app-rueckweg.css"><script defer src="app-rueckweg.js"></script></head>
 <body>
 <header>
   <div class="container" style="display:flex;justify-content:space-between;align-items:center;padding-top:0;padding-bottom:0;gap:12px;">
@@ -187,8 +187,8 @@ const SAETZE=[
   u2:'Erkläre, warum Holz auch nach Jahren noch arbeitet.'},
  {id:'q5',text:'Ich kann Quellen und Schwinden erklären.',
   u0:'Schau dir die Messwerte aus A7 an. Was ist größer geworden, was kleiner?',
-  u1:'Erkläre an einem Beispiel aus dem Alltag, z.B. einer Tür im Sommer.',
-  u2:'Erkläre, warum eine breite Massivholzplatte stärker arbeitet als eine schmale.'},
+  u1:'Erkläre, warum eine Holztür bei feuchter Luft klemmen kann.',
+  u2:'Vergleiche eine breite und eine schmale Platte derselben Holzart und Faserrichtung: Warum kann bei gleicher Feuchteänderung der Maßunterschied der breiten Platte größer sein?'},
  {id:'q6',text:'Ich kann eine Holzart passend auswählen.',
   u0:'Öffne die Steckbriefe. Suche zu einem Auftrag nur eine passende Eigenschaft.',
   u1:'Bearbeite einen zweiten Kundenauftrag komplett.',
@@ -219,28 +219,13 @@ function render(){
 }
 function setze(id,w){ antworten[id]=w; render(); }
 function auswerten(){
-  const e=document.getElementById('ergebnis');
-  const n=Object.keys(antworten).length;
-  if(n<7){ e.hidden=false; e.innerHTML='<div class="feedback-warnung">Schätze zuerst alle sieben Sätze ein. Es fehlen noch '+(7-n)+'.</div>'; return; }
-  const summe=Object.values(antworten).reduce((a,b)=>a+b,0);
-  const schwach=SAETZE.filter(s=>antworten[s.id]===0);
-  const mittel=SAETZE.filter(s=>antworten[s.id]===1);
-  let kopf;
-  if(summe>=12) kopf='<div class="feedback-richtig">Du stehst richtig gut da. Nimm dir die Transferaufgaben vor.</div>';
-  else if(summe>=7) kopf='<div class="feedback-tipp">Gute Basis. Übe gezielt die Punkte, bei denen du unsicher warst.</div>';
-  else kopf='<div class="feedback-warnung">Da fehlt noch einiges. Fang mit den ersten beiden Übungen an und hol dir Hilfe bei der Lehrkraft.</div>';
-  const liste=SAETZE.map((s,i)=>{
-    const w=antworten[s.id];
-    const txt=[s.u0,s.u1,s.u2][w];
-    const marke=['&#128309; Grundlagen','&#128993; Üben','&#11088; Transfer'][w];
-    return `<div class="uebung"><strong>${i+1}. ${s.text}</strong>
-      <p class="muted" style="margin:4px 0;">${marke}</p><p style="margin:0;">${txt}</p></div>`;
-  }).join('');
-  e.hidden=false;
-  e.innerHTML='<h3 style="margin:18px 0 8px;">Deine nächsten Schritte</h3>'+kopf+liste+
-   (schwach.length?'<div class="feedback-tipp">Sprich deine Lehrkraft auf '+schwach.length+' Punkt(e) an. Dafür gibt es am Montag eine kleine Gruppe.</div>':'')+
-   (!schwach.length&&mittel.length?'<div class="feedback-tipp">Arbeite die markierten Übungen der Reihe nach ab.</div>':'');
-  e.scrollIntoView({behavior:'smooth',block:'start'});
+ const e=document.getElementById('ergebnis');e.hidden=false;
+ if(SAETZE.some(s=>![0,1,2].includes(antworten[s.id]))){e.innerHTML='<p class="feedback-tipp">Schätze zuerst alle sieben Aussagen ein.</p>';return;}
+ const selected=SAETZE.reduce((best,s)=>antworten[s.id]<antworten[best.id]?s:best,SAETZE[0]);
+ const id=['A3','A1','A6','A7','A7','A9','A9'][SAETZE.indexOf(selected)];
+ const exercise=[selected.u0,selected.u1,selected.u2][antworten[selected.id]];
+ e.innerHTML='<h3>Dein nächster Schritt</h3><p>'+selected.text+'</p><p class="feedback-tipp">'+exercise+'</p><p>📁 Schreibe oder zeichne dein Übungsergebnis auf U.1 in deiner Mappe. Notiere die Auftrags-ID '+id+'.</p><a class="btn-primary" href="lernweg.html?auftrag='+id+'&wiederholen=1">Material und Hilfen bei '+id+' öffnen</a><p>Prüfe danach dein Ergebnis mit einem Partner oder deiner Lehrkraft. Schätze diesen Punkt anschließend erneut ein. Wenn du schon sicher bist, nutze die Transferübung.</p>';
+ e.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function neu(){ antworten={}; store.set('antworten',antworten);
   document.getElementById('ergebnis').hidden=true; render(); }
