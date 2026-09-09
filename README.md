@@ -36,3 +36,7 @@ Die Apps behalten Zuordnungs- und Simulationszustände. Schriftliche Leistungen 
 Auf ausdrücklichen Wunsch vorläufig im öffentlichen Lehrkraftbereich: `lehrkraft-material/pruefung/`. Lernerfolgskontrolle (60 Minuten) und Erwartungshorizont mit dreistufigem Kompetenzraster, jeweils PDF und DOCX. Das ZIP enthält das komplette Paket. Vor Reihenbeginn in das geschützte Dateisystem übertragen; Anleitung im Paket beachten. Die Dokumente sind nicht im Lernnavigator oder in der Schülermappe verlinkt. Frühere Git-Versionen und Deployments können weiterhin erreichbar bleiben.
 
 Fachliche Hintergrundquellen: [GD Holz: Quellen und Schwinden](https://holzvomfach.de/fachwissen-holz/wissenswertes/holzwissen/quellen-und-schwinden/), [GD Holz: Holzfeuchte](https://holzvomfach.de/fachwissen-holz/glossar/holzfeuchte-gl/) und [Waldwissen: Jahrringanalyse](https://www.waldwissen.net/de/waldwirtschaft/schadensmanagement/jahrringanalyse). Die Unterrichtsmodelle vereinfachen; Ringbreite allein belegt keine eindeutige Wachstumsursache.
+
+## Offener Anfang
+
+Zwölf doppelseitige Spielkarten mit drei wählbaren Stufen und passenden Lösungen: `materialien/offener-anfang/`. PDF, DOCX und sechs Wochenpakete. Im Cockpit unter „Offener Anfang“ stehen Ablauf und Druckhinweise. Fünf Minuten in jeder Stunde sind in den weiterhin 45/90 Minuten langen Wochenabläufen berücksichtigt.

@@ -1,0 +1,194 @@
+[
+  {
+    "id": "S01",
+    "title": "Stammgeflüster",
+    "week": 1,
+    "mode": "Zeige oder sprich. Zu zweit: Lies vor, dein Partner rät.",
+    "tasks": [
+      "Die Borke schützt den Baum außen. Zeige auf das passende Wort: BORKE oder MARK.",
+      "Wer bin ich? A: Ich bilde neue Zellen. B: Ich transportiere Wasser nach oben. Wähle: Kambium oder Splintholz.",
+      "Spiele ohne Worte: schützen oder Wasser transportieren. Nenne danach den passenden Stammbereich. Allein: Erfinde und prüfe zwei Gesten."
+    ],
+    "solutions": [
+      "Borke. Sie liegt außen. Das Mark liegt in der Mitte.",
+      "A: Kambium. B: Splintholz.",
+      "Beispiele: Arme als Schutzschild = Borke. Hände von unten nach oben bewegen = Splintholz. Andere verständliche Gesten passen auch."
+    ]
+  },
+  {
+    "id": "S02",
+    "title": "Ringrennen",
+    "week": 1,
+    "mode": "Tippe auf eine Antwort. Zu zweit: Antworte abwechselnd.",
+    "tasks": [
+      "Ein breiter Ring zeigt mehr Dickenwachstum. Welcher Ring ist breiter: 1 mm oder 4 mm?",
+      "Drei Jahresringe sind 2 mm, 4 mm und 1 mm breit. In welchem der drei Jahre war der Dickenzuwachs am größten? In welchem am kleinsten?",
+      "Erfinde eine mögliche Geschichte zum schmalen Ring. Beginne: „Vielleicht …“ Warum darfst du nicht „Ganz sicher …“ sagen?"
+    ],
+    "solutions": [
+      "4 mm. Vier Millimeter sind breiter als ein Millimeter.",
+      "Am größten im zweiten Jahr mit 4 mm; am kleinsten im dritten mit 1 mm.",
+      "Zum Beispiel: „Vielleicht gab es wenig Wasser.“ Auch Licht, Temperatur und Konkurrenz wirken mit. Die Ringbreite allein beweist die Ursache nicht."
+    ]
+  },
+  {
+    "id": "S03",
+    "title": "Sägewerk auf Reisen",
+    "week": 2,
+    "mode": "Sprich die Reihenfolge. Zu zweit: Jeder ergänzt einen Schritt.",
+    "tasks": [
+      "Zuerst wird der Baum gefällt. Danach wird er transportiert. Was kommt zuerst: FÄLLEN oder TRANSPORT?",
+      "Ordne diese drei Karten im Kopf: A Transport zum Sägewerk, B Baum fällen, C Stamm zu Brettern sägen. Nenne die Buchstaben.",
+      "Du bist ein Stamm. Erzähle deinen Weg vom Wald zum Brett in drei Sätzen. Baue Fällen, Transport und Einschnitt ein."
+    ],
+    "solutions": [
+      "Fällen kommt vor dem Transport.",
+      "B → A → C. Erst fällen, dann transportieren, dann sägen.",
+      "Zum Beispiel: „Ich werde gefällt. Ein Fahrzeug bringt mich zum Sägewerk. Beim Einschnitt werde ich zu Brettern gesägt.“ Andere sachlich richtige Erzählungen passen."
+    ]
+  },
+  {
+    "id": "S04",
+    "title": "Brett oder Pech",
+    "week": 2,
+    "mode": "Wähle einen Plan. Zu zweit: Spiele Kundschaft und Sägewerk.",
+    "tasks": [
+      "Du brauchst ein mindestens 10 cm breites Brett. Was passt: 8 cm oder 12 cm?",
+      "Von 100 Flächenteilen werden 70 zu nutzbaren Brettern. Wie viele bleiben als Verschnitt?",
+      "Du brauchst mindestens 12 cm breite Bretter, ohne Zusammenleimen. Plan A: 75 % Ausbeute, 9 cm breit. Plan B: 65 % Ausbeute, 14 cm breit. Verkaufe der Kundschaft den passenden Plan."
+    ],
+    "solutions": [
+      "12 cm. Das ist mindestens 10 cm. 8 cm sind zu schmal.",
+      "30 Flächenteile. 100 minus 70 = 30.",
+      "Plan B liefert die nötige Breite. Plan A hat zwar mehr Ausbeute, aber seine Bretter sind zu schmal. Mehr Ausbeute allein entscheidet nicht."
+    ]
+  },
+  {
+    "id": "S05",
+    "title": "Laborlüge",
+    "week": 3,
+    "mode": "Entlarve die falsche Aussage. Zu zweit: Begründe und tausche die Rollen.",
+    "tasks": [
+      "Eine Waage zeigt 50 g. Was hast du beobachtet: „Die Probe wiegt 50 g“ oder „Die Probe ist blau“?",
+      "Bei gleichem Druck hat P eine tiefe Druckspur, Q kaum eine Spur. Jemand sagt: „P ist härter.“ Stimmt das?",
+      "Behauptung: „Das schwerste Holz ist immer das härteste.“ Widerlege sie. Welchen zusätzlichen Test brauchst du?"
+    ],
+    "solutions": [
+      "„Die Probe wiegt 50 g.“ Die Waage zeigt die Masse, keine Farbe.",
+      "Nein. Q widersteht dem Eindrücken stärker und ist in dieser Prüfung härter.",
+      "Masse allein belegt keine Härte. Prüfe den Widerstand gegen Eindrücken bei möglichst gleichen Bedingungen, zum Beispiel mit derselben Münze."
+    ]
+  },
+  {
+    "id": "S06",
+    "title": "Fair oder faul",
+    "week": 3,
+    "mode": "Daumen hoch = fair, Daumen runter = unfair. Begründe ab Stufe 2.",
+    "tasks": [
+      "Du willst Holzarten durch Wiegen vergleichen. Fairer ist: gleich große Proben oder eine kleine und eine riesige Probe?",
+      "Beim Wassertest bekommt Probe A einen Tropfen, Probe B zehn Tropfen. Nach derselben Zeit wird verglichen. Fair oder unfair? Verbessere den Test.",
+      "Beide Proben bekommen einen Tropfen. Eine ist lackiert, die andere unbehandelt. Kannst du daraus sicher sagen, welche Holzart Wasser schneller aufnimmt?"
+    ],
+    "solutions": [
+      "Gleich große Proben. Achte auch auf ähnliche Feuchte.",
+      "Unfair. Nimm dieselbe Tropfenzahl und möglichst gleich große Tropfen. Halte auch Wartezeit und weitere Bedingungen gleich.",
+      "Nein. Die Lackschicht beeinflusst den Versuch. Vergleiche ähnlich vorbereitete Oberflächen in derselben Faserrichtung; weitere Bedingungen bleiben gleich."
+    ]
+  },
+  {
+    "id": "S07",
+    "title": "Holz in Bewegung",
+    "week": 4,
+    "mode": "Zeige mit deinen Händen: größer oder kleiner. Zu zweit: Einer liest, einer spielt.",
+    "tasks": [
+      "Quellen heißt: Holz wird durch Wasseraufnahme größer. Zeige Quellen: Hände auseinander oder zusammen?",
+      "Ein Brett ist erst 50 mm und nach dem Trocknen 49 mm breit. Zeige die Bewegung. Nenne den Fachbegriff.",
+      "Eine Schublade klemmt im feuchten Raum. Spiele die Schublade und erkläre eine mögliche Ursache. Nenne eine Vorsorge beim Bau."
+    ],
+    "solutions": [
+      "Hände auseinander. Das steht für größer werden.",
+      "Hände etwas zusammen. Das Brett ist geschwunden; seine Breite ist um 1 mm kleiner.",
+      "Das Holz kann Feuchte aufnehmen und quellen. Dadurch fehlt Platz. Zum Beispiel genügend Bewegungsspielraum einplanen oder passend getrocknetes Holz verwenden."
+    ]
+  },
+  {
+    "id": "S08",
+    "title": "Fehlerdetektive",
+    "week": 4,
+    "mode": "Löse die Rätsel. Zu zweit: Lies ein Rätsel vor und lass raten.",
+    "tasks": [
+      "Ein Riss ist ein Spalt im Holz. Wähle: Ein Spalt heißt RISS oder AST?",
+      "A: Hier saß ein Zweig. B: Das Brett ist krumm geworden. Ordne zu: Ast oder Verwerfen.",
+      "Ein Brett hat einen kleinen, festen Ast. Jemand ruft: „Wegwerfen!“ Spiele die Gegenrede. Nenne eine mögliche Verwendung und eine Grenze."
+    ],
+    "solutions": [
+      "Riss. Ein Ast ist eine Stelle, an der ein Zweig saß.",
+      "A: Ast. B: Verwerfen.",
+      "Zum Beispiel: Ein fester Ast kann in einer dekorativen Fläche bleiben. An einer stark belasteten Verbindung muss man Lage und Zustand prüfen. Ein Ast macht Holz nicht automatisch unbrauchbar."
+    ]
+  },
+  {
+    "id": "S09",
+    "title": "Kundenpantomime",
+    "week": 5,
+    "mode": "Rate das Produkt. Zu zweit: Einer spielt, einer rät. Allein: Denke dir eine Geste aus.",
+    "tasks": [
+      "Du schneidest Gemüse darauf. Was ist gesucht: SCHNEIDEBRETT oder BILDERRAHMEN?",
+      "Spiele eine Gartenbank oder ein Bücherregal. Nenne danach zwei Anforderungen an das Holz oder das Bauteil.",
+      "Dein Partner wählt: Gartenbank oder Bilderrahmen. Erkläre, warum „möglichst hart“ als einzige Anforderung nicht reicht. Allein: Vergleiche beide Produkte."
+    ],
+    "solutions": [
+      "Schneidebrett. Zum Beispiel Schneiden mit einer Handbewegung zeigen.",
+      "Gartenbank: Belastung aushalten, für draußen geeignet. Bücherregal: Bücher tragen, ausreichend steife und passend dicke Böden. Andere passende Anforderungen zählen.",
+      "Die Gartenbank wird nass und belastet. Ein Bilderrahmen soll zum Beispiel leicht sein und gut aussehen. Verwendungsort, Belastung und Gestaltung zählen zusätzlich."
+    ]
+  },
+  {
+    "id": "S10",
+    "title": "Wer bin ich aus Holz",
+    "week": 5,
+    "mode": "Nutze die Hinweise auf der Karte. Zu zweit: Einer liest vor, einer entscheidet.",
+    "tasks": [
+      "Fichte ist eher weich, Buche hart. Gesucht ist das härtere Holz: FICHTE oder BUCHE?",
+      "Fichte ist leicht und preiswert, bekommt aber leicht Druckstellen. Buche ist hart und schwerer. Wähle für eine leichte, günstige Stiftebox. Begründe.",
+      "Wähle mit denselben Hinweisen für eine stark benutzte Tischfläche. Nenne einen Vorteil und einen Nachteil deiner Wahl."
+    ],
+    "solutions": [
+      "Buche ist im Vergleich das härtere Holz.",
+      "Fichte passt zu leicht und preiswert. Die möglichen Druckstellen bleiben ein Nachteil. Eine andere Wahl braucht eine passende Begründung.",
+      "Buche passt wegen der Härte besser gegen Druckstellen; das höhere Gewicht ist ein Nachteil. Fichte wäre leichter und günstiger, aber empfindlicher gegen Druckstellen."
+    ]
+  },
+  {
+    "id": "S11",
+    "title": "Wahrheitswächter",
+    "week": 6,
+    "mode": "Entscheide: wahr oder falsch. Zu zweit: Korrigiere eine falsche Aussage für deinen Partner.",
+    "tasks": [
+      "Holz stammt von Bäumen. Wahr oder falsch?",
+      "A: Das Kambium ermöglicht Dickenwachstum. B: Beim Sägen entsteht nie Verschnitt. Welche Aussage ist falsch? Verbessere sie.",
+      "Erfinde zwei Aussagen über Holz: eine wahre und eine falsche. Lass raten. Allein: Schreibe beide auf einen Schmierzettel und verbessere die falsche."
+    ],
+    "solutions": [
+      "Wahr. Holz wird von Bäumen gebildet; auch Sträucher bilden Holz.",
+      "B ist falsch. Beim Sägen entsteht Verschnitt, etwa durch die Schnittbreite. A ist richtig.",
+      "Beispiel: „Holz kann quellen“ ist wahr. „Jeder Ast macht ein Brett unbrauchbar“ ist falsch. Entscheidend sind Zustand, Lage und Verwendung. Andere richtige Paare sind möglich."
+    ]
+  },
+  {
+    "id": "S12",
+    "title": "Knack den Holzcode",
+    "week": 6,
+    "mode": "Finde den Code im Kopf. Zu zweit: Einer löst, einer prüft erst danach auf der Rückseite.",
+    "tasks": [
+      "Was kann Holz zum Quellen bringen? WASSER = 1. SAND = 2. Nenne die richtige Ziffer.",
+      "Nutze die Zahlen: Transport = 3, Fällen = 2, Einschnitt = 1. Ordne den Weg vom Wald zum Brett. Dein Code hat drei Ziffern.",
+      "Drei Schlösser: Härter bei gleicher Prüfung? Tiefe Spur = 4, kaum Spur = 7. Quellen? Größer = 2, kleiner = 5. Ringbreite beweist Trockenheit? Ja = 8, nein = 6. Nenne den Code und begründe jede Ziffer."
+    ],
+    "solutions": [
+      "1. Holz kann durch Wasseraufnahme in die Zellwände quellen.",
+      "231. Fällen → Transport → Einschnitt.",
+      "726. Kaum eine Spur spricht für höhere Härte. Quellen bedeutet größer werden. Ein schmaler Ring kann mehrere Ursachen haben; Trockenheit ist nicht bewiesen."
+    ]
+  }
+]

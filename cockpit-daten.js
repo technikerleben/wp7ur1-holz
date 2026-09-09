@@ -20,24 +20,28 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Baumscheiben und Lupen bereitstellen.",
         "Darstellung mit deutlich unterscheidbaren Stammbereichen auswählen.",
-        "Mappen und Vorlagen A1/A2 ausdrucken und bereitlegen."
+        "Mappen und Vorlagen A1/A2 ausdrucken und bereitlegen.",
+        "Spielkarten S01 und S02 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Nicht jeder Baum bildet einen farblich abgesetzten Kern. Ein breiter Ring zeigt stärkeres Dickenwachstum; die genaue Ursache ist am Ring allein nicht sicher erkennbar.",
       "job": "Forstwirt/in",
       "jobtext": "Pflanzt und pflegt Bäume, schützt den Wald und erntet Holz.",
       "jobquestion": "Warum muss diese Person einen Baum beurteilen, bevor er gefällt wird?",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S01 / S02",
         "15 Min. Input: Ist Holz immer gleich?",
-        "25 Min. A1: Erkunden und Beschriften beginnen",
+        "20 Min. A1: Erkunden und Beschriften beginnen",
         "5 Min. Lernstand und nächster Schritt"
       ],
       "wednesday": [
-        "5 Min. Ankommen und Blatt bereitlegen",
+        "5 Min. offener Anfang: Spielkarten S01 / S02",
         "30 Min. A1 abschließen und Partner-Haltepunkt",
         "35 Min. A2: Jahresringe untersuchen und auswerten",
         "10 Min. Prüfen oder freiwillige Vertiefung",
         "10 Min. Mappe ordnen und Rückblick"
-      ]
+      ],
+      "games": "Stammgeflüster und Ringrennen",
+      "games_path": "materialien/offener-anfang/woche-1.pdf"
     },
     {
       "n": 2,
@@ -58,24 +62,28 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Stammquerschnitt und Brett als Anschauung bereitlegen.",
         "Schnittplan-Simulation auf dem Schul-iPad ausprobieren.",
-        "Vorlagen A3/A4 ausdrucken und bereitlegen."
+        "Vorlagen A3/A4 ausdrucken und bereitlegen.",
+        "Spielkarten S03 und S04 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Die Simulation ist ein vereinfachtes Modell. Auch gewünschte Brettmaße und Qualität bestimmen, welcher Schnittplan geeignet ist.",
       "job": "Holzbearbeitungsmechaniker/in",
       "jobtext": "Bedient Anlagen im Sägewerk, überwacht den Einschnitt und sortiert Schnittholz.",
       "jobquestion": "Warum kontrolliert diese Person Maße und Qualität der Bretter?",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S03 / S04",
         "15 Min. Input: Im Sägewerk",
-        "25 Min. A3: Kette ordnen und dokumentieren",
+        "20 Min. A3: Kette ordnen und dokumentieren",
         "5 Min. Rückblick"
       ],
       "wednesday": [
-        "5 Min. Start",
+        "5 Min. offener Anfang: Spielkarten S03 / S04",
         "15 Min. A3 prüfen und abschließen",
         "45 Min. A4: zwei Pläne und Auswertung",
         "15 Min. Lehrkraft-Haltepunkt, Nacharbeit oder Vertiefung",
         "10 Min. Abschluss"
-      ]
+      ],
+      "games": "Sägewerk auf Reisen und Brett oder Pech",
+      "games_path": "materialien/offener-anfang/woche-2.pdf"
     },
     {
       "n": 3,
@@ -97,25 +105,29 @@ window.HOLZ_COCKPIT = {
         "Mindestens acht nummerierte Probensätze gleicher Größe mit drei bis fünf Holzarten bereitstellen.",
         "Waagen, Messschieber, Lupen, Pipetten, Wasser und Unterlagen prüfen.",
         "Für A7 feuchte Proben vorbereiten, Messstellen markieren und Ausgangswerte aufnehmen.",
-        "Trocknungsplatz festlegen. Proben so lagern, dass Luft an sie gelangt."
+        "Trocknungsplatz festlegen. Proben so lagern, dass Luft an sie gelangt.",
+        "Spielkarten S05 und S06 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Schwerer bedeutet bei gleicher Größe und vergleichbarer Feuchte höhere Dichte; Härte wird separat geprüft. Wasseraufnahme hängt auch von Oberfläche, Faserrichtung und Beobachtungszeit ab.",
       "job": "Holztechniker/in",
       "jobtext": "Plant technische Abläufe und prüft Material und Qualität in der Holzverarbeitung. Eine mögliche berufliche Weiterbildung.",
       "jobquestion": "Wie sorgt diese Person dafür, dass Prüfergebnisse vergleichbar sind?",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S05 / S06",
         "15 Min. Input: Drei Proben, gleich groß",
         "10 Min. Prüfregeln klären und Probensätze verteilen",
-        "15 Min. A5.1: Aussehen und Masse beginnen",
+        "10 Min. A5.1: Aussehen und Masse beginnen",
         "5 Min. Sichern und aufräumen"
       ],
       "wednesday": [
-        "5 Min. Start",
+        "5 Min. offener Anfang: Spielkarten S05 / S06",
         "40 Min. Prüfstationen abschließen",
         "15 Min. A7.1: feuchte Proben messen und Trocknung starten",
         "20 Min. A6: Prüfbericht und Partnerkontrolle",
         "10 Min. Abschluss und aufräumen"
-      ]
+      ],
+      "games": "Laborlüge und Fair oder faul",
+      "games_path": "materialien/offener-anfang/woche-3.pdf"
     },
     {
       "n": 4,
@@ -137,24 +149,28 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Proben und Ausgangswerte aus Woche 3 bereitlegen.",
         "Dieselben Messgeräte und markierten Messstellen verwenden.",
-        "Echte Holzfehler ergänzend zur Visualisierung bereitlegen."
+        "Echte Holzfehler ergänzend zur Visualisierung bereitlegen.",
+        "Spielkarten S07 und S08 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Masseverlust zeigt Wasserabgabe, aber ohne Darrmasse keine genaue Holzfeuchte in Prozent. Äste sind natürliche Merkmale; ob sie stören, hängt vom Produkt und ihrer Beschaffenheit ab.",
       "job": null,
       "jobtext": "",
       "jobquestion": "",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S07 / S08",
         "15 Min. Input: Der Tisch mit dem Riss",
-        "25 Min. A7.1: Nachmessung und Vergleich",
+        "20 Min. A7.1: Nachmessung und Vergleich",
         "5 Min. Ergebnissicherung"
       ],
       "wednesday": [
-        "5 Min. Start",
+        "5 Min. offener Anfang: Spielkarten S07 / S08",
         "30 Min. A7.2: Auswertung und Haltepunkt",
         "30 Min. A8: Fehler erkennen und Folgen erklären",
         "15 Min. Nacharbeit oder freiwillige Vertiefung",
         "10 Min. Abschluss"
-      ]
+      ],
+      "games": "Holz in Bewegung und Fehlerdetektive",
+      "games_path": "materialien/offener-anfang/woche-4.pdf"
     },
     {
       "n": 5,
@@ -175,24 +191,28 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Acht Kundenkarten ausdrucken und passend zuweisen.",
         "Holzsteckbriefe und reale Proben bereithalten.",
-        "Beratungsbogen und Produktkarten-Vorlage ausdrucken und bereitlegen."
+        "Beratungsbogen und Produktkarten-Vorlage ausdrucken und bereitlegen.",
+        "Spielkarten S09 und S10 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Eigenschaften immer mit einer Anforderung verbinden. Für Außenprodukte reichen pauschale Aussagen wie „hält Wasser aus“ nicht: Holzbereich, Konstruktion und Schutz spielen mit hinein.",
       "job": "Tischler/in · Schreiner/in",
       "jobtext": "Plant und baut zum Beispiel Möbel, Türen und Innenausbauten. Berät Kundinnen und Kunden bei der Materialwahl.",
       "jobquestion": "Wie begründet diese Person eine Holzempfehlung gegenüber der Kundschaft?",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S09 / S10",
         "15 Min. Input: Der Kundenauftrag",
-        "25 Min. A9.1: Anforderungen und Steckbriefe",
+        "20 Min. A9.1: Anforderungen und Steckbriefe",
         "5 Min. Zwischenstand"
       ],
       "wednesday": [
-        "5 Min. Start",
+        "5 Min. offener Anfang: Spielkarten S09 / S10",
         "30 Min. A9.2: Materialwahl begründen",
         "35 Min. A10.1: Produktkarte",
         "10 Min. Partnerprüfung und Verbesserung",
         "10 Min. Abschluss"
-      ]
+      ],
+      "games": "Kundenpantomime und Wer bin ich aus Holz",
+      "games_path": "materialien/offener-anfang/woche-5.pdf"
     },
     {
       "n": 6,
@@ -213,24 +233,29 @@ window.HOLZ_COCKPIT = {
       "prep": [
         "Lernerfolgskontrolle und Erwartungshorizont prüfen; vor Reihenbeginn geschützt ablegen.",
         "Papieroption für den Kompetenzcheck bereitlegen.",
-        "Zeit für gezieltes Üben und Abschlussreflexion reservieren."
+        "Zeit für gezieltes Üben und Abschlussreflexion reservieren.",
+        "Spielkarten S11 und S12 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
       "pitfall": "Das Lehrkraft-Cockpit ist öffentlich. Prüfungspaket vor Reihenbeginn geschützt ablegen; ältere öffentliche Versionen können fortbestehen. 60 Minuten Kontrolle in der Doppelstunde einplanen.",
       "job": null,
       "jobtext": "",
       "jobquestion": "",
       "monday": [
+        "5 Min. offener Anfang: Spielkarten S11 / S12",
         "10 Min. Input: Was kann ich sicher?",
         "10 Min. Kompetenzcheck",
-        "20 Min. eine gezielte Übung auf U.1",
+        "15 Min. eine gezielte Übung auf U.1",
         "5 Min. Vorbereitung auf den Lernnachweis"
       ],
       "wednesday": [
+        "5 Min. offener Anfang: Spielkarten S11 / S12",
         "5 Min. Organisation",
         "60 Min. Lernerfolgskontrolle",
-        "15 Min. Abschlussreflexion",
+        "10 Min. Abschlussreflexion",
         "10 Min. Mappe ordnen und Ausblick"
-      ]
+      ],
+      "games": "Wahrheitswächter und Knack den Holzcode",
+      "games_path": "materialien/offener-anfang/woche-6.pdf"
     }
   ],
   "resources": [
@@ -602,6 +627,87 @@ window.HOLZ_COCKPIT = {
       "status": "Vorhanden",
       "desc": "Separates Lehrkraftmaterial. Vor Reihenbeginn in das geschützte Dateisystem übertragen.",
       "path": "lehrkraft-material/pruefung/pruefungspaket.zip"
+    },
+    {
+      "id": "SPIEL-W1",
+      "title": "Offener Anfang Woche 1 · Spielkarten",
+      "week": 1,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Stammgeflüster und Ringrennen. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-1.pdf"
+    },
+    {
+      "id": "SPIEL-W2",
+      "title": "Offener Anfang Woche 2 · Spielkarten",
+      "week": 2,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Sägewerk auf Reisen und Brett oder Pech. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-2.pdf"
+    },
+    {
+      "id": "SPIEL-W3",
+      "title": "Offener Anfang Woche 3 · Spielkarten",
+      "week": 3,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Laborlüge und Fair oder faul. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-3.pdf"
+    },
+    {
+      "id": "SPIEL-W4",
+      "title": "Offener Anfang Woche 4 · Spielkarten",
+      "week": 4,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Holz in Bewegung und Fehlerdetektive. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-4.pdf"
+    },
+    {
+      "id": "SPIEL-W5",
+      "title": "Offener Anfang Woche 5 · Spielkarten",
+      "week": 5,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Kundenpantomime und Wer bin ich aus Holz. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-5.pdf"
+    },
+    {
+      "id": "SPIEL-W6",
+      "title": "Offener Anfang Woche 6 · Spielkarten",
+      "week": 6,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Wahrheitswächter und Knack den Holzcode. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "path": "materialien/offener-anfang/woche-6.pdf"
+    },
+    {
+      "id": "SPIEL-PDF",
+      "title": "12 Spielkarten · Duplex-PDF",
+      "week": 0,
+      "kind": "Papier",
+      "status": "Vorhanden",
+      "desc": "Allein oder zu zweit. Superleicht, Weiterdenken und Knobeln mit Lösungen. A4, 100 %, beidseitig an der langen Kante.",
+      "path": "materialien/offener-anfang/spielkarten-offener-anfang.pdf"
+    },
+    {
+      "id": "SPIEL-DOCX",
+      "title": "12 Spielkarten · bearbeitbare DOCX",
+      "week": 0,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Allein oder zu zweit. Superleicht, Weiterdenken und Knobeln mit Lösungen. A4, 100 %, beidseitig an der langen Kante.",
+      "path": "materialien/offener-anfang/spielkarten-offener-anfang.docx"
+    },
+    {
+      "id": "SPIEL-START",
+      "title": "Offener Anfang · Ablauf und Druckhinweise",
+      "week": 0,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Fünf Minuten selbst wählen, spielen, prüfen und den nächsten Schritt bestimmen.",
+      "path": "#offener-anfang"
     }
   ]
 };
