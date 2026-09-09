@@ -1,15 +1,19 @@
 from pathlib import Path
-import sys,json,math
+import sys,json,math,subprocess
 from docx import Document
 from docx.shared import Mm,Pt,RGBColor
 from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from PIL import Image,ImageDraw,ImageFont
+from reportlab.graphics.barcode import qr
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics import renderPDF
 sys.path.insert(0,'/root/.codex/skills/builtins/documents/scripts')
 from table_geometry import apply_table_geometry
 ROOT=Path(__file__).resolve().parents[1]; OUT=ROOT/'materialien'; OUT.mkdir(exist_ok=True)
 data=json.loads((ROOT/'kurs-daten.js').read_text().split(' = ',1)[1].rstrip(';\n'))
+LEARN_URL='https://wp7ur1-holz.vercel.app/lernweg.html'
 # Preset compact_reference_guide; named overrides worksheet_A4: 20mm margins,
 # Arial 12pt, monochrome headings, response lines 24pt, page-based worksheet IDs.
 D=Document();sec=D.sections[0];sec.page_width=Mm(210);sec.page_height=Mm(297)
@@ -78,11 +82,31 @@ for i,(r,a) in enumerate(zip([278,250,228,175,80,0],[-55,-32,-7,20,49,0])):
  dr.ellipse((x-5,y-5,x+5,y+5),fill='#111');dr.line([(x,y),(720,yy),(790,yy)],fill='#222',width=2)
  dr.text((810,yy-20),f'{i+1}. ____________________',font=font,fill='#111')
 img.save(OUT/'baumscheibe-schema.png')
+# QR code for the student navigator. A quiet zone is built into the image.
+qr_widget=qr.QrCodeWidget(LEARN_URL)
+qr_widget.barLevel='H'
+x1,y1,x2,y2=qr_widget.getBounds();qr_size=420;qr_margin=30
+qr_scale=(qr_size-2*qr_margin)/(x2-x1)
+qr_drawing=Drawing(qr_size,qr_size,transform=[qr_scale,0,0,qr_scale,qr_margin-x1*qr_scale,qr_margin-y1*qr_scale])
+qr_drawing.add(qr_widget)
+qr_pdf=OUT/'lernweg-qr-temp.pdf'
+renderPDF.drawToFile(qr_drawing,str(qr_pdf))
+subprocess.run(['pdftocairo','-png','-singlefile','-r','144',str(qr_pdf),str(OUT/'lernweg-qr')],check=True)
+qr_pdf.unlink()
 # cover
 p('MEINE HOLZFORSCHER-MAPPE','Subtitle');D.add_heading('Vom Baum zum Holz',0)
 p('WP Technik 7  |  6 Wochen');p('Name: ___________________________________');p('Klasse: ___________')
 h('So arbeitest du');p('Die Mappe ist dein Arbeitsort. Die Website zeigt dir den nächsten Schritt. Schreibe und zeichne deine Ergebnisse auf diese Blätter.')
-p('Öffne auf deinem iPad:');p('https://wp7ur1-holz.vercel.app/lernweg.html')
+access=D.add_table(rows=1,cols=2)
+access.autofit=False
+left,right=access.rows[0].cells
+left.width=Mm(120);right.width=Mm(45)
+left.paragraphs[0].add_run('Öffne deinen Lernweg auf dem iPad.\n').bold=True
+left.paragraphs[0].add_run('Scanne den QR-Code oder öffne:\n')
+left.paragraphs[0].add_run(LEARN_URL).font.size=Pt(10)
+right.paragraphs[0].alignment=1
+right.paragraphs[0].add_run().add_picture(str(OUT/'lernweg-qr.png'),width=Mm(34))
+apply_table_geometry(access,[round(120/170*9638),round(50/170*9638)])
 h('Unsere Zeichen');table(['Zeichenwort','Das tust du'],[['MAPPE','Du schreibst oder zeichnest auf Papier.'],['iPAD','Du nutzt digitales Material.'],['LESEN','Du liest eine Information.'],['ERKUNDEN','Du probierst aus oder beobachtest.'],['HILFE','Du öffnest freiwillig einen Tipp.'],['VERTIEFUNG','Du wählst eine freiwillige Zusatzaufgabe.'],['HALTEPUNKT','Du sprichst mit Lehrkraft oder Partner.'],['KONTROLLE','Du prüfst deinen Pflichtteil.']],[1,3])
 p('Auf Papier steht zusätzlich immer das Zeichenwort. So bleibt die Orientierung auch im Schwarz-Weiß-Druck klar.')
 page('WEG','Dein Lernweg');p('Hake den Auftrag ab, wenn dein Ergebnis in der Mappe liegt und du es geprüft hast.')
