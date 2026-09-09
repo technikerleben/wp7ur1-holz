@@ -31,8 +31,8 @@ App-Modi: `baumscheibe.html?modus=entdecken|beschriften|ringe`, `pruefstation.ht
 
 Die Apps behalten Zuordnungs- und Simulationszustände. Schriftliche Leistungen werden nicht mehr digital eingegeben. Vorhandene ältere Daten werden nicht gelöscht. Die Lehrkraft-Vorbereitung verwendet einen separaten Speicher. Es gibt keine Synchronisierung und keine Klassenübersicht über Schülerleistungen.
 
-## Offen
+## Prüfungspaket
 
-Lernnachweis und Erwartungshorizont für Woche 6. Beide sind im Cockpit ehrlich als fehlend markiert. Das öffentliche Cockpit hat keinen Zugangsschutz; Prüfungslösungen dürfen dort nicht ohne gesonderte Entscheidung veröffentlicht werden.
+Auf ausdrücklichen Wunsch vorläufig im öffentlichen Lehrkraftbereich: `lehrkraft-material/pruefung/`. Lernerfolgskontrolle (60 Minuten) und Erwartungshorizont mit dreistufigem Kompetenzraster, jeweils PDF und DOCX. Das ZIP enthält das komplette Paket. Vor Reihenbeginn in das geschützte Dateisystem übertragen; Anleitung im Paket beachten. Die Dokumente sind nicht im Lernnavigator oder in der Schülermappe verlinkt. Frühere Git-Versionen und Deployments können weiterhin erreichbar bleiben.
 
 Fachliche Hintergrundquellen: [GD Holz: Quellen und Schwinden](https://holzvomfach.de/fachwissen-holz/wissenswertes/holzwissen/quellen-und-schwinden/), [GD Holz: Holzfeuchte](https://holzvomfach.de/fachwissen-holz/glossar/holzfeuchte-gl/) und [Waldwissen: Jahrringanalyse](https://www.waldwissen.net/de/waldwirtschaft/schadensmanagement/jahrringanalyse). Die Unterrichtsmodelle vereinfachen; Ringbreite allein belegt keine eindeutige Wachstumsursache.

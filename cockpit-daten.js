@@ -211,11 +211,11 @@ window.HOLZ_COCKPIT = {
       ],
       "check": "Vor dem Lernnachweis eine kurze Rückmeldung zur ausgewählten Übung geben. Aufgaben und Erwartungshorizont vor dem Einsatz abstimmen.",
       "prep": [
-        "Lernnachweis und Erwartungshorizont erstellen und prüfen.",
+        "Lernerfolgskontrolle und Erwartungshorizont prüfen; vor Reihenbeginn geschützt ablegen.",
         "Papieroption für den Kompetenzcheck bereitlegen.",
         "Zeit für gezieltes Üben und Abschlussreflexion reservieren."
       ],
-      "pitfall": "Lernnachweis und Erwartungshorizont liegen noch nicht vor. Im bestehenden Lernweg sind 60 Minuten vorgesehen; das passt nur in eine Doppelstunde.",
+      "pitfall": "Das Lehrkraft-Cockpit ist öffentlich. Prüfungspaket vor Reihenbeginn geschützt ablegen; ältere öffentliche Versionen können fortbestehen. 60 Minuten Kontrolle in der Doppelstunde einplanen.",
       "job": null,
       "jobtext": "",
       "jobquestion": "",
@@ -227,7 +227,7 @@ window.HOLZ_COCKPIT = {
       ],
       "wednesday": [
         "5 Min. Organisation",
-        "60 Min. Lernnachweis (noch zu erstellen)",
+        "60 Min. Lernerfolgskontrolle",
         "15 Min. Abschlussreflexion",
         "10 Min. Mappe ordnen und Ausblick"
       ]
@@ -434,21 +434,21 @@ window.HOLZ_COCKPIT = {
     },
     {
       "id": "LN",
-      "title": "Lernnachweis",
+      "title": "Lernerfolgskontrolle · PDF",
       "week": 6,
-      "kind": "Papier",
-      "status": "Fehlt",
-      "desc": "Schriftliche Aufgaben zu den Kompetenzen der Reihe.",
-      "path": null
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "7 Aufgabenblöcke, 60 Minuten. Erkennen, Erklären und Weiterdenken. Vor Reihenbeginn geschützt ablegen.",
+      "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
       "id": "EH",
-      "title": "Erwartungshorizont",
+      "title": "Erwartungshorizont · PDF",
       "week": 6,
-      "kind": "Papier",
-      "status": "Fehlt",
-      "desc": "Lösungen, alternative Begründungen und transparente Bewertung.",
-      "path": null
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Mindeststandard, Regelstandard und Expertenstandard; Lösungen, Kriterien und Rückmeldebogen.",
+      "path": "lehrkraft-material/pruefung/erwartungshorizont.pdf"
     },
     {
       "id": "I1",
@@ -575,6 +575,33 @@ window.HOLZ_COCKPIT = {
       "week": 0,
       "status": "Vorhanden",
       "desc": "Druckvorlage für die persönliche Mappe."
+    },
+    {
+      "id": "LN-DOCX",
+      "title": "Lernerfolgskontrolle · bearbeitbare DOCX",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Separates Lehrkraftmaterial. Vor Reihenbeginn in das geschützte Dateisystem übertragen.",
+      "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.docx"
+    },
+    {
+      "id": "EH-DOCX",
+      "title": "Erwartungshorizont · bearbeitbare DOCX",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Separates Lehrkraftmaterial. Vor Reihenbeginn in das geschützte Dateisystem übertragen.",
+      "path": "lehrkraft-material/pruefung/erwartungshorizont.docx"
+    },
+    {
+      "id": "PRUEFUNG-PAKET",
+      "title": "Prüfungspaket · ZIP für den Umzug",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Separates Lehrkraftmaterial. Vor Reihenbeginn in das geschützte Dateisystem übertragen.",
+      "path": "lehrkraft-material/pruefung/pruefungspaket.zip"
     }
   ]
 };
