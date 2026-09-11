@@ -363,7 +363,11 @@ function setzeModus(m){
   const discover=document.getElementById('discover-viz');
   const classic=document.getElementById('svg');
   discover.hidden=(m!=='entdecken');
-  classic.hidden=(m==='entdecken');
+  if(m==='entdecken'){
+    classic.setAttribute('hidden','');
+  }else{
+    classic.removeAttribute('hidden');
+  }
   ringe.style.pointerEvents = (m==='ringe')?'auto':'none';
   ringe.style.opacity = '1';
   marker.style.display = (m==='beschriften')?'block':'none';
