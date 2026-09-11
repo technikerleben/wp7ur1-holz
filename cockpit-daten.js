@@ -1,4 +1,4 @@
-/* Ressourcenstand: 11.09.2026 */
+/* Ressourcenstand: 11.09.2026 · Präsentation Woche 1 eingebunden */
 window.HOLZ_COCKPIT = {
   "weeks": [
     {
@@ -7,6 +7,7 @@ window.HOLZ_COCKPIT = {
       "ids": "A1 · A2",
       "goal": "Stammteile benennen und Jahresringe begründet deuten.",
       "input": "Ist Holz immer gleich?",
+      "input_path": "input-woche-1.html",
       "phenomenon": "Eine Baumscheibe und zwei unterschiedlich aussehende Holzstücke zeigen.",
       "question": "Was kannst du außen und innen am Stamm erkennen?",
       "clarify": "Beobachtungen sammeln. Rinde und Holz unterscheiden. Die sechs Fachbegriffe werden anschließend schrittweise erkundet.",
@@ -483,6 +484,15 @@ window.HOLZ_COCKPIT = {
       "status": "Vorhanden",
       "desc": "15-Minuten-Impuls mit Phänomen, Leitfrage und Übergang. Im Cockpit lesbar und druckbar.",
       "path": "#woche-1"
+    },
+    {
+      "id": "I1-PRAES",
+      "title": "Input Woche 1 · HTML-Präsentation",
+      "week": 1,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Interaktive Präsentation zu Arbeitsweise, Mappe, Lernweg-Symbolen, Stammaufbau und Jahresringen.",
+      "path": "input-woche-1.html"
     },
     {
       "id": "I2",
