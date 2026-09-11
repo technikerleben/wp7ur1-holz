@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WP Technik 7 · Woche 1 · Wie wächst ein Baum?</title>
+<style>
+:root{
+  --ink:#2c3d4c;
+  --muted:#536574;
+  --paper:#f4f6f7;
+  --line:#d4dde3;
+  --rust:#9e4e22;
+  --sage:#315b48;
+  --pale:#eaf1ed;
+  --warn:#fff1df;
+  --white:#fff;
+  --shadow:0 18px 55px rgba(44,61,76,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);color:var(--ink);
+font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a{font:inherit}
+a{color:inherit}
+.presentation{width:100%;height:100%;position:relative}
+.slide{
+  display:none;position:absolute;inset:0;padding:clamp(28px,5vw,72px) clamp(34px,7vw,110px) 72px;
+  background:
+    radial-gradient(circle at 88% 12%,rgba(49,91,72,.07),transparent 24%),
+    linear-gradient(180deg,#fff 0%,#f8faf9 100%);
+  overflow:auto;
+}
+.slide.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:.25;transform:translateY(4px)}to{opacity:1;transform:none}}
+.kicker{font-size:clamp(13px,1.4vw,18px);font-weight:850;letter-spacing:.11em;color:var(--rust);text-transform:uppercase;margin:0 0 12px}
+h1{font-size:clamp(40px,6vw,86px);line-height:1.02;letter-spacing:-.045em;margin:0 0 22px;max-width:1100px}
+h2{font-size:clamp(30px,4.7vw,66px);line-height:1.08;letter-spacing:-.035em;margin:0 0 24px}
+h3{font-size:clamp(22px,2.3vw,34px);line-height:1.15;margin:0 0 10px}
+.lead{font-size:clamp(22px,2.3vw,34px);line-height:1.35;color:var(--muted);max-width:1050px;margin:0}
+.big-question{font-size:clamp(34px,5vw,72px);line-height:1.12;font-weight:800;max-width:1100px;margin:30px 0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:stretch}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(20px,2.7vw,34px);box-shadow:0 7px 25px rgba(44,61,76,.05)}
+.card.sage{border-top:7px solid var(--sage)} .card.rust{border-top:7px solid var(--rust)}
+.icon{font-size:clamp(42px,5vw,70px);display:block;margin-bottom:12px}
+.rule{display:flex;align-items:flex-start;gap:18px;background:var(--warn);border-left:7px solid var(--rust);padding:20px 24px;border-radius:0 14px 14px 0;font-size:clamp(20px,2vw,30px);max-width:1100px;margin-top:28px}
+.symbol-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.symbol{border:1px solid var(--line);background:#fff;border-radius:16px;padding:18px;min-height:150px;cursor:pointer;text-align:left;transition:.15s}
+.symbol:hover,.symbol:focus-visible{transform:translateY(-2px);border-color:var(--sage);outline:none;box-shadow:0 10px 30px rgba(44,61,76,.08)}
+.symbol .emoji{font-size:40px;display:block} .symbol strong{display:block;font-size:20px;margin:6px 0}
+.symbol .meaning{display:none;color:var(--muted);font-size:17px;line-height:1.35}
+.symbol.revealed .meaning{display:block}
+.quiz{display:grid;gap:14px;max-width:1050px}
+.quiz-row{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 20px;font-size:clamp(19px,2vw,28px)}
+.reveal{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 14px;font-weight:750;cursor:pointer}
+.answer{display:none;color:var(--sage);font-weight:850;min-width:170px;text-align:right}
+.quiz-row.open .reveal{display:none} .quiz-row.open .answer{display:block}
+.two-ways{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.way{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;gap:20px;align-items:center}
+.arrow{font-size:50px;color:var(--rust);font-weight:900}
+.trunk-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(20px,3vw,38px);align-items:center}
+.trunk-labels{display:grid;gap:8px}
+.disc-figure{margin:0;display:flex;justify-content:center;min-width:0}
+.disc-svg{width:100%;height:auto;max-height:calc(100vh - 300px);display:block;user-select:none;-webkit-user-select:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.disc-svg [data-layer]{cursor:pointer}
+.hl-overlay{fill:#f6f7f7;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.hl-halo{fill:none;stroke:#ffcf33;stroke-width:14;stroke-linejoin:round;opacity:0;pointer-events:none}
+.hl-line{fill:none;stroke:var(--ink);stroke-width:5;stroke-linejoin:round;opacity:0;pointer-events:none}
+.disc-svg.has-sel .hl-overlay{opacity:.8}
+.disc-svg.has-sel .hl-halo{opacity:1;animation:halo 1.3s ease-in-out infinite}
+.disc-svg.has-sel .hl-line{opacity:1}
+.disc-svg.has-sel .in-lens .hl-halo{animation-name:haloSmall}
+@keyframes halo{0%,100%{stroke-width:14;stroke-opacity:1}50%{stroke-width:26;stroke-opacity:.5}}
+@keyframes haloSmall{0%,100%{stroke-width:10;stroke-opacity:1}50%{stroke-width:18;stroke-opacity:.5}}
+.lens-ring{fill:none;stroke:#6a8599;stroke-width:3;transition:stroke .2s,stroke-width .2s}
+.lens-link{stroke:#6a8599;stroke-width:2;stroke-dasharray:6 5;fill:none;pointer-events:none;transition:stroke .2s}
+.lens-cap{fill:var(--muted);font-size:17px;font-weight:700}
+.disc-svg.lens-on .lens-ring{stroke:var(--ink);stroke-width:5}
+.disc-svg.lens-on .lens-link{stroke:var(--ink)}
+.callout{opacity:0;transition:opacity .2s;pointer-events:none}
+.disc-svg.has-sel .callout{opacity:1}
+.callout text{font-size:23px;font-weight:800;fill:#fff}
+@media (prefers-reduced-motion:reduce){.disc-svg.has-sel .hl-halo{animation:none}}
+.layer-btn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 16px;text-align:left;cursor:pointer;font-size:clamp(17px,1.7vw,24px)}
+.layer-btn{transition:background .15s,border-color .15s,color .15s}
+.layer-btn:hover{border-color:var(--sage)}
+.layer-btn strong{color:var(--rust)}
+.layer-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;box-shadow:0 6px 18px rgba(44,61,76,.18)}
+.layer-btn.active strong{color:#ffcf33}
+.layer-info .lens-hint{display:block;margin-top:8px;font-size:.8em;color:var(--muted)}
+.layer-info{margin-top:14px;background:#fff;border-left:6px solid var(--sage);padding:18px 20px;border-radius:0 12px 12px 0;font-size:clamp(18px,1.8vw,26px);min-height:92px}
+.year-rings{width:min(60vw,650px);aspect-ratio:1.25;position:relative;margin:12px auto 0}
+.year-rings div{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:5px solid #9f795d;border-radius:50%;width:var(--s);height:var(--s);opacity:.93}
+.year-rings div:nth-child(2n){border-color:#cba47a}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:25px}
+.compare .card{min-height:180px}
+.tag{display:inline-block;padding:6px 11px;border-radius:999px;background:var(--pale);color:var(--sage);font-weight:800;font-size:15px}
+.qr-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.qr{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;display:inline-grid;place-items:center;justify-self:center}
+.qr img{width:min(30vw,300px);height:auto}
+.start-button{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;text-decoration:none;border-radius:12px;padding:15px 22px;font-size:20px;font-weight:800;margin-top:18px}
+.steps{counter-reset:s;display:grid;gap:13px;max-width:1050px}
+.steps div{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 20px 16px 64px;position:relative;font-size:clamp(18px,1.8vw,26px)}
+.steps div:before{content:counter(s);position:absolute;left:17px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--pale);color:var(--sage);font-weight:900}
+.note{display:none;position:absolute;left:24px;right:24px;bottom:76px;background:#fff9df;border:2px solid #d0a82a;border-radius:12px;padding:15px 18px;font-size:16px;line-height:1.4;box-shadow:var(--shadow);z-index:30}
+body.notes .slide.active .note{display:block}
+.controls{position:fixed;left:0;right:0;bottom:0;height:58px;background:rgba(244,246,247,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 18px;z-index:50}
+.controls button{border:1px solid var(--line);background:#fff;border-radius:9px;min-width:42px;height:38px;cursor:pointer;color:var(--ink);font-weight:800}
+.controls button:hover{background:var(--pale)} .counter{margin-left:auto;color:var(--muted);font-size:14px}
+.progress{position:fixed;bottom:58px;left:0;height:5px;background:var(--sage);z-index:51;transition:width .2s}
+.small{font-size:16px;color:var(--muted)} .accent{color:var(--rust)} .sage-text{color:var(--sage)}
+@media(max-width:900px){
+  .symbol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2,.grid3,.two-ways,.trunk-wrap,.qr-layout,.compare{grid-template-columns:1fr}
+  .disc-svg{max-height:58vh} .slide{padding-bottom:90px}
+}
+@media print{
+  html,body{overflow:visible;height:auto;background:#fff}
+  .presentation{height:auto} .slide{display:block!important;position:relative;min-height:190mm;page-break-after:always;overflow:hidden;padding:16mm}
+  .controls,.progress,.note{display:none!important}
+  .symbol .meaning{display:block}
+}
+</style>
+</head>
+<body>
+<div class="presentation">
+
+<section class="slide active">
+  <p class="kicker">WP Technik 7 · Woche 1</p>
+  <h1>Vom Baum<br>zum Holz</h1>
+  <p class="lead">Heute starten wir mit zwei Fragen: <strong>Wie arbeiten wir?</strong> und <strong>Wie wächst ein Baum?</strong></p>
+  <div class="rule"><span>🌳</span><div><strong>Ziel der Woche:</strong> Du kannst wichtige Teile eines Baumstamms benennen und Jahresringe sinnvoll deuten.</div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Kurz ankündigen: Erst Arbeitsweise klären, dann fachlicher Einstieg. Die offenen Anfangsspiele können direkt davor oder danach liegen.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">So arbeiten wir</p>
+  <h2>Zwei Dinge arbeiten zusammen.</h2>
+  <div class="grid2">
+    <div class="card sage">
+      <span class="icon">📁</span>
+      <h3>Die Mappe ist dein Arbeitsort.</h3>
+      <p class="lead">Hier schreibst, zeichnest und sicherst du deine Ergebnisse.</p>
+    </div>
+    <div class="card rust">
+      <span class="icon">📱</span>
+      <h3>Die Website ist dein Lernnavigator.</h3>
+      <p class="lead">Sie zeigt dir den nächsten Schritt, Hilfen und digitale Materialien.</p>
+    </div>
+  </div>
+  <div class="rule"><span>⭐</span><div><strong>Merksatz:</strong> Website = Wegweiser. Mappe = Arbeitsort.</div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Diesen Merksatz einmal gemeinsam sprechen lassen. Wichtig: Ergebnisse bleiben auf Papier, nicht nur auf dem Gerät.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Deine Holzforscher-Mappe</p>
+  <h2>So benutzt du die Mappe.</h2>
+  <div class="steps">
+    <div>Der Lernweg nennt dir eine Aufgabe, zum Beispiel <strong>A1.1</strong>.</div>
+    <div>Du suchst <strong>A1.1</strong> in deiner Mappe.</div>
+    <div>Du bearbeitest genau den Schritt, den der Lernweg gerade zeigt.</div>
+    <div>Du prüfst und verbesserst deine Arbeit, bevor du weitergehst.</div>
+  </div>
+  <div class="rule"><span>✋</span><div>Arbeite nicht schon drei Seiten weiter. <strong>Ein Schritt nach dem anderen.</strong></div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Eine echte Mappe hochhalten und A1.1 zeigen. Falls verteilt: Lernende die Seite kurz finden lassen.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Symbole im Lernweg</p>
+  <h2>Was soll ich gerade tun?</h2>
+  <p class="lead" style="margin-bottom:22px">Klicke auf ein Symbol, um die Bedeutung zu zeigen.</p>
+  <div class="symbol-grid">
+    <button class="symbol"><span class="emoji">📁</span><strong>MAPPE</strong><span class="meaning">Auf Papier arbeiten.</span></button>
+    <button class="symbol"><span class="emoji">📱</span><strong>iPAD</strong><span class="meaning">Digitales Material nutzen.</span></button>
+    <button class="symbol"><span class="emoji">📖</span><strong>LESEN</strong><span class="meaning">Eine Information lesen.</span></button>
+    <button class="symbol"><span class="emoji">🔬</span><strong>ERKUNDEN</strong><span class="meaning">Ausprobieren oder beobachten.</span></button>
+    <button class="symbol"><span class="emoji">💡</span><strong>HILFE</strong><span class="meaning">Freiwillig einen Tipp öffnen.</span></button>
+    <button class="symbol"><span class="emoji">🔍</span><strong>VERTIEFUNG</strong><span class="meaning">Freiwillig weiterarbeiten.</span></button>
+    <button class="symbol"><span class="emoji">🛑</span><strong>HALTEPUNKT</strong><span class="meaning">Partner oder Lehrkraft einbeziehen.</span></button>
+    <button class="symbol"><span class="emoji">✓</span><strong>KONTROLLE</strong><span class="meaning">Deinen Pflichtteil prüfen.</span></button>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Bedeutungen zunächst von der Lerngruppe vermuten lassen, erst danach anklicken.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Mini-Check</p>
+  <h2>Welches Symbol passt?</h2>
+  <div class="quiz">
+    <div class="quiz-row"><span>„Beschrifte A1.1 in deiner Mappe.“</span><button class="reveal">Lösung</button><span class="answer">📁 MAPPE</span></div>
+    <div class="quiz-row"><span.„Betrachte die echte Baumscheibe.“</span><button class="reveal">Lösung</button><span class="answer">🔬 ERKUNDEN</span></div>
+    <div class="quiz-row"><span>„Zeige einem Partner das Kambium.“</span><button class="reveal">Lösung</button><span class="answer">🛑 HALTEPUNKT</span></div>
+    <div class="quiz-row"><span„Du kommst nicht weiter.“</span><button class="reveal">Lösung</button><span class="answer">💡 HILFE</span></div>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Antworten per Zuruf oder Handzeichen. Diese viler Symbole reichen für den ersten Durchgang; die anderen tauchen später wieder auf.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Jetzt zum Holz</p>
+  <h2>Ist Holz immer gleich?</h2>
+  <p class="big-question">Was kannst du außen und innen an einem Baumstamm erkennen?</p>
+  <div class="grid3">
+    <div class="card"><span class="icon">👀</span><h3>Beobachten</h3><p>Was siehst du wirklich?</p></div>
+    <div class="card"><span class="icon">🗣️</span><h3>Beschreiben</h3><p>Nutze einfache Wörter.</p></div>
+    <div class="card"><span class="icon">❓</span><h3>Vermuten</h3><p>Was könnte eine Aufgabe haben?</p></div>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Jetzt echte Baumscheibe und zwei unterschiedlich aussehende Holzstücke zeigen. Noch keine Fachbegriffe vorgeben. Beobachtungen sammeln.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Wie wächst ein Baum?</p>
+  <h2>Ein Baum wächst auf zwei Arten.</h2>
+  <div class="two-ways">
+    <div class="way"><div class="arrow">↟</div><div><h3>In die Länge</h3><p class="lead">Neue Triebe wachsen an den Spitzen.</p></div></div>
+    <div class="way"><div class="arrow">↔</div><div><h3>In die Dicke</h3><p class="lead">Der Stamm wird Jahr für Jahr dicker.</p></div></div>
+  </div>
+  <div class="rule"><span>💡</span><div>Für uns ist heute besonders wichtig: <strong>Wo findet das Dickenwachstum statt?</strong></div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Keine Botanik-Vorlesung. Der entscheidende Übergang ist zum Kambium als Wachstumsschicht.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Der Stamm von außen nach innen</p>
+  <h2>Sechs Bereiche – sechs Begriffe.</h2>
+  <div class="trunk-wrap">
+    <figure class="disc-figure">
+      <svg id="discSvg" class="disc-svg" viewBox="0 0 660 630" role="img" aria-label="Baumscheibe (Querschnitt durch einen Stamm) mit Lupe auf den Rand"></svg>
+    </figure>
+    <div>
+      <div class="trunk-labels">
+        <button class="layer-btn" data-target="r1" data-info="Die Borke liegt außen. Sie schützt den Stamm."><strong>1</strong> Borke</button>
+        <button class="layer-btn" data-target="r2" data-info="Der Bast transportiert vor allem Zucker und andere Stoffe von den Blättern in andere Teile des Baumes."><strong>2</strong> Bast</button>
+        <button class="layer-btn" data-target="r3" data-info="Das Kambium ist eine dünne Wachstumsschicht. Hier entsteht neues Gewebe – der Stamm wächst in die Dicke."><strong>3</strong> Kambium</button>
+        <button class="layer-btn" data-target="r4" data-info="Im Splintholz wird Wasser mit gelösten Mineralstoffen nach oben transportiert."><strong>4</strong> Splintholz</button>
+        <button class="layer-btn" data-target="r5" data-info="Das Kernholz liegt weiter innen. Es trägt zur Festigkeit des Stammes bei; bei manchen Baumarten ist es deutlich dunkler."><strong>5</strong> Kernholz</button>
+        <button class="layer-btn" data-target="r6" data-info="Das Mark liegt in der Mitte des Stammes und gehört zu den ältesten Bereichen."><strong>6</strong> Mark</button>
+      </div>
+      <div class="layer-info" id="layerInfo">Klicke die Begriffe nacheinander an – oder direkt auf die Baumscheibe.</div>
+    </div>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Von außen nach innen aufbauen. Wichtigste Sicherung: Kambium = Wachstumsschicht für Dickenwachstum. Borke, Bast und Kambium sind am Rand sehr dünn – die Lupe zeigt diesen Bereich vierfach vergrößert. Erneutes Klicken hebt die Markierung auf. Hinweis: Nicht jeder Baum besitzt ein farblich deutlich abgesetztes Kernholz.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Das Wichtigste heute</p>
+  <h2>Wo wächst der Stamm in die Dicke?</h2>
+  <div class="card sage" style="max-width:1000px;margin-top:34px">
+    <span class="icon">🌱</span>
+    <h3 style="font-size:clamp(34px,4vw,58px)">Im Kambium.</h3>
+    <p class="lead">Diese dünne Schicht bildet neues Gewebe. Dadurch wird der Stamm dicker.</p>
+  </div>
+  <div class="rule"><span>🛑</span><div>Später im Lernweg erklärst du das einem Partner am echten Stammquerschnitt.</div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Kurze Rückfrage in die Klasse: „Welche Schicht muss ich zeigen, wenn ich das Dickenwachstum erklären will?“</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Jahresringe</p>
+  <h2>Der Stamm speichert Wachstum.</h2>
+  <div class="grid2" style="align-items:center">
+    <div class="year-rings" aria-label="schematische Jahresringe">
+      <div style="--s:94%"></div><div style="--s:82%"></div><div style="--s:70%"></div>
+      <div style="--s:58%"></div><div style="--s:43%"></div><div style="--s:30%"></div><div style="--s:16%"></div>
+    </div>
+    <div>
+      <p class="lead">Bei Bäumen in unserem Klima entsteht im Jahresverlauf meist ein neuer Jahresring.</p>
+      <div class="rule"><span>↔</span><div><strong>Breiter Ring:</strong> In diesem Jahr war das Dickenwachstum stärker.</div></div>
+    </div>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Nicht vereinfachen zu „breiter Ring = viel Regen“. Wasser, Licht, Temperatur und Konkurrenz können Einfluss haben; Ursache ist am Ring allein nicht sicher.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Forschen statt raten</p>
+  <h2>Beobachtung und Vermutung sind nicht dasselbe.</h2>
+  <div class="compare">
+    <div class="card sage">
+      <span class="tag">BEOBACHTUNG</span>
+      <h3 style="margin-top:16px">„Dieser Ring ist breiter als die beiden daneben.“</h3>
+      <p class="lead">Das kann ich sehen oder messen.</p>
+    </div>
+    <div class="card rust">
+      <span class="tag">VERMUTUNG</span>
+      <h3 style="margin-top:16px">„Vielleicht waren die Wachstumsbedingungen in diesem Jahr günstiger.“</h3>
+      <p class="lead">Das ist eine mögliche Erklärung – nicht sicher bewiesen.</p>
+    </div>
+  </div>
+  <div class="rule"><span>🔬</span><div>Gute Technik-Forscher trennen: <strong>Was sehe ich?</strong> – <strong>Was vermute ich?</strong></div></div>
+  <div class="note"><strong>Lehrkraft:</strong> Diese Trennung bereitet A2.2 vor. Ein Beispiel aus der Klasse aufgreifen und gemeinsam in Beobachtung/Vermutung sortieren.</div>
+</section>
+
+<section class="slide">
+  <p class="kicker">Dein erster Lernauftrag</p>
+  <h2>Jetzt startest du selbstständig.</h2>
+  <div class="qr-layout">
+    <div>
+      <div class="steps">
+        <div>Öffne den <strong>Lernweg</strong>.</div>
+        <div>Starte bei <strong>A1 · Die Baumscheibe</strong>.</div>
+        <div>Folge immer nur dem <strong>nächsten Schritt</strong>.</div>
+        <div>Alle Ergebnisse kommen in deine <strong>Mappe</strong>.</div>
+      </div>
+      <a class="start-button" href="https://wp7ur1-holz.vercel.app/lernweg.html" target="_blank" rel="noopener">📱 Lernweg öffnen</a>
+      <p class="small" style="margin-top:12px">https://wp7ur1-holz.vercel.app/lernweg.html</p>
+    </div>
+    <div class="qr"><img alt="QR-Code zum Lernweg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAAEDAQAAAAAZqlxmAAACUklEQVR4nO2aQY6jMBBFX+FIzs65AbmJ52Z2bkZu4twAdkQC/iycZNKbmcV0pyOrvUGYv6ivoqj/XZj4+7p0/wDAD+JdEauZmXXrfjpygqsdObHuJzMz279TpP+PQIuXJFsAMGmEpMWPvaTFq7xLpJ/FdoRkix+JGbw0sOHHfsBaY/tAuDmUs2xhOpLc8m1xvAax2qEfWHfXvkSTn78rji9FPOpWGntpg1CirN26BcAWP/ZDeroA0Bzb+5rplcFLEu6x3RTbjnXPxcws6GySpgPnDNcD59xcv+1wkx1Bmqcosx1ckoEf4YSb3ynST0F4FZLZPhTY1jD2J8H1ALA2llukGWLWAv1w0xrgNBKFa7Fu+wHbEQrIT72Ut3UPoGuTuf3QdgEthHrXVm7v765pDpI2d+c+9g12ILR4lZg3vO4iakjSHArtuQJUk/osK4Zkt9e7vdxKkrI0hxKFmyHKNFMFZGtsa+uxhVBI223XzaHE3CBbSRpSJZ02vDQk3Ew/0KQrGIn55vHqpSY15hYdnx975Y2qLmoVb26+3zXFtgO4mJw0EtXBZJaBKSqrPQ8EoURbzexIPakhdcDF1L02jq9HoIVQoHq8ZFVA1gONtLXnCpzqEdT1AKx+siMn7bw00FxuH7OC+pVi3YfzrwRMR7DlhXG8AvE0KwjlJqJqB9JAc/72eVbQK1fSuT5qsW7v63oANpjiABBKzK41N/9AOI0Xk/wczr/Shh8553X3+ji+FPFhVjBgkgrpdoTRoE7+MysAbpORqiNTc8rRfv5EaBbxG/i96fbPBdbiAAAAAElFTkSuQmCC"></div>
+  </div>
+  <div class="note"><strong>Lehrkraft:</strong> Übergang: „Öffnet jetzt den Lernweg. Wer unsicher ist, schaut zuerst noch einmal auf die Symbolübersicht.“ Danach A1 selbstständig beginnen lassen.</div>
+</section>
+
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="controls" aria-label="Präsentationssteuerung">
+  <button id="prev" title="Zurück (←)">←</button>
+  <button id="next" title="Weiter (→ / Leertaste)">→</button>
+  <button id="notes" title="Lehrkraftnotizen ein/aus (N)">N</button>
+  <button id="full" title="Vollbild (F)">⛶</button>
+  <span class="small">← → / Leertaste · N = Notizen · F = Vollbild</span>
+  <span class="counter" id="counter"></span>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let index=0;
+function show(i){
+  index=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+  document.getElementById('counter').textContent=(index+1)+' / '+slides.length;
+  document.getElementById('progress').style.width=((index+1)/slides.length*100)+'%';
+  history.replaceState(null,'','#folie-'+(index+1));
+}
+function next(){show(index+1)} function prev(){show(index-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+document.getElementById('notes').onclick=()=>document.body.classList.toggle('notes');
+document.getElementById('full').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}
+  if(e.key.toLowerCase()==='n')document.body.classList.toggle('notes');
+  if(e.key.toLowerCase()==='f')document.getElementById('full').click();
+  if(e.key==='Home')show(0); if(e.key==='End')show(slides.length-1);
+});
+document.querySelectorAll('.symbol').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('revealed')));
+document.querySelectorAll('.quiz-row .reveal').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.add('open')));
+/* ---------- Folie 8: Baumscheibe ---------- */
+(function(){
+  const svg=document.getElementById('discSvg'); if(!svg) return;
+  const NS='http://www.w3.org/2000/svg';
+  const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in (attrs||{}))e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;};
+  const CX=270,CY=300,R=230,ROUGH=5;            // Scheibe
+  const LX=568,LY=502,LR=90,ZOOM=4;              // Lupe
+  let seed=11; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+  // Mark liegt leicht außermittig – wie bei echten Stämmen
+  const ctr=r=>{const k=Math.max(0,1-r/R);return [CX-12*k,CY+9*k];};
+  const rad=(r,t,rough)=>{
+    let v=r*(1+.022*Math.sin(2*t+.6)+.014*Math.sin(3*t+2.1)+.007*Math.sin(5*t+4)+.004*Math.sin(7*t+r*.37));
+    if(rough) v+=rough*(.55*Math.sin(17*t+1.3)+.3*Math.sin(31*t+.4)+.25*Math.sin(53*t+2.9));
+    return v;
+  };
+  const pt=(r,t,rough)=>{const c=ctr(r),v=rad(r,t,rough||0);return [c[0]+v*Math.cos(t),c[1]+v*Math.sin(t)];};
+  const loop=(r,rough)=>{const N=rough?540:360;let d='';for(let i=0;i<N;i++){const p=pt(r,i/N*2*Math.PI,rough);d+=(i?'L':'M')+p[0].toFixed(2)+' '+p[1].toFixed(2);}return d+'Z';};
+
+  const LAYERS={
+    r1:{n:1,name:'Borke',     o:[R,ROUGH],i:[212,0],fill:'#5d3f2b'},
+    r2:{n:2,name:'Bast',      o:[212,0], i:[205,0],fill:'#a86a40'},
+    r3:{n:3,name:'Kambium',   o:[205,0], i:[202,0],fill:'#e3ebb2'},
+    r4:{n:4,name:'Splintholz',o:[202,0], i:[128,0],fill:'#ecd3a1'},
+    r5:{n:5,name:'Kernholz',  o:[128,0], i:[11,0], fill:'#b67e4d'},
+    r6:{n:6,name:'Mark',      o:[11,0],  i:null,   fill:'#6b4228'}
+  };
+  for(const id in LAYERS){const L=LAYERS[id];L.outer=loop(L.o[0],L.o[1]);L.band=L.outer+(L.i?loop(L.i[0],0):'');}
+
+  // ---- defs
+  const defs=el('defs',{},svg);
+  el('path',{d:LAYERS.r1.outer},el('clipPath',{id:'discClip'},defs));
+  el('circle',{cx:LX,cy:LY,r:LR},el('clipPath',{id:'lensClip'},defs));
+  const grain=el('filter',{id:'discGrain',x:0,y:0,width:'100%',height:'100%'},defs);
+  el('feTurbulence',{type:'fractalNoise',baseFrequency:'.85',numOctaves:'2',seed:'4'},grain);
+  el('feColorMatrix',{type:'matrix',values:'0 0 0 0 .25  0 0 0 0 .15  0 0 0 0 .08  0 0 0 .6 -.2'},grain);
+  const soft=el('filter',{id:'discShadow',x:'-10%',y:'-10%',width:'120%',height:'120%'},defs);
+  el('feGaussianBlur',{stdDeviation:'9'},soft);
+  const mask=el('mask',{id:'hlMask',maskUnits:'userSpaceOnUse',x:-100,y:-100,width:900,height:900},defs);
+  el('rect',{x:-100,y:-100,width:900,height:900,fill:'#fff'},mask);
+  const hole=el('path',{fill:'#000','fill-rule':'evenodd'},mask);
+
+  // ---- Schatten
+  el('path',{d:LAYERS.r1.outer,fill:'rgba(44,61,76,.22)',transform:'translate(5 11)',filter:'url(#discShadow)'},svg);
+
+  // ---- Scheibe
+  const art=el('g',{},svg);
+  for(const id in LAYERS) el('path',{d:LAYERS[id].outer,fill:LAYERS[id].fill,'data-layer':id},art);
+
+  // Jahresringe: innen breit, außen schmaler; dunkles Spätholz am Ringende
+  const rings=el('g',{'pointer-events':'none'},art);
+  const W=[13,14,12,13,11,10,12,9,8,10,11,7,6,9,8,10,7,6,5,8,7,6,4,6,5,7,5,4,5,4];
+  const k=(200-11)/W.reduce((a,b)=>a+b,0); let rr=11;
+  W.forEach(w=>{w*=k;rr+=w;const late=Math.max(1.3,w*.3),rm=rr-late/2;
+    el('path',{d:loop(rm,0),fill:'none','stroke-width':late.toFixed(2),
+      stroke:rm<128?'rgba(92,52,22,.55)':'rgba(160,110,55,.5)'},rings);});
+
+  // Markstrahlen (fein)
+  const rays=el('g',{stroke:'rgba(255,248,235,.3)','stroke-width':.8,'pointer-events':'none'},art);
+  for(let i=0;i<56;i++){const t=i/56*2*Math.PI+rnd()*.08,a=pt(14+rnd()*70,t),b=pt(199,t);
+    el('line',{x1:a[0].toFixed(1),y1:a[1].toFixed(1),x2:b[0].toFixed(1),y2:b[1].toFixed(1)},rays);}
+
+  // Borke: Risse
+  const bark=el('g',{fill:'#3a2618','data-layer':'r1','clip-path':'url(#discClip)'},art);
+  for(let i=0;i<96;i++){const t=i/96*2*Math.PI+rnd()*.04,dw=.01+rnd()*.017,dep=213+rnd()*10;
+    const p1=pt(R+12,t-dw),p2=pt(R+12,t+dw),p3=pt(dep,t+(rnd()-.5)*.01);
+    el('path',{d:`M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}L${p3[0].toFixed(1)} ${p3[1].toFixed(1)}Z`},bark);}
+
+  // Holzstruktur (leichtes Rauschen)
+  el('rect',{x:CX-R-12,y:CY-R-12,width:2*R+24,height:2*R+24,filter:'url(#discGrain)','clip-path':'url(#discClip)',opacity:.45,'pointer-events':'none'},art);
+
+  // Hervorhebung: Rest abdunkeln + Textmarker-Kontur
+  el('path',{class:'hl-overlay',d:LAYERS.r1.outer,mask:'url(#hlMask)'},art);
+  // Kontur nur außerhalb der Schicht zeichnen (Maske), damit die Schicht selbst sichtbar bleibt
+  el('path',{class:'hl-halo','fill-rule':'evenodd','vector-effect':'non-scaling-stroke',mask:'url(#hlMask)'},art);
+  el('path',{class:'hl-line','fill-rule':'evenodd','vector-effect':'non-scaling-stroke',mask:'url(#hlMask)'},art);
+
+  // ---- Lupe auf den Rand
+  const tS=Math.atan2(LY-CY,LX-CX), S=pt(209,tS), mr=LR/ZOOM;
+  const dx=LX-S[0],dy=LY-S[1],dl=Math.hypot(dx,dy),nx=-dy/dl,ny=dx/dl;
+  [1,-1].forEach(sg=>el('line',{class:'lens-link',x1:S[0]+sg*nx*mr,y1:S[1]+sg*ny*mr,x2:LX+sg*nx*LR,y2:LY+sg*ny*LR},svg));
+  el('circle',{class:'lens-link',cx:S[0],cy:S[1],r:mr,'stroke-dasharray':'none','stroke-width':2.5},svg);
+  const lens=el('g',{},svg);
+  el('circle',{cx:LX,cy:LY,r:LR,fill:'#fff'},lens);
+  const zoom=el('g',{transform:`translate(${LX} ${LY}) scale(${ZOOM}) translate(${-S[0]} ${-S[1]})`},el('g',{'clip-path':'url(#lensClip)'},lens));
+  const copy=art.cloneNode(true); copy.setAttribute('class','in-lens'); zoom.appendChild(copy);
+  el('circle',{class:'lens-ring',cx:LX,cy:LY,r:LR},lens);
+  el('text',{class:'lens-cap',x:LX,y:LY+LR+24,'text-anchor':'middle'},lens).textContent='Lupe (4×)';
+
+  // ---- Beschriftung mit Zeigelinie
+  const co=el('g',{class:'callout'},svg);
+  const lh=el('line',{stroke:'#fff','stroke-width':7,'stroke-linecap':'round'},co);
+  const ln=el('line',{stroke:'#2c3d4c','stroke-width':3,'stroke-linecap':'round'},co);
+  const dot=el('circle',{r:8,fill:'#ffcf33',stroke:'#2c3d4c','stroke-width':3},co);
+  const pill=el('rect',{rx:12,fill:'#2c3d4c'},co);
+  const txt=el('text',{x:648,y:56,'text-anchor':'end'},co);
+  const T_CALLOUT=-0.66;
+
+  const info=document.getElementById('layerInfo');
+  const btns=[...document.querySelectorAll('.layer-btn')];
+  let cur=null;
+  function select(id){
+    cur=id;
+    btns.forEach(b=>b.classList.toggle('active',b.dataset.target===id));
+    svg.classList.toggle('has-sel',!!id);
+    svg.classList.toggle('lens-on',['r1','r2','r3'].includes(id));
+    if(!id){info.textContent='Klicke die Begriffe nacheinander an – oder direkt auf die Baumscheibe.';return;}
+    const L=LAYERS[id];
+    hole.setAttribute('d',L.band);
+    svg.querySelectorAll('.hl-halo,.hl-line').forEach(p=>p.setAttribute('d',L.band));
+    svg.querySelectorAll('.hl-halo').forEach(p=>{p.style.animation='none';p.getBoundingClientRect();p.style.animation='';});
+    // Zeigelinie
+    txt.textContent=L.n+' · '+L.name;
+    let bb=txt.getBBox(); if(!bb.width) bb={x:648-txt.textContent.length*13,y:36,width:txt.textContent.length*13,height:26};
+    const px=bb.x-14,py=bb.y-8,pw=bb.width+28,ph=bb.height+16;
+    pill.setAttribute('x',px);pill.setAttribute('y',py);pill.setAttribute('width',pw);pill.setAttribute('height',ph);
+    const P=L.i?pt((L.o[0]+L.i[0])/2,T_CALLOUT):ctr(0);
+    [lh,ln].forEach(l=>{l.setAttribute('x1',px+22);l.setAttribute('y1',py+ph);l.setAttribute('x2',P[0]);l.setAttrribute('y2',P[1]);
+    });
+    dot.setAttribute('cx',P[0]);dot.setAttribute('cy',P[1]);
+    const b=btns.find(x=>x.dataset.target===id);
+    info.innerHTML='<strong>'+L.n+' · '+L.name+'</strong><br>'+(b?b.dataset.info:'')+
+      (['r1','r2','r3'].includes(id)?'<span class="lens-hint">🔍 In der Lupe siehst du den Rand des Stammes vergrößert.</span>':'');
+  }
+  btns.forEach(b=>b.addEventListener('click',()=>select(cur===b.dataset.target?null:b.dataset.target)));
+  svg.addEventListener('click',e=>{const t=e.target.closest('[data-layer]');if(t)select(cur===t.dataset.layer?null:t.dataset.layer);});
+})();
+const m=location.hash.match(/folie-(\d+)/); if(m) index=Math.max(0,Math.min(slides.length-1,Number(m[1])-1)); show(index);
+</script>
+</body>
+</html>
