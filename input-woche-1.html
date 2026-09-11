@@ -187,11 +187,11 @@ body.notes .slide.active .note{display:block}
   <h2>Welches Symbol passt?</h2>
   <div class="quiz">
     <div class="quiz-row"><span>„Beschrifte A1.1 in deiner Mappe.“</span><button class="reveal">Lösung</button><span class="answer">📁 MAPPE</span></div>
-    <div class="quiz-row"><span.„Betrachte die echte Baumscheibe.“</span><button class="reveal">Lösung</button><span class="answer">🔬 ERKUNDEN</span></div>
+    <div class="quiz-row"><span>„Betrachte die echte Baumscheibe.“</span><button class="reveal">Lösung</button><span class="answer">🔬 ERKUNDEN</span></div>
     <div class="quiz-row"><span>„Zeige einem Partner das Kambium.“</span><button class="reveal">Lösung</button><span class="answer">🛑 HALTEPUNKT</span></div>
-    <div class="quiz-row"><span„Du kommst nicht weiter.“</span><button class="reveal">Lösung</button><span class="answer">💡 HILFE</span></div>
+    <div class="quiz-row"><span>„Du kommst nicht weiter.“</span><button class="reveal">Lösung</button><span class="answer">💡 HILFE</span></div>
   </div>
-  <div class="note"><strong>Lehrkraft:</strong> Antworten per Zuruf oder Handzeichen. Diese viler Symbole reichen für den ersten Durchgang; die anderen tauchen später wieder auf.</div>
+  <div class="note"><strong>Lehrkraft:</strong> Antworten per Zuruf oder Handzeichen. Diese vier Symbole reichen für den ersten Durchgang; die anderen tauchen später wieder auf.</div>
 </section>
 
 <section class="slide">
@@ -457,8 +457,7 @@ document.querySelectorAll('.quiz-row .reveal').forEach(b=>b.addEventListener('cl
     const px=bb.x-14,py=bb.y-8,pw=bb.width+28,ph=bb.height+16;
     pill.setAttribute('x',px);pill.setAttribute('y',py);pill.setAttribute('width',pw);pill.setAttribute('height',ph);
     const P=L.i?pt((L.o[0]+L.i[0])/2,T_CALLOUT):ctr(0);
-    [lh,ln].forEach(l=>{l.setAttribute('x1',px+22);l.setAttribute('y1',py+ph);l.setAttribute('x2',P[0]);l.setAttrribute('y2',P[1]);
-    });
+    [lh,ln].forEach(l=>{l.setAttribute('x1',px+22);l.setAttribute('y1',py+ph);l.setAttribute('x2',P[0]);l.setAttribute('y2',P[1]);});
     dot.setAttribute('cx',P[0]);dot.setAttribute('cy',P[1]);
     const b=btns.find(x=>x.dataset.target===id);
     info.innerHTML='<strong>'+L.n+' · '+L.name+'</strong><br>'+(b?b.dataset.info:'')+
