@@ -1,4 +1,4 @@
-/* Ressourcenstand: 09.09.2026 */
+/* Ressourcenstand: 11.09.2026 */
 window.HOLZ_COCKPIT = {
   "weeks": [
     {
@@ -21,7 +21,7 @@ window.HOLZ_COCKPIT = {
         "Baumscheiben und Lupen bereitstellen.",
         "Darstellung mit deutlich unterscheidbaren Stammbereichen auswählen.",
         "Mappen und Vorlagen A1/A2 ausdrucken und bereitlegen.",
-        "Spielkarten S01 und S02 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
+        "Spielkarten S01 und S02 doppelseitig drucken: A4 quer, 100 %, über die kurze Kante wenden; danach mittig schneiden und am Tisch auslegen."
       ],
       "pitfall": "Nicht jeder Baum bildet einen farblich abgesetzten Kern. Ein breiter Ring zeigt stärkeres Dickenwachstum; die genaue Ursache ist am Ring allein nicht sicher erkennbar.",
       "job": "Forstwirt/in",
@@ -40,7 +40,7 @@ window.HOLZ_COCKPIT = {
         "10 Min. Prüfen oder freiwillige Vertiefung",
         "10 Min. Mappe ordnen und Rückblick"
       ],
-      "games": "Stammgeflüster und Ringrennen",
+      "games": "Baum – Holz – Möbel und Stimmt oder Quatsch?",
       "games_path": "materialien/offener-anfang/woche-1.pdf"
     },
     {
@@ -630,11 +630,11 @@ window.HOLZ_COCKPIT = {
     },
     {
       "id": "SPIEL-W1",
-      "title": "Offener Anfang Woche 1 · Spielkarten",
+      "title": "Offener Anfang Woche 1 · Spielkarten · tonersparend",
       "week": 1,
       "kind": "Papier",
       "status": "Vorhanden",
-      "desc": "Stammgeflüster und Ringrennen. Drei Stufen, Lösungen rückseitig. Zwei PDF-Seiten ergeben zwei doppelseitige Karten.",
+      "desc": "Baum – Holz – Möbel und Stimmt oder Quatsch? Ohne Material, nur mit Vorwissen. Drei Stufen, Lösungen rückseitig. A4 quer; Duplexdruck über die kurze Kante.",
       "path": "materialien/offener-anfang/woche-1.pdf"
     },
     {
