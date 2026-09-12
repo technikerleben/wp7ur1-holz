@@ -7,21 +7,62 @@ const query=new URLSearchParams(location.search),requested=tasks.find(t=>t.id===
 if(requested&&(requested.id!==state.task||query.get('wiederholen')==='1')){state.task=requested.id;state.index=0;state.phase='step';}
 if(requested)state.introDone=true;
 if(requested&&query.get('wiederholen')==='1')history.replaceState(null,'','lernweg.html?auftrag='+requested.id);
-const box=document.getElementById('step'),dialog=document.getElementById('overview');
+const box=document.getElementById('step'),dialog=document.getElementById('overview'),navBack=document.getElementById('nav-back'),navOverview=document.getElementById('nav-overview'),navPosition=document.getElementById('nav-position');
 let helpLevel=0;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const current=()=>tasks.find(t=>t.id===state.task);
 const key=()=>state.task+':'+state.index+':'+state.phase;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch{const e=document.getElementById('save-warning');e.hidden=false;e.textContent='Dein Gerät kann den Fortschritt gerade nicht speichern. Notiere deinen Auftrag und Schritt auf Papier.';}}
 function appURL(url){const u=new URL(url,location.href);u.searchParams.set('von',state.task);return u.pathname.split('/').pop()+u.search;}
-function render(focus=false){const progressArea=document.getElementById('progress-area'),storageNote=document.getElementById('storage-note');if(!state.introDone){progressArea.hidden=true;storageNote.hidden=true;box.classList.add('intro-card');box.innerHTML=`<p class="meta">DEIN START</p><h1>So funktioniert dein Lernweg</h1><p class="intro-lead">Die Website zeigt dir immer nur den nächsten Schritt. Deine Ergebnisse schreibst oder zeichnest du in deine Mappe.</p><div class="symbol-grid" aria-label="Bedeutung der Symbole"><div><strong>📁 MAPPE</strong><span>auf Papier arbeiten</span></div><div><strong>📱 iPAD</strong><span>digitales Material nutzen</span></div><div><strong>📖 LESEN</strong><span>eine Information lesen</span></div><div><strong>🔬 ERKUNDEN</strong><span>ausprobieren oder beobachten</span></div><div><strong>💡 HILFE</strong><span>freiwillig einen Tipp öffnen</span></div><div><strong>🔍 VERTIEFUNG</strong><span>freiwillig weiterarbeiten</span></div><div><strong>🛑 HALTEPUNKT</strong><span>Lehrkraft oder Partner einbeziehen</span></div><div><strong>✓ KONTROLLE</strong><span>deinen Pflichtteil prüfen</span></div></div><p class="intro-rule"><strong>Wichtig:</strong> Arbeite nur an dem Schritt, den du gerade siehst.</p><button class="primary intro-start" data-action="start">Lernweg starten</button>`;save();if(focus)box.focus({preventScroll:true});return;}progressArea.hidden=false;storageNote.hidden=false;box.classList.remove('intro-card');const t=current(),step=t.steps[state.index];document.getElementById('progress').value=state.done.length;document.getElementById('progress-text').textContent=state.done.length+' von 10 Pflichtaufträgen geschafft';let html=`<p class="meta">Woche ${t.week} · ${t.id}</p><h1>${esc(t.title)}</h1>`;
+function updateNav(){
+  if(!state.introDone){
+    navPosition.textContent='Start · So funktioniert der Lernweg';
+    navBack.disabled=true;
+    return;
+  }
+  const t=current();
+  navPosition.textContent=t.id+' · Woche '+t.week+' · '+t.title;
+  navBack.disabled=false;
+}
+function render(focus=false){updateNav();const progressArea=document.getElementById('progress-area'),storageNote=document.getElementById('storage-note');if(!state.introDone){progressArea.hidden=true;storageNote.hidden=true;box.classList.add('intro-card');box.innerHTML=`<p class="meta">DEIN START</p><h1>So funktioniert dein Lernweg</h1><p class="intro-lead">Die Website zeigt dir immer nur den nächsten Schritt. Deine Ergebnisse schreibst oder zeichnest du in deine Mappe.</p><div class="symbol-grid" aria-label="Bedeutung der Symbole"><div><strong>📁 MAPPE</strong><span>auf Papier arbeiten</span></div><div><strong>📱 iPAD</strong><span>digitales Material nutzen</span></div><div><strong>📖 LESEN</strong><span>eine Information lesen</span></div><div><strong>🔬 ERKUNDEN</strong><span>ausprobieren oder beobachten</span></div><div><strong>💡 HILFE</strong><span>freiwillig einen Tipp öffnen</span></div><div><strong>🔍 VERTIEFUNG</strong><span>freiwillig weiterarbeiten</span></div><div><strong>🛑 HALTEPUNKT</strong><span>Lehrkraft oder Partner einbeziehen</span></div><div><strong>✓ KONTROLLE</strong><span>deinen Pflichtteil prüfen</span></div></div><p class="intro-rule"><strong>Wichtig:</strong> Arbeite nur an dem Schritt, den du gerade siehst.</p><button class="primary intro-start" data-action="start">Lernweg starten</button>`;save();if(focus)box.focus({preventScroll:true});return;}progressArea.hidden=false;storageNote.hidden=false;box.classList.remove('intro-card');const t=current(),step=t.steps[state.index];document.getElementById('progress').value=state.done.length;document.getElementById('progress-text').textContent=state.done.length+' von 10 Pflichtaufträgen geschafft';let html=`<p class="meta">Woche ${t.week} · ${t.id}</p><h1>${esc(t.title)}</h1>`;
 if(state.phase==='finished'){html+=`<p class="medium">✓ KONTROLLE</p><p class="instruction">Deine Pflichtaufgabe ist geschafft.</p>${t.extra?'<p>Möchtest du das Thema noch vertiefen?</p>':''}<div class="tools"><button class="primary" data-action="next-task">${t.id==='A10'?'Zum Kompetenzcheck':'Weiter zum nächsten Auftrag'}</button>${t.extra?'<button data-action="extra">Thema vertiefen</button>':''}</div>`;}
 else if(state.phase==='extra'&&t.extra){html+=`<p class="medium">🔍 VERTIEFUNG · freiwillig</p><p class="instruction">${esc(t.extra.text)}</p><div class="tools">${t.extra.url&&!state.opened[key()]?`<a class="button primary" data-action="open" href="${appURL(t.extra.url)}">Vertiefung öffnen</a>`:'<button class="primary" data-action="extra-done">Vertiefung abgeschlossen → weiter</button>'}<button data-action="skip-extra">Zurück zum Pflichtabschluss</button></div>`;}
 else if(!step){html+=`<p class="medium">✓ KONTROLLE</p><p class="instruction">Prüfe deine Mappe bei ${t.id}.</p><ul class="list">${t.check.map(c=>'<li>'+esc(c)+'</li>').join('')}</ul><button class="primary" data-action="finish">Alles geprüft · Pflichtteil geschafft</button><div class="subactions"><button data-action="back">Zurück zum letzten Schritt</button></div>`;}
 else{html+=`<p class="meta">Schritt ${state.index+1} von ${t.steps.length}</p><p class="medium">${symbols[step.kind]}</p><p class="instruction">${esc(step.text)}</p><div class="tools">${step.url&&!state.opened[key()]?`<a class="button primary" data-action="open" href="${appURL(step.url)}">Material öffnen</a>`:`<button class="primary" data-action="next">${step.kind==='halt'?'Besprochen':step.kind==='lesen'?'Gelesen':step.url?'Ausprobiert':'Erledigt'} → weiter</button>`}</div>${step.url&&state.opened[key()]?`<a class="small-link" href="${appURL(step.url)}">Material noch einmal öffnen</a>`:''}<div class="subactions">${state.index>0?'<button data-action="back">← Zurück</button>':''}<button data-action="help">💡 Ich brauche einen Tipp</button></div><div id="help-panel" hidden class="help-panel"></div>`;}
 box.innerHTML=html;save();if(focus)box.focus({preventScroll:true});}
 function move(i){state.index=i;state.phase='step';helpLevel=0;render(true);}
+function navZurueck(){
+  if(!state.introDone)return;
+  const t=current();
+  if(state.phase==='finished'||state.phase==='extra'){
+    state.phase='step';
+    state.index=t.steps.length;
+    render(true);
+    return;
+  }
+  if(state.index>0){move(state.index-1);return;}
+  const pos=tasks.indexOf(t);
+  if(pos>0){
+    const prev=tasks[pos-1];
+    state.task=prev.id;
+    state.phase='step';
+    state.index=Math.max(0,prev.steps.length-1);
+    history.replaceState(null,'','lernweg.html');
+    render(true);
+    return;
+  }
+  state.introDone=false;
+  state.index=0;
+  state.phase='step';
+  render(true);
+}
 box.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;if(a==='start'){state.introDone=true;render(true);return;}const t=current();if(a==='open'){state.opened[key()]=true;save();return;}if(a==='next')move(Math.min(state.index+1,t.steps.length));if(a==='back')move(Math.max(0,state.index-1));if(a==='finish'){if(!state.done.includes(t.id))state.done.push(t.id);state.phase='finished';render(true);}if(a==='next-task'){const next=tasks[tasks.indexOf(t)+1];if(next){state.task=next.id;history.replaceState(null,'','lernweg.html');move(0);}else location.href='kompetenzcheck.html';}if(a==='extra'){state.phase='extra';render(true);}if(a==='extra-done'){if(!state.extras.includes(t.id))state.extras.push(t.id);state.phase='finished';render(true);}if(a==='skip-extra'){state.phase='finished';render(true);}if(a==='help'){helpLevel=Math.min(helpLevel+1,t.hints.length);state.helps[key()]=Math.max(Number(state.helps[key()])||0,helpLevel);save();const panel=document.getElementById('help-panel');panel.hidden=false;panel.innerHTML=`<strong>Hilfe ${helpLevel}</strong><p>${esc(t.hints[helpLevel-1])}</p><div class="tools"><button data-action="close-help">Jetzt weiß ich weiter</button>${helpLevel<t.hints.length?'<button data-action="help">Noch eine Hilfe</button>':'<p>Frage deine Lehrkraft, wenn du noch nicht weiterkommst.</p>'}</div>`;}if(a==='close-help')document.getElementById('help-panel').hidden=true;});
-document.getElementById('overview-open').addEventListener('click',()=>{document.getElementById('task-list').innerHTML=tasks.map(t=>`<button class="task-choice" data-task="${t.id}">${state.done.includes(t.id)?'✓':'○'} ${t.id} · ${esc(t.title)}</button>`).join('');dialog.showModal();});
+function openOverview(){
+  document.getElementById('task-list').innerHTML=tasks.map(t=>`<button class="task-choice" data-task="${t.id}">${state.done.includes(t.id)?'✓':'○'} ${t.id} · ${esc(t.title)}</button>`).join('');
+  dialog.showModal();
+}
+document.getElementById('overview-open').addEventListener('click',openOverview);
+navOverview.addEventListener('click',openOverview);
+navBack.addEventListener('click',navZurueck);
 document.getElementById('overview-close').addEventListener('click',()=>dialog.close());document.getElementById('task-list').addEventListener('click',e=>{const id=e.target.closest('[data-task]')?.dataset.task;if(!id)return;state.introDone=true;state.task=id;move(0);history.replaceState(null,'','lernweg.html');dialog.close();});
 window.addEventListener('pageshow',()=>render());render();
