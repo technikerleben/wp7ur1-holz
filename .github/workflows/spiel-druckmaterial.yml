@@ -40,5 +40,6 @@ jobs:
             echo "Keine Änderungen an den PDFs."
           else
             git commit -m "Spiel: Druckmaterial aktualisieren"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
