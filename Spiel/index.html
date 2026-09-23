@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#163d2a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Vom Baum zum Brett – Spiel</title>
+  <link rel="stylesheet" href="spiel.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Technik · Klasse 7</p>
+        <h1>Vom Baum zum Brett</h1>
+      </div>
+      <div class="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="statusText">Spielfeld-Prototyp</span>
+      </div>
+    </header>
+
+    <section class="board-shell" aria-label="Spielfeld Vom Baum zum Brett">
+      <div class="board" id="board">
+        <img
+          class="board-background"
+          src="assets/hintergrund.webp"
+          alt="Panorama vom Wald über Baumfällung, Transport und Sägewerk bis zum Baumarkt"
+          draggable="false"
+        >
+
+        <div class="zones" aria-hidden="true">
+          <div class="zone" style="--i:0"><span>Wald</span></div>
+          <div class="zone" style="--i:1"><span>Baumfällung</span></div>
+          <div class="zone" style="--i:2"><span>Transport</span></div>
+          <div class="zone" style="--i:3"><span>Sägewerk</span></div>
+          <div class="zone" style="--i:4"><span>Baumarkt</span></div>
+        </div>
+
+        <svg class="track-lines" id="trackSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <polyline id="trackLine" points=""></polyline>
+        </svg>
+
+        <div class="fields" id="fields" aria-hidden="true"></div>
+
+        <div class="start-label">Start</div>
+        <div class="goal-label">Ziel</div>
+
+        <div class="test-token" id="testToken" aria-label="Testfigur">
+          <span>T</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="Teststeuerung">
+      <div class="position-info">
+        <strong id="fieldInfo">Feld 1 von 40</strong>
+        <span id="zoneInfo">Wald</span>
+      </div>
+      <div class="control-buttons">
+        <button type="button" class="secondary" id="resetButton">Zurücksetzen</button>
+        <button type="button" class="primary" id="nextButton">Feld weiter</button>
+      </div>
+    </section>
+
+    <p class="prototype-note">
+      Dieser Schritt prüft zunächst nur Wegführung und Feldpositionen. Würfel, mehrere Figuren und Spielregeln kommen anschließend dazu.
+    </p>
+  </main>
+
+  <script src="spiel.js"></script>
+</body>
+</html>
