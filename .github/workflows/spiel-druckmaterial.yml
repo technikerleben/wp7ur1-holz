@@ -1,0 +1,44 @@
+name: Spiel-Druckmaterial erzeugen
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Spiel/druckmaterial/generate_pdfs.py"
+      - "Spiel/druckmaterial/README.md"
+      - ".github/workflows/spiel-druckmaterial.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: PDF-Bibliotheken installieren
+        run: pip install reportlab pypdf
+
+      - name: Druckmaterial erzeugen
+        run: python Spiel/druckmaterial/generate_pdfs.py
+
+      - name: PDFs ins Repository schreiben
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Spiel/druckmaterial/*.pdf
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen an den PDFs."
+          else
+            git commit -m "Spiel: Druckmaterial aktualisieren"
+            git push
+          fi
