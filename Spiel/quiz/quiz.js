@@ -165,6 +165,17 @@
   ];
 
   const letters=["A","B","C","D"];
+  const topicIcons = {
+    "Wald":"🌲",
+    "Baumfällung":"🪵",
+    "Transport":"🚛",
+    "Sägewerk":"🪚",
+    "Baumarkt":"🪚",
+    "Weg des Holzes":"🧭",
+    "Wald & Sägewerk":"🌲🪚",
+    "Baumfällung & Sägewerk":"🪵🪚",
+    "Gesamter Prozess":"🌲➡️🪵"
+  };
   const els={
     startView:document.getElementById("startView"),
     quizView:document.getElementById("quizView"),
@@ -217,7 +228,7 @@
   function render(){
     const q=QUESTIONS[index];
     selected=null; locked=false;
-    els.topicBadge.textContent=q.topic;
+    els.topicBadge.textContent = `${topicIcons[q.topic] ? topicIcons[q.topic] + " " : ""}${q.topic}`;
     els.questionNumber.textContent=`Frage ${index+1}`;
     els.questionText.textContent=q.q;
     els.levelLabel.textContent=`Stufe ${index+1} von ${QUESTIONS.length}`;
