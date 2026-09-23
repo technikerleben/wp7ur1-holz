@@ -61,3 +61,15 @@ Aktuell gibt es **40 Felder**, also **8 Felder je Bereich**.
 7. Bei Erfolg bewegt die Webapp die Figur automatisch.
 8. Beim ersten Erreichen eines neuen Bereichs fordert die Webapp die passende Infokarte an.
 9. Danach wechselt der Zug automatisch zur nächsten Person.
+
+
+## Druckmaterial
+
+Die analogen Karten und Texte liegen im Unterordner [`druckmaterial`](druckmaterial/README.md).
+
+- [Gesamtes Druckset](druckmaterial/Druckset_Vom_Baum_zum_Brett.pdf)
+- [Infokarten](druckmaterial/Infokarten_Vom_Baum_zum_Brett.pdf)
+- [Aufgabenkarten](druckmaterial/Aufgabenkarten_Vom_Baum_zum_Brett.pdf)
+- [Quiz-Lösungen](druckmaterial/Quizloesungen_Vom_Baum_zum_Brett.pdf)
+
+Die fünf Bereiche sind zwischen digitalem Spielfeld und Druckmaterial einheitlich nummeriert.
