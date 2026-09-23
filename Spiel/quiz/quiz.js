@@ -29,24 +29,24 @@
     {
       topic:"Baumfällung", level:"Grundwissen",
       q:"Warum wird die Rinde nach dem Fällen vom Stamm entfernt?",
-      a:["Damit das Holz schwerer wird.","Damit das Holz besser trocknen kann.","Damit der Stamm länger wird.","Damit das Kernholz weicher wird."],
-      correct:1,
+      a:["Damit das Holz schwerer wird.","Damit der Stamm länger wird.","Damit das Kernholz weicher wird.","Damit das Holz besser trocknen kann."],
+      correct:3,
       hint:"Überlegt, was vor der weiteren Verarbeitung mit der Feuchtigkeit passieren muss.",
       explain:"Die Rinde wird entfernt, damit das Holz besser trocknen kann."
     },
     {
       topic:"Transport", level:"Grundwissen",
       q:"Wohin wird ein vorbereiteter Baumstamm nach der Baumfällung gebracht?",
-      a:["Direkt in den Baumarkt","Ins Sägewerk","Zurück in den Wald","In eine Möbelwerkstatt"],
-      correct:1,
+      a:["Ins Sägewerk","Direkt in den Baumarkt","Zurück in den Wald","In eine Möbelwerkstatt"],
+      correct:0,
       hint:"Dort wird aus dem Stamm erst ein Brett.",
       explain:"Der vorbereitete Stamm wird ins Sägewerk gebracht."
     },
     {
       topic:"Transport", level:"Grundwissen",
       q:"Warum werden für den Transport von Baumstämmen große Maschinen und LKW eingesetzt?",
-      a:["Weil die Stämme sehr schwer sind.","Weil Holz nicht nass werden darf.","Weil nur Maschinen den Wald verlassen dürfen.","Weil der Stamm dabei schon gesägt wird."],
-      correct:0,
+      a:["Weil Holz nicht nass werden darf.","Weil die Stämme sehr schwer sind.","Weil nur Maschinen den Wald verlassen dürfen.","Weil der Stamm dabei schon gesägt wird."],
+      correct:1,
       hint:"Denkt an Masse und Größe eines ganzen Baumstamms.",
       explain:"Große Maschinen und LKW können die sehr schweren Baumstämme bewegen."
     },
@@ -55,11 +55,11 @@
       q:"Welche Reihenfolge passt zur Arbeit im Sägewerk?",
       a:[
         "Trocknen → Sägen → Fällen",
-        "Sägen → Trocknen → Weiterverarbeiten",
         "Transport → Pflanzen → Sägen",
+        "Sägen → Trocknen → Weiterverarbeiten",
         "Trocknen → Rinde wachsen lassen → Sägen"
       ],
-      correct:1,
+      correct:2,
       hint:"Erst muss aus dem Stamm ein Brett werden. Danach wird seine Feuchtigkeit wichtig.",
       explain:"Im Sägewerk wird der Stamm zuerst in Bretter geschnitten. Danach werden die Bretter getrocknet."
     },
@@ -67,12 +67,12 @@
       topic:"Sägewerk", level:"Anwendung",
       q:"Ein frisch gesägtes Brett ist noch sehr feucht. Warum sollte es noch nicht direkt verarbeitet werden?",
       a:[
-        "Es könnte sich verziehen oder brechen.",
         "Es würde sofort zu Kernholz werden.",
         "Es wäre zu leicht für Möbel.",
-        "Es könnte wieder Äste bilden."
+        "Es könnte wieder Äste bilden.",
+        "Es könnte sich verziehen oder brechen."
       ],
-      correct:0,
+      correct:3,
       hint:"Feuchtigkeit kann die Form und Stabilität des Holzes verändern.",
       explain:"Zu feuchtes Holz kann sich verziehen oder brechen. Deshalb werden Bretter nach dem Sägen getrocknet."
     },
@@ -89,11 +89,11 @@
       q:"Welche Prozesskette beschreibt den Weg des Holzes am besten?",
       a:[
         "Wald → Baumarkt → Baumfällung → Sägewerk → Transport",
-        "Baumfällung → Wald → Sägewerk → Baumarkt → Transport",
         "Wald → Baumfällung → Transport → Sägewerk → Baumarkt",
+        "Baumfällung → Wald → Sägewerk → Baumarkt → Transport",
         "Sägewerk → Wald → Transport → Baumfällung → Baumarkt"
       ],
-      correct:2,
+      correct:1,
       hint:"Startet dort, wo der Baum wächst, und endet dort, wo Bretter verkauft werden.",
       explain:"Die Unterrichtsreihe folgt der Kette Wald → Baumfällung → Transport → Sägewerk → Baumarkt."
     },
@@ -101,12 +101,12 @@
       topic:"Wald & Sägewerk", level:"Zusammenhänge",
       q:"Welche Aussage verbindet Splintholz und Holztrocknung richtig?",
       a:[
-        "Splintholz transportiert Wasser im lebenden Baum; nach dem Sägen muss Feuchtigkeit aus den Brettern heraus.",
         "Splintholz ist bereits trocken und muss deshalb im Sägewerk entfernt werden.",
         "Splintholz schützt außen den Baum; beim Trocknen wird daraus Rinde.",
+        "Splintholz transportiert Wasser im lebenden Baum; nach dem Sägen muss Feuchtigkeit aus den Brettern heraus.",
         "Splintholz gibt nur Stabilität; Feuchtigkeit spielt dabei keine Rolle."
       ],
-      correct:0,
+      correct:2,
       hint:"Vergleicht die Funktion im lebenden Baum mit dem Zustand eines frisch gesägten Brettes.",
       explain:"Im lebenden Baum transportiert Splintholz Wasser. Nach dem Sägen muss das Holz trocknen, damit es stabil verarbeitet werden kann."
     },
@@ -114,12 +114,12 @@
       topic:"Baumfällung & Sägewerk", level:"Zusammenhänge",
       q:"Welche Vorbereitung des Stammes unterstützt die spätere Verarbeitung im Sägewerk am sinnvollsten?",
       a:[
-        "Äste und Rinde entfernen.",
         "Neue Äste wachsen lassen.",
         "Den Stamm möglichst feucht halten.",
-        "Den Stamm schon im Wald lackieren."
+        "Den Stamm schon im Wald lackieren.",
+        "Äste und Rinde entfernen."
       ],
-      correct:0,
+      correct:3,
       hint:"Denkt an Entasten und daran, warum die Rinde entfernt wird.",
       explain:"Entasten und das Entfernen der Rinde bereiten den Stamm auf Transport, Trocknung und weitere Verarbeitung vor."
     },
@@ -140,12 +140,12 @@
       topic:"Baumarkt", level:"Transfer",
       q:"Warum ist die Qualitätsprüfung vor dem Verkauf ein sinnvoller letzter Schritt?",
       a:[
-        "Damit geprüft wird, ob das Holz für die Nutzung geeignet ist.",
         "Damit aus Brettern wieder Baumstämme werden.",
+        "Damit geprüft wird, ob das Holz für die Nutzung geeignet ist.",
         "Damit das Holz wieder feuchter wird.",
         "Damit die Rinde erneut anwächst."
       ],
-      correct:0,
+      correct:1,
       hint:"Überlegt, was Käuferinnen und Käufer von einem Werkstoff erwarten.",
       explain:"Vor dem Verkauf wird die Qualität geprüft, damit geeignetes Holz angeboten wird."
     },
@@ -153,12 +153,12 @@
       topic:"Gesamter Prozess", level:"Profi",
       q:"Welche Begründung beschreibt den gesamten Weg vom Baum zum nutzbaren Brett am vollständigsten?",
       a:[
-        "Der Baum wird gefällt, vorbereitet und transportiert; im Sägewerk wird der Stamm gesägt und getrocknet; anschließend werden die Bretter geprüft und verkauft.",
         "Der Baum wird gefällt und direkt als fertiges Brett verkauft.",
         "Der Stamm wird zuerst getrocknet, danach wächst eine neue Rinde und erst dann wird er gesägt.",
+        "Der Baum wird gefällt, vorbereitet und transportiert; im Sägewerk wird der Stamm gesägt und getrocknet; anschließend werden die Bretter geprüft und verkauft.",
         "Der Baum wird im Baumarkt gefällt und anschließend in den Wald transportiert."
       ],
-      correct:0,
+      correct:2,
       hint:"Achtet darauf, ob Vorbereitung, Transport, Sägen, Trocknen und Verkauf in sinnvoller Reihenfolge vorkommen.",
       explain:"Die vollständige Prozesskette umfasst Fällen und Vorbereiten, Transport, Sägen, Trocknen sowie Prüfung und Verkauf."
     }
