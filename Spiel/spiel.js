@@ -2,11 +2,11 @@
   "use strict";
 
   const ZONES = [
-    { name: "Wald", card: "Der Wald", icon: "🌲" },
-    { name: "Baumfällung", card: "Baumfällung", icon: "🪵" },
-    { name: "Transport", card: "Transport", icon: "🚛" },
-    { name: "Sägewerk", card: "Im Sägewerk", icon: "⚙️" },
-    { name: "Baumarkt", card: "Der Baumarkt", icon: "🪚" }
+    { number: 1, name: "Wald", card: "Der Wald", icon: "🌲" },
+    { number: 2, name: "Baumfällung", card: "Baumfällung", icon: "🪵" },
+    { number: 3, name: "Transport", card: "Transport", icon: "🚛" },
+    { number: 4, name: "Sägewerk", card: "Im Sägewerk", icon: "⚙️" },
+    { number: 5, name: "Baumarkt", card: "Der Baumarkt", icon: "🪚" }
   ];
 
   const PLAYER_COLORS = ["#2469a0", "#c9423a", "#278354", "#7456a7", "#d57a24"];
@@ -367,7 +367,7 @@
     const zone = ZONES[zoneIndex];
     phase = "intro";
     els.eventIcon.textContent = zone.icon;
-    els.eventKicker.textContent = zoneIndex === 0 ? "Start des Spiels" : "Neuer Bereich";
+    els.eventKicker.textContent = `Bereich ${zone.number} von 5`;
     els.eventTitle.textContent = zone.card;
     els.eventText.textContent = `Nehmt die Infokarte „${zone.card}“ und lest den Text einmal gemeinsam laut vor.`;
     els.eventButton.textContent = "Gelesen – weiter";
@@ -485,7 +485,7 @@
     els.turnToken.textContent = initials(player.name);
     els.turnToken.style.background = player.color;
     els.currentPlayerName.textContent = player.name;
-    els.turnLocation.textContent = `${ZONES[field.zone].name} · Feld ${player.position + 1}`;
+    els.turnLocation.textContent = `Bereich ${ZONES[field.zone].number} – ${ZONES[field.zone].name} · Feld ${player.position + 1}`;
   }
 
   function pulseToken(playerId) {
