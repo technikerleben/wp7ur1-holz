@@ -48,7 +48,7 @@ Aktuell gibt es **40 Felder**, also **8 Felder je Bereich**.
 - `index.html` – Oberfläche, Spielaufbau und Dialoge
 - `spiel.css` – iPad-optimierte Gestaltung
 - `spiel.js` – Spielzustand, Würfel, Figuren, Bewegung und Regeln
-- `assets/hintergrund.webp` – Hintergrundpanorama ohne Wegpunkte
+- `assets/hintergrund.png` – hochauflösendes Hintergrundpanorama ohne Wegpunkte
 
 ## Spielablauf
 
