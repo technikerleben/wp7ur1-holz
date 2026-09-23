@@ -1,25 +1,37 @@
 # Spiel – Vom Baum zum Brett
 
-Hybrides Würfelspiel für den Technikunterricht.
+Hybrides Würfelspiel für den Technikunterricht in Klasse 7.
 
 ## Grundidee
 
-Das iPad übernimmt nur die Spielleitung:
-- digitales Spielfeld
+Das iPad übernimmt bewusst nur die Spielleitung:
+
+- Spielfeld und Figuren
 - Würfel
-- Spielfiguren
-- automatische Bewegung und Bereichserkennung
+- Zuordnung der Würfelzahl zur Kartenart
+- Bewegung der Figuren
+- Bereichserkennung
+- Regel „besetztes Feld überspringen“
+- Spielerwechsel und Zielerkennung
 
-Die eigentlichen Aufgaben, Infotexte und Lösungen bleiben gedruckt auf dem Tisch, damit die Lernenden miteinander sprechen, darstellen, zeichnen und beraten.
+Die eigentlichen Aufgaben, Lösungen und Sachtexte bleiben gedruckt auf dem Tisch. Dadurch schauen die Lernenden nicht dauerhaft auf den Bildschirm, sondern müssen miteinander lesen, zeichnen, darstellen, beraten und entscheiden.
 
-## Technischer Aufbau
+## Spielregel in der Webapp
 
-- `index.html` – Spielfeld und Bedienoberfläche
-- `spiel.css` – responsive Gestaltung für iPad-Querformat
-- `spiel.js` – Feldkoordinaten und Bewegungslogik
-- `assets/hintergrund.webp` – Panorama ohne Wegpunkte
+- **1 oder 6:** rote Karte – Malaufgabe
+- **2 oder 5:** gelbe Karte – Quizfrage
+- **3 oder 4:** blaue Karte – Pantomime
+- **Aufgabe geschafft:** 3 Felder vor
+- **Aufgabe nicht geschafft:** stehenbleiben
+- **Zielfeld besetzt:** automatisch bis zum nächsten freien Feld weiterrücken
+- **Neuer Bereich:** passende gedruckte Infokarte einmal gemeinsam laut lesen
+- **Ziel:** Wer zuerst das letzte Feld erreicht, gewinnt
 
-Das Spielfeld ist in fünf exakt gleich breite Bereiche zu je 20 % geteilt:
+Ein Zug, der über das letzte Feld hinausführen würde, endet direkt auf dem Zielfeld.
+
+## Spielfeld
+
+Das Panorama ist in fünf exakt gleich breite HTML-Bereiche zu je 20 % geteilt:
 
 1. Wald
 2. Baumfällung
@@ -27,19 +39,25 @@ Das Spielfeld ist in fünf exakt gleich breite Bereiche zu je 20 % geteilt:
 4. Sägewerk
 5. Baumarkt
 
-Der Weg wird vollständig in HTML/CSS/JavaScript über das Hintergrundbild gelegt. Dadurch sind alle Feldpositionen eindeutig bekannt und die Spielfiguren können später exakt von Feld zu Feld bewegt werden.
+Der Weg liegt vollständig als HTML/SVG-Ebene über dem Hintergrundbild. Dadurch kennt die Anwendung jede Feldposition exakt und kann Figuren zuverlässig bewegen.
 
-## Aktueller Prototyp
+Aktuell gibt es **40 Felder**, also **8 Felder je Bereich**.
 
-Der erste Prototyp legt 40 Felder an, acht pro Bereich. Ein Teststein kann mit „Feld weiter“ über den kompletten Weg bewegt werden. Damit lässt sich zuerst prüfen, ob Wegführung, Feldgrößen und Positionen auf dem Hintergrund funktionieren.
+## Dateien
 
-## Nächster Ausbau
+- `index.html` – Oberfläche, Spielaufbau und Dialoge
+- `spiel.css` – iPad-optimierte Gestaltung
+- `spiel.js` – Spielzustand, Würfel, Figuren, Bewegung und Regeln
+- `assets/hintergrund.webp` – Hintergrundpanorama ohne Wegpunkte
 
-Nach Freigabe des Spielfelds:
-1. 2–5 Spieler einrichten
-2. Würfelanimation
-3. Zuordnung 1/6 = Malen, 2/5 = Quiz, 3/4 = Pantomime
-4. „Geschafft“ = 3 Felder vor, „nicht geschafft“ = stehenbleiben
-5. besetzte Felder automatisch überspringen
-6. Bereichswechsel erkennen und gedruckte Infokarte anfordern
-7. Gewinnerkennung am Ziel
+## Spielablauf
+
+1. 2–5 Personen auswählen und optional Namen eintragen.
+2. Zu Beginn wird die Infokarte **„Der Wald“** vorgelesen.
+3. Die aktuelle Person würfelt auf dem iPad.
+4. Das iPad zeigt nur die Kartenart an.
+5. Die Gruppe führt die Aufgabe mit der gedruckten Karte durch.
+6. Die Gruppe tippt **„Geschafft“** oder **„Nicht geschafft“**.
+7. Bei Erfolg bewegt die Webapp die Figur automatisch.
+8. Beim ersten Erreichen eines neuen Bereichs fordert die Webapp die passende Infokarte an.
+9. Danach wechselt der Zug automatisch zur nächsten Person.
