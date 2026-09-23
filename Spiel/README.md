@@ -73,3 +73,10 @@ Die analogen Karten und Texte liegen im Unterordner [`druckmaterial`](druckmater
 - [Quiz-Lösungen](druckmaterial/Quizloesungen_Vom_Baum_zum_Brett.pdf)
 
 Die fünf Bereiche sind zwischen digitalem Spielfeld und Druckmaterial einheitlich nummeriert.
+
+
+## Quizspiel
+
+Zusätzlich gibt es die [Holz-Challenge](quiz/README.md): ein 15-stufiges Gruppenquiz mit steigender Schwierigkeit und verbindlichem Konsenscheck vor jeder eingeloggenen Antwort.
+
+Nach dem Deployment: `/Spiel/quiz/`
