@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07152e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Holz-Challenge – Vom Baum zum Brett</title>
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="start-view" id="startView" aria-labelledby="startTitle">
+      <div class="start-card">
+        <p class="eyebrow">Technik · Vom Baum zum Brett</p>
+        <h1 id="startTitle">Die Holz-Challenge</h1>
+        <p class="lead">15 Fragen. Eine Antwort. Ihr entscheidet als Gruppe.</p>
+
+        <div class="consensus-rule">
+          <span class="rule-icon" aria-hidden="true">◎</span>
+          <div>
+            <strong>Konsens-Regel</strong>
+            <p>Beratet euch. Eine Antwort darf erst eingeloggt werden, wenn alle in eurer Lerngruppe zustimmen.</p>
+          </div>
+        </div>
+
+        <label class="group-name">
+          <span>Gruppenname <small>(freiwillig)</small></span>
+          <input id="groupNameInput" type="text" maxlength="24" autocomplete="off" placeholder="z. B. Holzfüchse">
+        </label>
+
+        <div class="start-actions">
+          <button class="primary large" id="startButton" type="button">Challenge starten</button>
+        </div>
+
+        <p class="tiny-note">Die Schwierigkeit steigt von Frage zu Frage. Es geht um Wissen – nicht um echtes Geld.</p>
+      </div>
+    </section>
+
+    <section class="quiz-view" id="quizView" hidden>
+      <header class="quiz-header">
+        <div>
+          <p class="eyebrow">Vom Baum zum Brett</p>
+          <h1>Holz-Challenge</h1>
+        </div>
+        <div class="group-chip" id="groupChip">Lerngruppe</div>
+      </header>
+
+      <section class="progress-card" aria-label="Fortschritt">
+        <div class="progress-meta">
+          <strong id="levelLabel">Stufe 1 von 15</strong>
+          <span id="difficultyLabel">Einstieg</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="checkpoint cp1">5</div>
+          <div class="checkpoint cp2">10</div>
+          <div class="checkpoint cp3">15</div>
+        </div>
+      </section>
+
+      <section class="game-grid">
+        <aside class="ladder" aria-label="Wissensstufen">
+          <h2>Wissensstufen</h2>
+          <ol id="ladderList"></ol>
+          <div class="helpers">
+            <h3>Hilfen</h3>
+            <button type="button" id="fiftyButton">2 Antworten weg</button>
+            <button type="button" id="hintButton">Themen-Hinweis</button>
+          </div>
+        </aside>
+
+        <section class="stage">
+          <div class="topic-badge" id="topicBadge">Wald</div>
+
+          <div class="question-card">
+            <p class="question-number" id="questionNumber">Frage 1</p>
+            <h2 id="questionText"></h2>
+          </div>
+
+          <div class="answers" id="answers" role="group" aria-label="Antwortmöglichkeiten"></div>
+
+          <div class="consensus-bar" id="consensusBar">
+            <div>
+              <strong id="selectionStatus">Wählt gemeinsam eine Antwort.</strong>
+              <span id="selectionHint">Antippen markiert nur eure Auswahl – noch wird nichts eingeloggt.</span>
+            </div>
+            <button type="button" class="lock-button" id="lockButton" disabled>Antwort einloggen</button>
+          </div>
+
+          <p class="hint-panel" id="hintPanel" hidden></p>
+        </section>
+      </section>
+    </section>
+
+    <div class="modal-backdrop" id="consensusModal" hidden>
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="consensusTitle">
+        <div class="modal-icon" aria-hidden="true">◎</div>
+        <p class="eyebrow">Konsenscheck</p>
+        <h2 id="consensusTitle">Sind wirklich alle einverstanden?</h2>
+        <p id="consensusAnswer"></p>
+        <div class="modal-actions">
+          <button type="button" class="secondary" id="backToDiscussButton">Noch beraten</button>
+          <button type="button" class="primary" id="confirmAnswerButton">Ja, einloggen</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="resultModal" hidden>
+      <section class="modal-card result-card" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="result-mark" id="resultMark" aria-hidden="true">✓</div>
+        <p class="eyebrow" id="resultEyebrow">Richtig</p>
+        <h2 id="resultTitle">Starke Entscheidung!</h2>
+        <p id="resultExplanation"></p>
+        <button type="button" class="primary large" id="nextButton">Nächste Frage</button>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="endModal" hidden>
+      <section class="modal-card end-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+        <div class="end-rings" aria-hidden="true">◉ ◉ ◉</div>
+        <p class="eyebrow">Challenge beendet</p>
+        <h2 id="endTitle">Euer Ergebnis</h2>
+        <div class="score" id="scoreText">0 / 15</div>
+        <p id="endMessage"></p>
+        <button type="button" class="primary large" id="restartButton">Noch einmal spielen</button>
+      </section>
+    </div>
+  </main>
+
+  <script src="quiz.js"></script>
+</body>
+</html>
