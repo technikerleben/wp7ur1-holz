@@ -149,8 +149,8 @@ h1 {
 
 #trackLine {
   fill: none;
-  stroke: var(--track-border);
-  stroke-width: 6;
+  stroke: var(--track);
+  stroke-width: 7;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
@@ -158,7 +158,7 @@ h1 {
 
 #trackLineUnder {
   fill: none;
-  stroke: var(--track);
+  stroke: var(--track-border);
   stroke-width: 13;
   stroke-linecap: round;
   stroke-linejoin: round;
