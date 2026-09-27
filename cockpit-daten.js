@@ -92,6 +92,7 @@ window.HOLZ_COCKPIT = {
       "ids": "A5 · A6",
       "goal": "Holzproben vergleichbar prüfen und Beobachtung von Eigenschaft trennen.",
       "input": "Drei Proben, gleich groß",
+      "input_path": "input-woche-3.html",
       "phenomenon": "Drei gleich große, trockene Holzproben herumgeben und wiegen lassen.",
       "question": "Warum haben gleich große Holzstücke unterschiedliche Massen?",
       "clarify": "Gleiches Volumen als Bedingung für den Vergleich festhalten. Masse und Härte werden mit unterschiedlichen Versuchen geprüft.",
@@ -511,6 +512,15 @@ window.HOLZ_COCKPIT = {
       "status": "Vorhanden",
       "desc": "15-Minuten-Impuls mit Phänomen, Leitfrage und Übergang. Im Cockpit lesbar und druckbar.",
       "path": "#woche-3"
+    },
+    {
+      "id": "I3-PRAES",
+      "title": "Input Woche 3 · HTML-Präsentation",
+      "week": 3,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Bildgeführter Input zu Holzeigenschaften, Möbelnutzung und dem Beruf Holztechniker/in. Mit Möbel-Challenge und Lehrkrafthinweisen.",
+      "path": "input-woche-3.html"
     },
     {
       "id": "I4",
