@@ -298,6 +298,24 @@ window.HOLZ_COCKPIT = {
       "path": "schnittplan.html"
     },
     {
+      "id": "CHECK12",
+      "title": "Holz-Check · Wochen 1–2",
+      "week": 2,
+      "kind": "Digital",
+      "status": "Vorhanden",
+      "desc": "Nach A4: zwölf materialgestützte Aufgaben, direktes Feedback, bis zu zwei Papierübungen und neue Prüfaufgaben. Ohne Note, nur lokale Speicherung.",
+      "path": "zwischencheck.html"
+    },
+    {
+      "id": "RASTER12",
+      "title": "Kompetenzraster · Wochen 1–2",
+      "week": 2,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Drei Niveaustufen für A1–A4, Begründungskompetenz, Erwartungshorizont und Hinweise zur Lernberatung (Markdown).",
+      "path": "materialien/kompetenzraster-woche-1-2.md"
+    },
+    {
       "id": "APP5",
       "title": "Prüflabor",
       "week": 3,
