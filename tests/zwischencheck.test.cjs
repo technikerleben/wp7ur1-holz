@@ -9,4 +9,5 @@ t.click({practice:'0'});t.click({test:'0'});const q=D.retests[0];q.fields.forEac
 t=setup();t.click({action:'start'});t.click({action:'hint'});D.questions[0].fields.forEach((f,i)=>t.choose(i,f.correct));t.submit();assert.equal(t.state().answers.s1.first.help,true);t=setup(t.memory.holz_zwischencheck_v1);assert.match(t.nodes.app.innerHTML,/Mit Tipp gelungen/);
 t.click({action:'next'});t.click({action:'unknown'});t.click({action:'retry'});D.questions[1].fields.forEach((f,i)=>t.choose(i,f.correct));t.submit();assert.equal(t.state().answers.s2.first.ok,false);assert.equal(t.state().answers.s2.corrected.ok,true);
 t=setup('{invalid');assert.equal(t.state().mode,'intro');
-console.log('PASS: 12 items, keys, required inputs, unknowns, two recommendations, paper gate, retest separation, hints, reload, corrections, invalid storage.');
+t=setup();t.click({action:'start'});t.click({action:'unknown'});t.click({action:'next'});t.choose(0,0);t.choose(1,2);t.submit();const partial=t.state();partial.mode='results';t=setup(JSON.stringify(partial));assert.match(t.nodes.app.innerHTML,/0 von 8 Begründungen/);
+console.log('PASS: 12 items, keys, required inputs, unknowns, two recommendations, paper gate, retest separation, hints, reload, corrections, invalid storage, reason requires matching factual answer.');

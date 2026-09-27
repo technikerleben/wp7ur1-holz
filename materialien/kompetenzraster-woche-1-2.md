@@ -1,8 +1,8 @@
 # Kompetenzraster · Vom Baum zum Brett · Wochen 1–2
 
-Dieses Raster bezieht sich ausschließlich auf A1–A4. Es dient der Lernberatung, nicht der Benotung. Leistungsstandard bezeichnet hier den Expertenstandard. Die Stufen beschreiben zunehmend anspruchsvolle Anwendungen mit vorliegendem Material.
+Dieses Raster bezieht sich ausschließlich auf A1–A4. Es dient der Lernberatung, nicht der Benotung. Die Stufen beschreiben zunehmend anspruchsvolle Anwendungen mit vorliegendem Material.
 
-| Ich kann … | Mindeststandard | Regelstandard | Leistungsstandard / Expertenstandard |
+| Ich kann … | Mindeststandard | Regelstandard | Expertenstandard |
 |---|---|---|---|
 | A1: den Stammaufbau untersuchen | Ich ordne mit einem Wortspeicher Begriffe den Bereichen einer Stammdarstellung zu. | Ich verbinde einen Stammbereich mit seiner Aufgabe und erkläre damit das Dickenwachstum. | Ich leite aus einer beschriebenen Beschädigung und einer Funktionsbeschreibung eine mögliche Folge ab. |
 | A2: Jahresringe auswerten | Ich lese die Zahl der Wachstumsjahre an einer Modell-Baumscheibe ab und vergleiche Ringbreiten. | Ich beschreibe Unterschiede im Dickenwachstum und trenne Beobachtung von vermuteter Ursache. | Ich erkenne die Grenzen einer Aussage über Ursachen und benenne zusätzliche Informationen, die ich dafür brauche. |
@@ -16,7 +16,7 @@ Zeitpunkt: nach A4, vor dem Prüflabor. Etwa 25–30 Minuten für zwölf Aufgabe
 
 Vier Fälle mit je einer Aufgabe pro Stufe: Stammaufbau, Jahresringe, Produktionskette, Schnittplan. Alle notwendigen Informationen stehen im Material. Begründungen werden über passende Satzteile und Belege geprüft, nicht über freie Texte oder Stichwortsuche.
 
-Die fünfte Kompetenz wird quer zu den vier Fällen betrachtet. Der digitale Check zeigt dabei nur, ob passende Begründungen erkannt werden. Eigenständiges Beschreiben und Erklären wird zusätzlich auf U.1 sichtbar: „Ich sehe im Material …“ / „Daraus schließe ich …, weil …“. Partner oder Lehrkraft prüfen: Ist die Beobachtung richtig? Passt der Beleg? Geht die Schlussfolgerung nicht über das Material hinaus?
+Die fünfte Kompetenz wird quer zu den vier Fällen betrachtet. Der digitale Check zeigt dabei nur, ob passende Begründungen erkannt werden. Eine Begründung zählt in der Übersicht nur, wenn auch die zugehörige Sachantwort richtig ist. Frühere Rückmeldungen können spätere Antworten unterstützen; der Check ist daher eine Lerngelegenheit und keine unabhängige Testmessung. Eigenständiges Beschreiben und Erklären wird zusätzlich auf U.1 sichtbar: „Ich sehe im Material …“ / „Daraus schließe ich …, weil …“. Partner oder Lehrkraft prüfen: Ist die Beobachtung richtig? Passt der Beleg? Geht die Schlussfolgerung nicht über das Material hinaus?
 
 ## Rückmeldung und Übungsplanung
 
@@ -24,7 +24,7 @@ Die fünfte Kompetenz wird quer zu den vier Fällen betrachtet. Der digitale Che
 - Erster Versuch bleibt erhalten. Hinweise, Verbesserungen nach Feedback und neue Prüfaufgaben werden getrennt ausgewiesen.
 - Keine Note und keine pauschale Kompetenzstufe aus einer Gesamtpunktzahl. Die Übersicht zeigt pro Bereich und Aufgabenstufe, was selbstständig, mit Tipp oder erst nach Feedback gelang.
 - Höchstens zwei Übungsempfehlungen. Vorrang haben Bereiche mit offenen Grundlagen. Bei Gleichstand gilt die Reihenfolge A1–A4.
-- Ergebnisse der Übungen auf U.1, mit Bezug auf das passende Arbeitsblatt. Erst nach bestätigter Papierübung folgt eine neue Aufgabe mit verändertem Material.
+- Ergebnisse der hier empfohlenen Übungen im freien Schreibbereich von U.1 oder auf einem leeren Blatt, mit Bezug auf das passende Arbeitsblatt. Erst nach bestätigter Papierübung folgt eine neue Aufgabe mit verändertem Material.
 - Ein einzelner erfolgreicher Versuch ist ein Lernhinweis, noch kein belastbarer Nachweis einer dauerhaft erworbenen Kompetenz.
 
 ## Erwartete Kerngedanken
