@@ -172,22 +172,22 @@ window.HOLZ_KURS = {
         },
         {
           "kind": "ipad",
-          "text": "Untersuche Farbe und Maserung. Schreibe die Beobachtungen direkt in A5.1.",
+          "text": "Sieh dir im Prüflabor den Film zum Aussehen an. Untersuche dann deine echten Proben und notiere Farbe und Maserung auf A5.1.",
           "url": "pruefstation.html?station=aussehen"
         },
         {
           "kind": "ipad",
-          "text": "Wiege die Proben. Notiere die Masse in Gramm in A5.1.",
+          "text": "Sieh dir den Film zum Wiegen an. Wiege dann deine echten Proben und notiere ihre Masse in Gramm auf A5.1.",
           "url": "pruefstation.html?station=gewicht"
         },
         {
           "kind": "ipad",
-          "text": "Prüfe die Härte nach der Anleitung. Notiere die Spuren in A5.1.",
+          "text": "Sieh dir den Film zum Härtestest an. Prüfe dann deine echten Proben nach der Anleitung und notiere ihre Spuren auf A5.1.",
           "url": "pruefstation.html?station=haerte"
         },
         {
           "kind": "ipad",
-          "text": "Prüfe die Wasseraufnahme. Notiere deine Beobachtungen nach gleicher Wartezeit in A5.1.",
+          "text": "Sieh dir den Film zum Tropfenversuch an. Prüfe dann deine echten Proben und notiere die Beobachtungen nach 60 Sekunden auf A5.1.",
           "url": "pruefstation.html?station=wasser"
         },
         {
