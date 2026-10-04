@@ -75,3 +75,27 @@ navOverview.addEventListener('click',openOverview);
 navBack.addEventListener('click',navZurueck);
 document.getElementById('overview-close').addEventListener('click',()=>dialog.close());document.getElementById('task-list').addEventListener('click',e=>{if(e.target.closest('[data-check]')){location.href='zwischencheck.html?von=A4';return;}const id=e.target.closest('[data-task]')?.dataset.task;if(!id)return;state.introDone=true;state.task=id;move(0);history.replaceState(null,'','lernweg.html');dialog.close();});
 window.addEventListener('pageshow',()=>render());render();
+
+/* Hinweis zum offenen Start: lokales Systemdatum, einmal je Tab und Tag. */
+(() => {
+  const hint = document.getElementById('open-start-hint');
+  if (!hint) return;
+  const storagePrefix = 'hbg_holz_offener_start_';
+  let shownDate = '';
+  function showOpenStartHint() {
+    const now = new Date();
+    if (now.getFullYear() !== 2026 || now.getMonth() !== 9 || ![5, 7].includes(now.getDate())) return;
+    const day = '2026-10-' + String(now.getDate()).padStart(2, '0');
+    if (shownDate === day || document.querySelector('dialog[open]')) return;
+    try { if (sessionStorage.getItem(storagePrefix + day) === 'shown') return; } catch {}
+    hint.showModal();
+    shownDate = day;
+    try { sessionStorage.setItem(storagePrefix + day, 'shown'); } catch {}
+  }
+  document.getElementById('open-start-dismiss').addEventListener('click', () => hint.close());
+  window.addEventListener('pageshow', showOpenStartHint);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) showOpenStartHint();
+  });
+  showOpenStartHint();
+})();
