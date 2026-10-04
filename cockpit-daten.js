@@ -261,6 +261,7 @@ window.HOLZ_COCKPIT = {
     }
   ],
   "resources": [
+    {"id":"MOEBELBAU","title":"Möbelbau · 20 Projektangebote","week":0,"kind":"Lehrkraft","status":"Vorhanden","desc":"Anschlussreihe: Projektideen mit Vorschauskizzen, Anspruchsstufen, Materialkosten, Vorbereitung und Quellenlinks.","path":"moebelbau/"},
     {
       "id": "NAV",
       "title": "Lernweg",
@@ -749,3 +750,4 @@ window.HOLZ_COCKPIT = {
     }
   ]
 };
+
