@@ -4,7 +4,7 @@ Die Visualisierung wird in `pruefstation.html` oberhalb der erhaltenen Stationsa
 
 Alle Modelle sind 200 × 50 × 18 mm. Die Holzart „Akazie“ ist die vom Kurs verwendete Probenbezeichnung. Farben, Massen, Druckspuren und Tropfenverhalten sind ausdrücklich illustrative Beispieldaten; sie sind keine Messwerte der Unterrichtsproben oder allgemeingültige Holzartkennwerte. Der Tropfenversuch zeigt 60 Sekunden im gekennzeichneten Zeitraffer. Gleich große Tropfen werden gleichzeitig aufgesetzt. Die Druckprüfung stellt gleiche Belastung dar und keinen genormten Härtemessversuch.
 
-Der Film enthält keine Audiospur, startet nicht automatisch und pausiert beim Wechsel in einen anderen Browsertab sowie bei Berührung der 3D-Ansicht. Bei fehlendem WebGL bleiben die vollständigen Stationsanleitungen zugänglich. JavaScript ist für die bisherige Aufgabenführung erforderlich.
+Der Film enthält keine Audiospur, startet nicht automatisch und pausiert beim Wechsel in einen anderen Browsertab sowie bei Berührung der 3D-Ansicht. Bei fehlendem WebGL spielt Three.js dieselbe Szene mit SVGRenderer ab; Textschilder werden dabei als HTML über der Szene gesetzt. Die vollständigen Stationsanleitungen bleiben zugänglich. JavaScript ist für die bisherige Aufgabenführung erforderlich.
 
 ## Bearbeiten und bauen
 

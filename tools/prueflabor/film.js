@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {SVGRenderer} from 'three/examples/jsm/renderers/SVGRenderer.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const $=id=>document.getElementById(id);
@@ -12,7 +13,7 @@ const chapters=[
 const woods=[{name:'Fichte',color:'#dab67a',dark:'#a17e49',mass:65,spur:'deutliche Spur',water:'teilweise eingezogen'}, {name:'Buche',color:'#b98765',dark:'#885636',mass:125,spur:'leichte Spur',water:'Tropfen steht'}, {name:'Akazie',color:'#83613a',dark:'#4d3219',mass:135,spur:'leichte Spur',water:'teilweise eingezogen'}];
 const initial=keys.indexOf(new URLSearchParams(location.search).get('station'));
 let chapter=initial<0?0:initial, elapsed=0, playing=false, last=0, lastUI=0, failed=false, renderer, scene, camera, controls;
-const duration=48, meshes=[], homes=[-255,0,255], rows=[];let scale,coin,drops=[],pipettes=[],marks=[],ruler;
+const duration=48, meshes=[], homes=[-255,0,255], rows=[];let scale,coin,drops=[],pipettes=[],marks=[],ruler;let svgMode=false;const screenLabels=[];
 const smooth=t=>{t=THREE.MathUtils.clamp(t,0,1);return t*t*(3-2*t);};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -31,17 +32,17 @@ function label(text,width=210,bg='#fffaf0',fg='#392c1d'){
 function setup(){
  const host=$('film-world');scene=new THREE.Scene();scene.background=new THREE.Color('#ece7dc');scene.fog=new THREE.Fog('#ece7dc',1150,2100);
  camera=new THREE.PerspectiveCamera(36,1,1,3000);camera.position.set(650,650,880);
- renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-label','Animierte Werkbank mit drei beschrifteten Holzproben');renderer.domElement.setAttribute('role','img');
+ try{renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;}catch(error){svgMode=true;renderer=new SVGRenderer();renderer.setQuality('low');}host.prepend(renderer.domElement);renderer.domElement.setAttribute('aria-label','Animierte Werkbank mit drei beschrifteten Holzproben');renderer.domElement.setAttribute('role','img');
  controls=new OrbitControls(camera,renderer.domElement);controls.target.set(0,30,0);controls.enableDamping=true;controls.enablePan=false;controls.minDistance=260;controls.maxDistance=1500;controls.maxPolarAngle=Math.PI*.48;
  controls.addEventListener('start',()=>{if(playing){playing=false;updateUI();}});
  scene.add(new THREE.HemisphereLight('#fff8e8','#645944',2.7));const sun=new THREE.DirectionalLight('#ffffff',3);sun.position.set(0,850,500);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-650;sun.shadow.camera.right=650;sun.shadow.camera.top=650;sun.shadow.camera.bottom=-650;scene.add(sun);
  const bench=box(1000,28,470,'#c8b39a');bench.position.y=-24;bench.receiveShadow=true;scene.add(bench);const edge=box(1000,44,20,'#9c8164');edge.position.set(0,-40,225);scene.add(edge);
  for(let i=0;i<3;i++){
   const w=woods[i],g=new THREE.Group(),side=new THREE.MeshStandardMaterial({map:woodTexture(w),roughness:.8}),end=new THREE.MeshStandardMaterial({map:woodTexture(w,true),roughness:.8});
-  const sample=new THREE.Mesh(new THREE.BoxGeometry(200,18,50),[end,end,side,side,side,side]);sample.castShadow=true;sample.receiveShadow=true;g.add(sample);g.position.set(homes[i],0,45);scene.add(g);meshes.push(g);
-  const name=label(w.name,190);name.position.set(homes[i],0,125);scene.add(name);
+  const sample=new THREE.Mesh(new THREE.BoxGeometry(200,18,50),[end,end,side,side,side,side]);sample.castShadow=true;sample.receiveShadow=true;if(svgMode){side.color.set(w.color);end.color.set(w.color);}g.add(sample);if(svgMode){for(let k=0;k<7;k++){const points=[];for(let x=-98;x<=98;x+=7)points.push(new THREE.Vector3(x,9.3,-22+k*7+Math.sin(x/37+k)*1.2));const grain=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:w.dark,transparent:true,opacity:.45}));g.add(grain);}}g.position.set(homes[i],0,45);scene.add(g);meshes.push(g);
+  const name=label(w.name,190);name.position.set(homes[i],0,125);scene.add(name);if(svgMode){name.visible=false;const tag=document.createElement('span');tag.className='film-3d-label';tag.textContent=w.name;host.append(tag);screenLabels.push({sprite:name,tag});}
   const mark=new THREE.Mesh(new THREE.CircleGeometry(7,24),new THREE.MeshStandardMaterial({color:'#4d3421',transparent:true,opacity:.7}));mark.rotation.x=-Math.PI/2;mark.position.set(0,9.2,0);g.add(mark);marks.push(mark);
-  const drop=new THREE.Mesh(new THREE.SphereGeometry(8,24,16),new THREE.MeshPhysicalMaterial({color:'#3488cc',transparent:true,opacity:.82,roughness:.1,metalness:.1}));g.add(drop);drops.push(drop);
+  const drop=new THREE.Mesh(new THREE.SphereGeometry(8,24,16),new THREE.MeshStandardMaterial({color:'#3488cc',transparent:true,opacity:.82,roughness:.1}));g.add(drop);drops.push(drop);
   const pip=new THREE.Group();const tube=new THREE.Mesh(new THREE.CylinderGeometry(4,4,62,16),new THREE.MeshStandardMaterial({color:'#e1edf4',transparent:true,opacity:.8}));const bulb=new THREE.Mesh(new THREE.SphereGeometry(9,16,12),new THREE.MeshStandardMaterial({color:'#367aaf'}));bulb.position.y=37;pip.add(tube,bulb);pip.position.set(homes[i],100,45);scene.add(pip);pipettes.push(pip);
  }
  scale=new THREE.Group();const foot=box(235,22,145,'#7d8d92');const tray=box(220,7,100,'#e4e8e5');tray.position.y=17;scale.add(foot,tray);scale.position.set(0,0,-105);scene.add(scale);
@@ -49,7 +50,7 @@ function setup(){
  ruler=new THREE.Group();const rb=box(210,1,12,'#e7d09a');ruler.add(rb);for(let j=0;j<=20;j++){const tick=box(.7,.7,j%5===0?9:5,'#3e3425');tick.position.set(-100+j*10,1,0);ruler.add(tick);}ruler.position.set(0,13,90);scene.add(ruler);
  new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();}).observe(host);
  renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();fallback('Die 3D-Ansicht wurde unterbrochen. Du kannst die Prüfschritte weiterhin lesen. Lade die Seite für den Film neu.');});
- renderer.setAnimationLoop(frame);
+ if(svgMode){const loop=ms=>{frame(ms);requestAnimationFrame(loop);};requestAnimationFrame(loop);}else renderer.setAnimationLoop(frame);
 }
 function pose(){
  const t=elapsed, index=Math.min(2,Math.floor(t/14)),local=t-index*14;
@@ -83,10 +84,10 @@ function updateUI(){
  const labels=chapter===0?['Aussehen','Maserung','Vergleich']:chapter===1?['Holzart','Masse','Stand']:chapter===2?['Holzart','Druckspur','Stand']:['Holzart','Nach 60 Sekunden','Stand'];
  $('film-table-head').innerHTML=labels.map(x=>'<th scope="col">'+x+'</th>').join('');
  $('film-results').innerHTML=woods.map((w,i)=>{const ready=chapter===0?elapsed>=(i+1)*12:chapter===1?elapsed>=i*14+8:chapter===2?elapsed>=i*14+10:elapsed>=44;const value=chapter===0?['hell · deutliche Linien','rötlich · feine Linien','braun · deutliche Linien'][i]:chapter===1?w.mass+' g':chapter===2?w.spur:w.water;return '<tr><th scope="row">'+w.name+'</th><td>'+ (ready?value:'—')+'</td><td>'+ (ready?'Beispiel':'noch offen')+'</td></tr>';}).join('');
- if(scale){const ix=Math.min(2,Math.floor(elapsed/14)),lt=elapsed-ix*14;const text=chapter===1&&elapsed<42&&lt>=4&&lt<10?woods[ix].mass+' g':'0 g';if(scale.userData.displayText===text)return;scale.userData.displayText=text;const old=scale.getObjectByName('display');if(old){scale.remove(old);old.material.map.dispose();old.material.dispose();}const screen=label(text,105,'#162b2a','#c9f2d0');screen.name='display';screen.position.set(0,8,85);scale.add(screen);}
+ if(scale){const ix=Math.min(2,Math.floor(elapsed/14)),lt=elapsed-ix*14;const text=chapter===1&&elapsed<42&&lt>=4&&lt<10?woods[ix].mass+' g':'0 g';if(scale.userData.displayText===text)return;scale.userData.displayText=text;const old=scale.getObjectByName('display');if(old){scale.remove(old);old.material.map.dispose();old.material.dispose();}const screen=label(text,105,'#162b2a','#c9f2d0');screen.name='display';screen.position.set(0,8,85);scale.add(screen);if(svgMode){screen.visible=false;let reading=scale.userData.reading;if(!reading){const tag=document.createElement('span');tag.className='film-3d-label film-scale-reading';$('film-world').append(tag);reading={sprite:screen,tag};screenLabels.push(reading);scale.userData.reading=reading;}reading.sprite=screen;reading.tag.textContent=text;}}
 }
 function select(n){chapter=n;elapsed=0;playing=false;updateUI();if(!failed)pose();document.dispatchEvent(new CustomEvent('prueflabor:chapter',{detail:keys[n]}));}
-function frame(ms){const dt=last?Math.min((ms-last)/1000,.12):0;last=ms;if(playing){elapsed=Math.min(duration,elapsed+dt);if(elapsed>=duration){playing=false;updateUI();$('film-paper').focus({preventScroll:true});}if(ms-lastUI>200||!playing){updateUI();lastUI=ms;}}pose();renderer.render(scene,camera);}
+function frame(ms){const dt=last?Math.min((ms-last)/1000,.12):0;last=ms;if(playing){elapsed=Math.min(duration,elapsed+dt);if(elapsed>=duration){playing=false;updateUI();$('film-paper').focus({preventScroll:true});}if(ms-lastUI>200||!playing){updateUI();lastUI=ms;}}pose();renderer.render(scene,camera);if(svgMode){const host=$('film-world');screenLabels.forEach(({sprite,tag})=>{tag.hidden=sprite.name==='display'&&chapter!==1;const p=new THREE.Vector3();sprite.getWorldPosition(p);p.project(camera);tag.style.left=((p.x+1)/2*host.clientWidth)+'px';tag.style.top=((-p.y+1)/2*host.clientHeight)+'px';});}}
 function fallback(message){failed=true;playing=false;$('film-error').hidden=false;$('film-error').textContent=message;$('film-play').disabled=true;$('film-repeat').disabled=true;$('film-progress').disabled=true;$('film-show-steps').hidden=false;}
 $('film-chapters').innerHTML=chapters.map((c,i)=>'<button type="button" data-chapter="'+i+'" class="film-chip">'+c.icon+' '+(i+1)+' '+c.title+'</button>').join('');
 $('film-chapters').addEventListener('click',e=>{const b=e.target.closest('[data-chapter]');if(b)select(Number(b.dataset.chapter));});
@@ -100,4 +101,4 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing){p
 try{setup();}catch(error){console.error('Prüflabor-Film:',error);fallback('Dein Browser kann die 3D-Ansicht gerade nicht anzeigen. Nutze die vollständigen Stationsanleitungen darunter.');}
 updateUI();if(!failed)pose();
 // State exposed read-only for diagnostics and regression verification.
-Object.defineProperty(window,'prueflaborFilm',{get:()=>({chapter,elapsed,playing,duration,failed,dimensions:[200,50,18]})});
+Object.defineProperty(window,'prueflaborFilm',{get:()=>({chapter,elapsed,playing,duration,failed,svgMode,dimensions:[200,50,18]})});
