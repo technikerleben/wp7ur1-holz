@@ -2,7 +2,7 @@
 
 Anschluss an „Vom Baum zum Brett“ · Planungsstand: 04.10.2026
 
-Dieser Katalog stellt **20 Projektangebote** nach steigendem Anspruch vor. Er dient zunächst der Auswahl durch die Lehrkraft. Die kurzen Projektaufträge können anschließend für die Lernenden genutzt werden. Die Nummern P01–P20 sind neue Katalognummern; die Zuordnung zur ursprünglichen Ideensammlung steht am Ende.
+Dieser Katalog stellt **21 Projektangebote** nach steigendem Anspruch vor. Er dient zunächst der Auswahl durch die Lehrkraft. Die kurzen Projektaufträge können anschließend für die Lernenden genutzt werden. Die Nummern P01–P21 sind neue Katalognummern; die Zuordnung zur ursprünglichen Ideensammlung steht am Ende.
 
 **Leitfrage:** Wie kannst du aus Holz etwas bauen, das einen konkreten Bedarf erfüllt?
 
@@ -43,6 +43,7 @@ Innerhalb einer Stufe stehen die in der Regel leichter zugänglichen Angebote zu
 | P02 | iPad-, Kopfhörer- und Stifteablage | 1 | einzeln / zu zweit | 8–18 € | eine Station, ca. 30 cm breit |
 | P03 | Werkzeughalter für einen Arbeitsplatz | 1 | zu zweit | 8–18 € | ein Modul für 4–6 Werkzeuge |
 | P04 | Kleine offene Aufbewahrungskiste | 1 | zu zweit | 12–25 € | eine Kiste, ca. 30 × 20 × 15 cm |
+| P21 | Möbelmodelle aus Eisstielen | 1 | einzeln / zu zweit | 3–6 € | ein einfaches Modell; Gruppe 8–15 € |
 | P05 | Designerstuhl im Modell | 2 | einzeln / zu zweit | 5–12 € | ein Modell im Maßstab 1:5 |
 | P06 | Tisch und Sitzmöbel im Modell | 2 | zu zweit | 10–22 € | ein Tisch mit zwei Sitzmöbeln, 1:5 |
 | P07 | Materialcaddy mit Griff | 2 | zu zweit | 15–30 € | ein Caddy, ca. 30 × 20 × 20 cm |
@@ -105,6 +106,23 @@ Innerhalb einer Stufe stehen die in der Regel leichter zugänglichen Angebote zu
 - **Lehrkraftvorbereitung:** Einkauf passender Brettbreite; ggf. Bodenrohling einmal grob abtrennen.
 - **Prüfung:** Inhalt passt, Boden trägt die geplante Füllung, Kiste lässt sich sicher greifen.
 - **Quelle:** [Bosch: Holzkiste bauen](https://www.bosch-diy.com/de/de/all-about-diy/holzkiste-bauen). **Adaption:** Einfache offene Bauform mit stumpfen Verbindungen.
+
+### P21 · Möbelmodelle aus Eisstielen
+
+![Stühle und Tisch aus Eisstielen](bilder/eisstiel-moebel.jpg)
+
+**Dein Projekt:** Plane und baue ein Möbelmodell aus Eisstielen. Wähle einen Stuhl, einen kleinen Tisch oder eine Bank. Nutze das Bild als Anregung und entwickle eine eigene Variante.
+
+- **Anspruch:** Stufe 1 für einen fest verleimten Tisch oder eine einfache Bank; Stufe 2 für einen Stuhl mit Rücken- und Armlehnen oder eine passende Möbelgruppe. Ein beweglicher Klappmechanismus ist eine freiwillige Herausforderung auf Stufe 3.
+- **Material/Kostenbasis:** Etwa 30–50 naturbelassene Holz-Eisstiele pro einfachem Modell, Holzleim, Schleifpapier und optional etwas Farbe; **3–6 € pro Modell**, bei anteiligem Verbrauch aus Sammelpackungen. Für einen Tisch mit zwei Stühlen ungefähr 100–150 Stiele und **8–15 € pro Möbelgruppe** einplanen. Planungswerte einschließlich kleiner Materialreserve, ohne Versand und Werkzeug.
+- **Preisorientierung:** [100 Holz-Eisstiele, 114 × 10 mm](https://cake-outlet.de/Eis-Stiele-Sticks-100-Stueck-114-x10-mm) wurden bei der Recherche am 04.10.2026 mit 3,89 € angeboten. Vor Bestellung aktuellen Preis prüfen.
+- **Schulvariante:** Lege ganze Stiele nebeneinander und verbinde sie auf der Unterseite mit zwei Querleisten aus Stielen. So entstehen Sitzfläche, Tischplatte oder Rückenlehne. Fertige zwei gleiche Seitenteile und verbinde sie mit der Fläche. Verleime Kreuzbeine zunächst fest; das Modell muss nicht klappbar sein.
+- **Eigenarbeit:** Zeichne deinen Entwurf, zähle die benötigten Stiele und prüfe ihre Anordnung zunächst ohne Leim. Nutze eine einfache Pappschablone für gleiche Beine und Seitenteile. Verleime in Baugruppen, fixiere mit Klammern und lasse den Leim nach Herstellerangabe trocknen. Verbinde anschließend die Baugruppen und schleife scharfe Kanten.
+- **Werkzeuge:** Lineal, Bleistift, Schleifpapier, kleine Klammern und ggf. eine feine Handsäge mit Spannhilfe. Ganze Eisstiele bevorzugen; kleine Teile nicht frei an Sägemaschinen führen. Für die Grundvariante sind keine Sägemaschinen nötig.
+- **Lehrkraftvorbereitung:** Einheitliche Stiele und Leim bereitstellen, geeignete Spannhilfen zeigen und Trockenplätze organisieren. Keine Vorbereitungsschnitte mit Kreissägen nötig.
+- **Planung:** Lege zuerst eine passende Modellfigur oder eine gemeinsame Modellgröße fest. Bei einem ausdrücklich maßstäblichen Modell rechne die Möbelmaße um; die Länge eines Eisstiels gibt nicht automatisch einen Maßstab vor.
+- **Prüfung:** Steht dein Modell ohne Wackeln? Sind beide Seitenteile gleich? Halten die Leimflächen nach dem Trocknen? Passen Tisch- und Sitzhöhe zusammen? Erkläre, wie Querleisten und Diagonalen die Form stabilisieren. Das Ergebnis ist ein Modell, kein Sitzmöbel für Menschen.
+- **Bildvorlage:** [Mitgebrachtes Beispielbild in voller Größe](bilder/eisstiel-moebel.jpg) – zeigt Stühle und einen Tisch aus Eisstielen mit Konstruktionsdetails. Vom Nutzer bereitgestellt; ursprüngliche Bildquelle nicht bekannt. Es ist eine Anregung, kein vollständiger geprüfter Bauplan.
 
 ## Stufe 2 – planen, anpassen und maßhaltig montieren
 
