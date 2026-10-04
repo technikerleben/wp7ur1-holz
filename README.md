@@ -33,10 +33,12 @@ Die Apps behalten Zuordnungs- und Simulationszustände. Schriftliche Leistungen 
 
 ## Prüfungspaket
 
-Auf ausdrücklichen Wunsch vorläufig im öffentlichen Lehrkraftbereich: `lehrkraft-material/pruefung/`. Lernerfolgskontrolle (4 Seiten, 30 Minuten Open Book; gedrucktes Mappenmaterial erlaubt, kein iPad) und Erwartungshorizont mit 30 Punkten und Belegen zu den drei Kompetenzstandards, jeweils PDF und DOCX. Das ZIP enthält das komplette Paket. Vor Reihenbeginn in das geschützte Dateisystem übertragen; Anleitung im Paket beachten. Die Dokumente sind nicht im Lernnavigator oder in der Schülermappe verlinkt. Frühere Git-Versionen und Deployments können weiterhin erreichbar bleiben.
+Auf ausdrücklichen Wunsch vorläufig im öffentlichen Lehrkraftbereich: `lehrkraft-material/pruefung/`. Lernerfolgskontrolle (4 Seiten, 30 Minuten Open Book; gedrucktes Mappenmaterial erlaubt, kein iPad) und Erwartungshorizont mit 28 Pflichtpunkten und 4 freiwilligen Bonuspunkten und Belegen zu den drei Kompetenzstandards, jeweils PDF und DOCX. Das ZIP enthält das komplette Paket. Vor Reihenbeginn in das geschützte Dateisystem übertragen; Anleitung im Paket beachten. Die Dokumente sind nicht im Lernnavigator oder in der Schülermappe verlinkt. Frühere Git-Versionen und Deployments können weiterhin erreichbar bleiben.
 
 Fachliche Hintergrundquellen: [GD Holz: Quellen und Schwinden](https://holzvomfach.de/fachwissen-holz/wissenswertes/holzwissen/quellen-und-schwinden/), [GD Holz: Holzfeuchte](https://holzvomfach.de/fachwissen-holz/glossar/holzfeuchte-gl/) und [Waldwissen: Jahrringanalyse](https://www.waldwissen.net/de/waldwirtschaft/schadensmanagement/jahrringanalyse). Die Unterrichtsmodelle vereinfachen; Ringbreite allein belegt keine eindeutige Wachstumsursache.
 
 ## Offener Anfang
 
 Zwölf doppelseitige Spielkarten mit drei wählbaren Stufen und passenden Lösungen: `materialien/offener-anfang/`. PDF, DOCX und sechs Wochenpakete. Im Cockpit unter „Offener Anfang“ stehen Ablauf und Druckhinweise. Fünf Minuten in jeder Stunde sind in den weiterhin 45/90 Minuten langen Wochenabläufen berücksichtigt.
+
+Die Probearbeit für HolzBot steht in `materialien/holzbot-probearbeit.md`: eigenständige Übungsvariante mit Aufgaben, Lösungen, Bewertung und verbindlichem Ablauf für den Chatbot.

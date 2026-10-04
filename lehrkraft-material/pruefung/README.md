@@ -1,6 +1,6 @@
 # Prüfungspaket Holz
 
-4 Seiten Lernerfolgskontrolle, 30 Minuten, 30 Punkte. Open Book: Das gedruckte Material der Mappe darf genutzt werden; iPad und andere digitale Geräte sind nicht erlaubt. 3 Seiten Erwartungshorizont einschließlich Kompetenzbelegen und individueller Rückmeldung. PDF zum Drucken; DOCX zum Bearbeiten.
+4 Seiten Lernerfolgskontrolle, 30 Minuten, 28 Pflichtpunkte zu A1 bis A8 und 4 freiwillige Bonuspunkte zu A9/A10. Open Book: Das gedruckte Material der Mappe darf genutzt werden; iPad und andere digitale Geräte sind nicht erlaubt. 3 Seiten Erwartungshorizont einschließlich Kompetenzbelegen und individueller Rückmeldung. PDF zum Drucken; DOCX zum Bearbeiten.
 
 Reihenfolgeaufgaben werden nur nummeriert. Kurze Erklärungen und Begründungen erfolgen in Lückensätzen. Jede Auswahlaufgabe nennt ausdrücklich Einfach- oder Mehrfachauswahl. Die Bewertung der Mehrfachauswahl ist im Schülerblatt und Erwartungshorizont beschrieben. Keine freie Langantwort. Nachschlagen, Bearbeiten und Prüfen sind in den 30 Minuten enthalten.
 
@@ -18,3 +18,6 @@ Der aktuelle Lehrkraftbereich ist nicht zugriffsgeschützt. Die Dateien sind aus
 ## Bearbeiten
 
 Die DOCX-Dateien können direkt bearbeitet werden. generate.py ist die reproduzierbare Quelle und enthält auch Lösungen; benötigt python-docx sowie den table_geometry-Helfer des Documents-Skills. Nach Änderungen DOCX rendern und alle Seiten visuell prüfen; PDF und ZIP anschließend aktualisieren.
+
+Die Probearbeit für HolzBot steht in `../../materialien/holzbot-probearbeit.md`: eigenständige Übungsvariante mit Aufgaben, Lösungen, Bewertung und verbindlichem Ablauf für den Chatbot.
+Das ZIP enthält zusätzlich die Datei `holzbot-probearbeit.md` zum Hochladen als Wissensbasis.

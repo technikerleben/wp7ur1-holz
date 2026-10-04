@@ -485,8 +485,17 @@ window.HOLZ_COCKPIT = {
       "week": 6,
       "kind": "Lehrkraft",
       "status": "Vorhanden",
-      "desc": "4 Seiten, 30 Minuten Open Book. Gedruckte Mappe erlaubt, kein iPad. Zahlenfolgen, Lückensätze und eindeutige Auswahlaufgaben. Vor Reihenbeginn geschützt ablegen.",
+      "desc": "4 Seiten, 30 Minuten Open Book. A1 bis A8 Pflicht; A9/A10 freiwilliger Bonus. Gedruckte Mappe erlaubt, kein iPad. Zahlenfolgen, Lückensätze und eindeutige Auswahlaufgaben. Vor Reihenbeginn geschützt ablegen.",
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
+    },
+    {
+      "id": "PROBEARBEIT-MD",
+      "title": "Probearbeit für HolzBot · Markdown",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Feste Übungsaufgaben A1 bis A8, freiwilliger Bonus A9/A10, Lösungen und KI-Anweisungen: eine Teilaufgabe pro Schritt, präzises Feedback und gestufte Hilfe.",
+      "path": "materialien/holzbot-probearbeit.md"
     },
     {
       "id": "EH",
@@ -494,7 +503,7 @@ window.HOLZ_COCKPIT = {
       "week": 6,
       "kind": "Lehrkraft",
       "status": "Vorhanden",
-      "desc": "Lösungen und Bewertung für die 30-Minuten-Fassung mit 30 Punkten; Kompetenzbelege und Rückmeldebogen.",
+      "desc": "Lösungen und Bewertung für die 30-Minuten-Fassung mit 28 Pflichtpunkten und 4 freiwilligen Bonuspunkten; Kompetenzbelege und Rückmeldebogen.",
       "path": "lehrkraft-material/pruefung/erwartungshorizont.pdf"
     },
     {
