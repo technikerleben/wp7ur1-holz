@@ -1,174 +1,176 @@
+"""Generate the four-page 30-minute open-book exam and its answer key.
+Run with the bundled Python; render the DOCX files with render_docx.py afterwards.
+"""
 from pathlib import Path
-import sys,json,math
 from docx import Document
-from docx.shared import Mm,Pt,RGBColor
-from docx.enum.table import WD_ROW_HEIGHT_RULE
+from docx.shared import Mm, Pt, RGBColor
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from PIL import Image,ImageDraw,ImageFont
-sys.path.insert(0,'/root/.codex/skills/builtins/documents/scripts')
+from docx.enum.table import WD_TABLE_ALIGNMENT, WD_CELL_VERTICAL_ALIGNMENT
+import sys
+sys.path.insert(0, '/root/.codex/skills/builtins/documents/scripts')
 from table_geometry import apply_table_geometry
-ROOT=Path(__file__).resolve().parents[2]; OUT=Path(__file__).resolve().parent
+OUT=Path(__file__).resolve().parent
 
-# Preset compact_reference_guide; named overrides worksheet_A4: 20mm margins,
-# Arial 12pt, monochrome headings, response lines 24pt, page-based worksheet IDs.
-D=Document();sec=D.sections[0];sec.page_width=Mm(210);sec.page_height=Mm(297)
-sec.top_margin=sec.bottom_margin=Mm(18);sec.left_margin=sec.right_margin=Mm(20);sec.header_distance=sec.footer_distance=Mm(9)
-for name,size,before,after in [('Normal',12,0,6),('Title',25,0,10),('Subtitle',13,0,8),('Heading 1',20,0,10),('Heading 2',13,14,7),('Heading 3',12,10,5)]:
- s=D.styles[name];s.font.name='Arial';s.font.size=Pt(size);s.font.color.rgb=RGBColor.from_string('000000');s.paragraph_format.space_before=Pt(before);s.paragraph_format.space_after=Pt(after);s.paragraph_format.line_spacing=1.25
-D.styles['Normal'].font.color.rgb=RGBColor.from_string('222222')
-for sty in D.styles:
- if sty.element.pPr is not None:
-  for border in list(sty.element.pPr.findall(qn('w:pBdr'))):sty.element.pPr.remove(border)
-for name in ['Header','Footer']:
- D.styles[name].font.name='Arial';D.styles[name].font.size=Pt(9)
-sec.header.paragraphs[0].text='HBG  |  WP Technik 7  |  Vom Baum zum Holz'
-f=sec.footer.paragraphs[0];f.text='WP Technik 7   Lernerfolgskontrolle                                         '
-fld=OxmlElement('w:fldSimple');fld.set(qn('w:instr'),'PAGE');f._p.append(fld)
+def document(teacher=False):
+ d=Document();s=d.sections[0];s.page_width=Mm(210);s.page_height=Mm(297)
+ s.top_margin=s.bottom_margin=Mm(17);s.left_margin=Mm(22);s.right_margin=Mm(18)
+ for name,size in [('Normal',11),('Title',21),('Heading 1',17),('Heading 2',14)]:
+  st=d.styles[name];st.font.name='DejaVu Sans';st.font.size=Pt(size);st.font.color.rgb=RGBColor(0,0,0)
+  st.paragraph_format.line_spacing=1.1;st.paragraph_format.space_after=Pt(5)
+  st.paragraph_format.space_before=Pt(0 if name=='Normal' else 8)
+  for b in list(st.element.findall('.//'+qn('w:pBdr'))):b.getparent().remove(b)
+ s.header.paragraphs[0].text='WP Technik 7  |  Vom Baum zum Holz'
+ f=s.footer.paragraphs[0];f.text=('Erwartungshorizont' if teacher else 'Lernerfolgskontrolle')+'  |  30 Minuten Open Book  |  Seite '
+ field=OxmlElement('w:fldSimple');field.set(qn('w:instr'),'PAGE');f._p.append(field)
+ for st in ['Header','Footer']:d.styles[st].font.size=Pt(8)
+ return d
 
-def p(t='',style=None):return D.add_paragraph(t,style)
-def h(t):return D.add_paragraph(t,'Heading 2')
-def page(id,title,goal=None):
- if len(D.paragraphs):D.add_page_break()
- D.add_heading(id+'  |  '+title,0)
- p('Name: ____________________________   Datum: ______________')
- if goal:p('Mein Ziel: '+goal)
-def lines(n=2):
- for _ in range(n):
-  z=p();z.paragraph_format.space_after=Pt(0);z.paragraph_format.line_spacing=1;z.paragraph_format.space_before=Pt(0)
-  z.paragraph_format.line_spacing=Pt(24)
-  pp=z._p.get_or_add_pPr();b=OxmlElement('w:pBdr');bot=OxmlElement('w:bottom');bot.set(qn('w:val'),'single');bot.set(qn('w:sz'),'3');bot.set(qn('w:color'),'AAAAAA');b.append(bot);between=OxmlElement('w:between');between.set(qn('w:val'),'single');between.set(qn('w:sz'),'3');between.set(qn('w:color'),'AAAAAA');b.append(between);pp.append(b)
-def box(label,height=55):
- h(label);z=p(' ');z.paragraph_format.line_spacing=Pt(height);z.paragraph_format.space_after=Pt(8)
- pp=z._p.get_or_add_pPr();b=OxmlElement('w:pBdr')
- for edge in ['top','left','bottom','right']:
-  a=OxmlElement('w:'+edge);a.set(qn('w:val'),'single');a.set(qn('w:sz'),'4');a.set(qn('w:color'),'999999');a.set(qn('w:space'),'6');b.append(a)
- pp.append(b)
-def table(headers,rows,widths=None,height=None):
- t=D.add_table(rows=1,cols=len(headers));t.style='Table Grid'
- for c,txt in zip(t.rows[0].cells,headers):c.text=txt
+def p(text='',bold=False):
+ x=D.add_paragraph();r=x.add_run(text);r.bold=bold;return x
+
+def h(text):D.add_heading(text,2)
+def table(head,rows,widths):
+ t=D.add_table(rows=1,cols=len(head));t.alignment=WD_TABLE_ALIGNMENT.CENTER
+ for c,txt in zip(t.rows[0].cells,head):c.text=txt
  for row in rows:
-  cells=t.add_row().cells
-  for c,txt in zip(cells,row):c.text=str(txt)
+  for c,txt in zip(t.add_row().cells,row):c.text=str(txt)
  for i,row in enumerate(t.rows):
+  row._tr.get_or_add_trPr().append(OxmlElement('w:cantSplit'))
   for c in row.cells:
-   for q in c.paragraphs:
-    q.paragraph_format.space_after=Pt(4);q.paragraph_format.space_before=Pt(4);q.paragraph_format.line_spacing=1.15
-    for r in q.runs:r.font.size=Pt(11);r.bold=(i==0)
-  if height and i>0:row.height=Mm(height);row.height_rule=WD_ROW_HEIGHT_RULE.AT_LEAST
-  pr=row._tr.get_or_add_trPr();pr.append(OxmlElement('w:cantSplit'))
- t.rows[0]._tr.get_or_add_trPr().append(OxmlElement('w:tblHeader'))
- total=round(170/25.4*1440)
- if not widths:widths=[total//len(headers)]*len(headers);widths[-1]+=total-sum(widths)
- else:
-  widths=[round(total*x/sum(widths)) for x in widths];widths[-1]+=total-sum(widths)
- apply_table_geometry(t,widths,indent_dxa=120)
- if height:
-  for row in t.rows[1:]:row.height=Mm(height);row.height_rule=WD_ROW_HEIGHT_RULE.AT_LEAST
+   c.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.CENTER
+   pr=c._tc.get_or_add_tcPr();border=OxmlElement('w:tcBorders')
+   for edge in ['top','left','bottom','right']:
+    e=OxmlElement('w:'+edge);e.set(qn('w:val'),'single');e.set(qn('w:sz'),'5');e.set(qn('w:color'),'D9D9D9');border.append(e)
+   pr.append(border)
+   if i==0:
+    shade=OxmlElement('w:shd');shade.set(qn('w:fill'),'EEEEEE');pr.append(shade)
+   for z in c.paragraphs:
+    z.paragraph_format.space_before=z.paragraph_format.space_after=Pt(3)
+    for r in z.runs:r.font.size=Pt(10.5);r.bold=i==0
+ apply_table_geometry(t,[round(x*56.692913) for x in widths],indent_dxa=0)
  return t
 
-def check(text):p('KONTROLLE: '+text)
-# Exact schematic figures, drawn locally for print.
-font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',26)
-im=Image.new('RGB',(1000,420),'white');dr=ImageDraw.Draw(im);r=7
-for n in range(1,13):
- prev=r;r+=7 if n==8 else 14
- dr.ellipse((230-r,205-r,230+r,205+r),outline='black',width=2)
- if n==8:
-  dr.line((230+r,205,510,205),fill='black',width=2);dr.text((525,185),'Ring 8',fill='black',font=font)
-dr.ellipse((227,202,233,208),fill='black');dr.text((520,245),'Modell einer Baumscheibe',fill='black',font=font)
-im.save(OUT/'ringe.png')
-im=Image.new('RGB',(1350,340),'white');dr=ImageDraw.Draw(im)
-for x,label in [(15,'Bild A'),(460,'Bild B'),(905,'Bild C')]:dr.text((x+130,285),label,fill='black',font=font)
-dr.rectangle((20,40,420,240),outline='black',width=3)
-for y in [85,125,165,205]:dr.line((25,y,410,y+5),fill='#999',width=2)
-dr.line([(205,40),(180,85),(210,120),(175,165),(190,205)],fill='black',width=7)
-dr.rectangle((465,40,865,240),outline='black',width=3)
-for ry in [22,38,55]:dr.ellipse((665-ry,140-ry,665+ry,140+ry),outline='black',width=3)
-for y in [70,210]:dr.line((475,y,855,y),fill='#999',width=2)
-# Bowed board in side view, next to a straight reference surface.
-dr.arc((915,-30,1325,210),0,180,fill='black',width=4);dr.arc((915,5,1325,245),0,180,fill='black',width=4)
-dr.line((915,90,915,125),fill='black',width=4);dr.line((1325,90,1325,125),fill='black',width=4);dr.line((915,255,1325,255),fill='#999',width=2)
-im.save(OUT/'fehler.png')
-# Seven task pages with space for handwriting.
-D.add_heading('Lernerfolgskontrolle Holz',0);p('Name: _________________________  Klasse: ______  Datum: __________')
-p('Du hast 60 Minuten. Arbeite allein auf diesen sieben Seiten. Mappe und iPad bleiben geschlossen. Nutze die Materialien auf dem Blatt. Kurze Sätze reichen. Prüfe deine Antworten am Ende.')
-p('Bearbeite in jedem Block zuerst a, dann b und c. Wenn du festhängst, beginne den nächsten Block. Zeige bei c, wie du dein Wissen weiterdenken kannst.')
-h('1  Was steckt im Stamm');p('1a Erkennen: Beschrifte die sechs Bereiche mit den Wörtern aus dem Kasten.')
-D.add_picture(str(OUT/'stamm.png'),width=Mm(155))
-p('Borke · Bast · Kambium · Splintholz · Kernholz · Mark')
-p('1b Erklären: Welche Aufgabe haben Kambium und Splintholz?');lines(3)
-p('1c Weiterdenken: Der Bast ist rings um einen Stamm stark beschädigt. Warum ist das für den Baum gefährlich?');lines(3)
-page('2','Was verraten Jahresringe');D.add_picture(str(OUT/'ringe.png'),width=Mm(150))
-p('Die Mitte ist als Punkt markiert. Jede geschlossene Kreislinie begrenzt einen Jahresring. Die Rinde ist nicht dargestellt.')
-h('2a Erkennen');p('Zähle die Jahresringe. Notiere das ungefähre Alter an dieser Schnittstelle.');lines(2)
-h('2b Erklären');p('Ring 8 ist schmaler als seine Nachbarringe. Was sagt das über das Wachstum?');lines(3)
-h('2c Weiterdenken');p('Sam sagt: „In diesem Jahr hat es bestimmt zu wenig geregnet.“ Beurteile Sams Aussage.');lines(4)
-page('3','Vom Baum zum Brett');h('3a Erkennen');p('Ordne die sechs Begriffe. Schreibe die richtige Reihenfolge auf.')
-p('Transport · Schnittholz · Baum · Einschnitt · Fällen · Sägewerk');lines(3)
-h('3b Erklären');p('Was passiert beim Einschnitt? Warum entsteht dabei Verschnitt?');lines(4)
-h('3c Weiterdenken');p('Du brauchst mindestens 12 cm breite Bretter. Die Bretter werden nicht zusammengeleimt. Welchen Schnittplan wählst du? Begründe mit der Tabelle.')
-table(['Plan','Ausbeute','Brettbreite'],[['A','72 %','9 cm'],['B','64 %','14 cm']],[1,2,2]);lines(4)
-page('4','Was zeigt der Holztest');p('Zwei gleich große, ähnlich trockene Proben werden mit derselben Münze bei möglichst gleichem Druck geprüft.')
-table(['Probe','Masse','Sichtbare Spur'],[['P','45 g','deutliche Druckspur'],['Q','68 g','kaum eine Druckspur']],[1,1,3])
-h('4a Erkennen');p('Welche Probe hat die größere Masse? Bei welcher Probe siehst du die deutlichere Druckspur?');lines(2)
-h('4b Erklären');p('Welche Probe ist bei dieser Prüfung härter? Begründe mit einer Beobachtung.');lines(3)
-h('4c Weiterdenken');p('Eine dritte Probe ist doppelt so groß und wiegt 80 g. Alex sagt: „Diese Holzart ist am schwersten.“ Warum reicht dieser Vergleich nicht aus? Wie könntest du besser vergleichen?');lines(4)
-page('5','Warum arbeitet Holz');table(['Messung derselben Probe','Vorher feucht','Nach Trocknung'],[['Masse','80 g','68 g'],['Breite','50 mm','49 mm']],[2,1,1])
-h('5a Erkennen');p('Ergänze die Fachbegriffe.')
-p('Holz nimmt Wasser in seine Zellwände auf und wird größer: ______________')
-p('Holz wird beim Trocknen kleiner: __________________________')
-h('5b Erklären');p('Beschreibe die beiden Veränderungen in der Tabelle. Erkläre, warum sie entstehen.');lines(4)
-h('5c Weiterdenken');p('Eine Schublade lässt sich in einem feuchten Raum plötzlich schwer öffnen. Erkläre eine mögliche Ursache. Wie kannst du beim Bau vorsorgen?');lines(5)
-page('6','Muss dieses Holz weg');D.add_picture(str(OUT/'fehler.png'),width=Mm(170))
-p('Vereinfachte Zeichnungen. Bild C zeigt ein Brett von der Seite über einer geraden Unterlage.')
-h('6a Erkennen');p('Ordne zu: Riss · Ast · Verwerfen')
-p('Bild A: ______________  Bild B: ______________  Bild C: ______________')
-h('6b Erklären');p('Wähle einen Fehler. Beschreibe ein Problem, das dadurch bei einem Möbelstück entstehen kann.');lines(4)
-h('6c Weiterdenken');p('Ein Brett hat einen kleinen, fest verwachsenen Ast. Muss es aussortiert werden? Begründe an einem Beispiel.');lines(4)
-page('7','Berate eine Kundin');p('Eine Kundin braucht ein Schneidebrett. Sie benutzt es täglich. Es soll eine harte, glatte Oberfläche haben. Nach dem Abwaschen trocknet sie es sorgfältig.')
-table(['Holzart','Eigenschaften und Grenzen'],[['Fichte','Weich, leicht, preiswert. Gut bearbeitbar. Druckstellen entstehen leicht.'],['Buche','Hart, fein und gleichmäßig strukturiert. Lässt sich glatt bearbeiten. Arbeitet stark bei wechselnder Feuchte.'],['Eiche','Hart, deutlich gemasert. Lässt sich glatt bearbeiten. Meist teurer; kann bei Kontakt mit Eisen und Feuchte dunkel verfärben.']],[1,4])
-h('7a Erkennen');p('Nenne zwei wichtige Anforderungen aus dem Kundenauftrag.');lines(1)
-h('7b Erklären');p('Wähle eine Holzart. Begründe mit drei passenden Eigenschaften. Nenne einen Nachteil.');lines(4)
-h('7c Weiterdenken');p('Vergleiche deine Wahl mit einer anderen Holzart. Warum bleibst du bei deiner Wahl oder änderst sie?');lines(3)
+def choose(prompt,options,multi=False):
+ p(prompt+(' Mehrere Antworten sind richtig.' if multi else ' Nur eine Antwort ist richtig.'),True)
+ for option in options:
+  z=p('☐ '+option);z.paragraph_format.space_after=Pt(2)
+
+def page(title):D.add_page_break();D.add_heading(title,0)
+D=document();D.add_heading('Lernerfolgskontrolle Holz',0)
+p('Name: ________________________  Klasse: _____  Datum: __________')
+p('Arbeitszeit: 30 Minuten. Du darfst das gedruckte Material deiner Mappe benutzen. Das iPad und andere digitale Geräte darfst du nicht benutzen.',True)
+p('Arbeite allein. Trage Zahlen oder kurze Wörter ein. Bei Ankreuzaufgaben steht dabei, ob eine oder mehrere Antworten richtig sind. Kreuze nur die richtigen Aussagen an. Bei Mehrfachauswahl kostet jedes falsche Kreuz einen Punkt in dieser Teilaufgabe; weniger als 0 Punkte gibt es nicht. Insgesamt: 30 Punkte.')
+h('1 Aufbau des Stamms   4 Punkte')
+p('1a Ergänze. Nutze deine Mappe. (2 P)')
+p('Das ____________________ ermöglicht das Dickenwachstum.\nDas ____________________ leitet Wasser von den Wurzeln nach oben.')
+choose('1b Der Bast ist rings um den Stamm unterbrochen. Welche Folge ist möglich? (2 P)',[
+ 'Die Wurzeln bekommen zu wenig Zucker aus den Blättern.',
+ 'Das Mark bildet sofort eine neue Borke.',
+ 'Der Stamm kann keine Jahresringe mehr zeigen.'])
+h('2 Jahresringe auswerten   4 Punkte')
+D.add_picture(str(OUT/'ringe.png'),width=Mm(95))
+p('Die Mitte ist ein Punkt. Jede Kreislinie begrenzt einen Jahresring. Die Rinde ist nicht dargestellt. Die Zeichnung ist ein Modell.')
+p('2a Trage nur die Zahl ein: Alter an dieser Schnittstelle: etwa ______ Jahre. (1 P)')
+choose('2b Ring 8 ist schmaler als die Nachbarringe. Was zeigt das? (1 P)',[
+ 'Der Stamm ist in diesem Jahr weniger in die Dicke gewachsen.',
+ 'Der Baum ist in diesem Jahr kleiner geworden.'])
+choose('2c Sam sagt: „In Jahr 8 hat es bestimmt zu wenig geregnet.“ Prüfe die Aussage. (2 P)',[
+ 'Wassermangel ist eine mögliche Ursache.',
+ 'Die Ringbreite beweist Wassermangel.',
+ 'Auch Licht, Temperatur oder Konkurrenz können das Wachstum beeinflussen.',
+ 'Ein schmaler Ring zeigt, wie hoch der Baum war.'],True)
+page('Vom Baum zum Brett und zum Holztest')
+h('3 Produktionsweg und Schnittplan   6 Punkte')
+p('3a Ordne die Schritte. Trage nur die Zahlen 1 bis 6 in die Kästchen ein. 1 ist der Anfang. Nutze jede Zahl einmal. (3 P)',True)
+p('[____] Transport     [____] Schnittholz     [____] Baum\n[____] Einschnitt     [____] Fällen     [____] Sägewerk')
+p('3b Ergänze ein passendes Wort: Beim Sägen entstehen ____________, weil das Sägeblatt eine Schnittbreite hat. (1 P)')
+p('3c Du brauchst mindestens 12 cm breite Bretter. Du darfst schmale Bretter nicht zusammenleimen. Nutze die Übungsdaten.')
+table(['Plan','Ausbeute','Breite jedes Bretts'],[['A','72 %','9 cm'],['B','64 %','14 cm']],[30,55,85])
+choose('Wähle den passenden Plan. (1 P)',['Plan A','Plan B'])
+p('Ergänze: Dieser Plan passt, weil seine Bretter ______ cm breit sind. (1 P)')
+h('4 Holzproben vergleichen   4 Punkte')
+p('Zwei gleich große, ähnlich trockene Proben werden mit derselben Münze bei möglichst gleichem Druck geprüft. Die Angaben sind Übungsdaten.')
+table(['Probe','Masse','Druckspur'],[['P','45 g','deutliche Spur'],['Q','68 g','kaum eine Spur']],[30,45,95])
+choose('4a Welche Probe ist in diesem Test härter? (1 P)',['Probe P','Probe Q'])
+p('4b Ergänze ein passendes Wort: Die härtere Probe erkenne ich daran, dass die Münze ____________ eine Spur hinterlässt. (1 P)')
+choose('4c Eine dritte Probe ist doppelt so groß und wiegt 80 g. Welche Aussagen stimmen? (2 P)',[
+ 'Ihre größere Masse kann an ihrer Größe liegen.',
+ 'Die Masse von 80 g beweist, dass das Holz am härtesten ist.',
+ 'Für einen fairen Massevergleich sollten die Proben gleich groß und ähnlich trocken sein.',
+ 'Beim Massevergleich spielt die Feuchtigkeit keine Rolle.'],True)
+page('Holzfeuchte und Holzfehler')
+h('5 Holz arbeitet   4 Punkte')
+p('Dieselbe Probe wird vor und nach dem Trocknen gemessen. Die Angaben sind Übungsdaten.')
+table(['Messwert','Vorher feucht','Nach dem Trocknen'],[['Masse','80 g','68 g'],['Breite','50 mm','49 mm']],[60,55,55])
+p('5a Ergänze zwei passende Wörter. (2 P)')
+p('Die Masse sinkt, weil das Holz ____________________ abgibt.\nDie Breite nimmt ab. Diese Verkleinerung heißt ____________________.')
+p('5b Eine Holzschublade klemmt in einem feuchten Raum. Ergänze zwei passende Wörter. (2 P)')
+p('Das Holz kann Wasser aufnehmen und ____________________.\nBeim Bau lässt du deshalb etwas ____________________ für die Bewegung.')
+h('6 Holzfehler beurteilen   4 Punkte')
+D.add_picture(str(OUT/'fehler.png'),width=Mm(164))
+p('Bild C zeigt ein Brett von der Seite über einer geraden Unterlage.')
+p('6a Ordne zu. Trage nur die Zahlen ein: 1 = Ast, 2 = Verwerfen, 3 = Riss. (3 P)',True)
+p('Bild A: ______     Bild B: ______     Bild C: ______')
+choose('6b Ein Brett hat einen kleinen, fest verwachsenen Ast. Welche Aussage stimmt? (1 P)',[
+ 'Das Brett muss immer weggeworfen werden.',
+ 'Ob der Ast stört, hängt von seiner Lage und der Nutzung des Bretts ab.',
+ 'Ein Ast macht jedes Brett automatisch tragfähiger.'])
+page('Eine Holzart für einen Auftrag auswählen')
+h('7 Eine Kundin beraten   4 Punkte')
+p('Eine Kundin braucht ein Regal für einen trockenen Innenraum. Die Oberfläche soll hart und glatt sein. Von den passenden Holzarten möchte sie die preiswertere. Vergleiche nur die Angaben in der Tabelle.',True)
+p('Die Tabelle enthält vereinfachte Übungsangaben. Alle angebotenen Bretter haben passende Maße.')
+table(['Holzart','Oberfläche und Bearbeitung','Preis','Grenze'],[
+ ['Fichte','weich; lässt sich glatt bearbeiten','niedrig','Druckstellen entstehen leicht'],
+ ['Buche','hart; lässt sich glatt bearbeiten','mittel','arbeitet stark bei wechselnder Feuchte'],
+ ['Eiche','hart; lässt sich glatt bearbeiten','hoch','teurer als Buche']], [25,64,25,56])
+choose('7a Welche Holzart erfüllt den Auftrag am besten? (1 P)',['Fichte','Buche','Eiche'])
+p('7b Ergänze deine Begründung mit zwei passenden Wörtern. (2 P)')
+p('Die gewählte Holzart eignet sich, weil ihre Oberfläche\n____________________ ist und sich ____________________ bearbeiten lässt.')
+p('7c Ergänze einen passenden Nachteil. (1 P)')
+p('Bei wechselnder Feuchtigkeit arbeitet dieses Holz ____________________.')
+h('Prüfe deine Arbeit')
+p('Lies deine Antworten noch einmal. Sind alle Zahlen und Lücken ausgefüllt? Hast du bei jeder Ankreuzaufgabe auf den Hinweis geachtet?')
+p('Punkte: ______ / 30    Rückmeldung: __________________________')
 D.save(OUT/'lernerfolgskontrolle.docx')
-# Teacher edition, criteria and printable individual feedback.
-D=Document();s=D.sections[0];s.page_width=Mm(210);s.page_height=Mm(297);s.top_margin=s.bottom_margin=Mm(18);s.left_margin=s.right_margin=Mm(20)
-for name,size in [('Normal',11),('Title',23),('Heading 1',18),('Heading 2',13)]:
- st=D.styles[name];st.font.name='Arial';st.font.size=Pt(size);st.font.color.rgb=RGBColor(0,0,0);st.paragraph_format.space_after=Pt(6);st.paragraph_format.line_spacing=1.15
- for b in list(st.element.findall('.//'+qn('w:pBdr'))):b.getparent().remove(b)
-s.header.paragraphs[0].text='HBG  |  WP Technik 7  |  Lehrkraftmaterial'
-f=s.footer.paragraphs[0];f.text='Erwartungshorizont Holz                                              ';fld=OxmlElement('w:fldSimple');fld.set(qn('w:instr'),'PAGE');f._p.append(fld)
-D.add_heading('Erwartungshorizont Holz',0)
-p('Zur Lernerfolgskontrolle mit sieben Aufgabenblöcken und 60 Minuten Bearbeitungszeit. Teilaufgabe a erfasst den Mindeststandard, b den Regelstandard und c den Expertenstandard.')
-p('Die Standards bauen fachlich aufeinander auf. Sie beschreiben einzelne Kompetenzen, keine festen Schülergruppen. Alle Kinder dürfen alle Teilaufgaben bearbeiten. Expertenaufgaben zählen hier zur Kontrolle; sie sind nicht die freiwilligen Vertiefungen des Lernwegs.')
-h('Durchführung');p('Sieben Aufgabenblätter ausgeben. Etwa 50 Minuten für Aufgaben und 10 Minuten zum Lesen und Prüfen vorsehen. Mappe und Apps bleiben geschlossen. Die Materialauszüge auf dem Blatt sind erlaubt. Nachteilsausgleiche wie vereinbart berücksichtigen. Zeiten sind Planwerte und nach dem ersten Einsatz zu prüfen.')
-h('Auswertung');p('Pro Teilaufgabe E = erreicht, T = teilweise erreicht, N = noch nicht erreicht eintragen. E bedeutet: Alle im Lösungsteil genannten Kernmerkmale sind enthalten. T bedeutet: Mindestens ein tragfähiger Bestandteil stimmt, aber die Antwort bleibt wesentlich unvollständig. N bedeutet: Kein tragfähiger Bestandteil, ein grundlegender Widerspruch oder keine Antwort. Bei Aufzählungen gelten die angegebenen Schwellen.')
-p('Sinngemäße Antworten und fachlich passende Alternativen anerkennen. Rechtschreibung verändert den fachlichen Kompetenzstatus nicht, solange die Aussage verständlich bleibt. Folgefehler nicht mehrfach bewerten: Entscheidend ist auch die nachvollziehbare Begründung.')
-p('Die Standards nicht zu einer pauschalen Niveaustufe verrechnen. Höhere Leistungen bleiben sichtbar, auch wenn Grundlagen lückenhaft sind. Dieses Raster enthält bewusst keinen Notenschlüssel; eine gegebenenfalls erforderliche Benotung ist vor dem Einsatz gesondert festzulegen.')
-h('Ablage vor Reihenbeginn');p('Prüfung und Lösungen liegen vorläufig im öffentlichen Lehrkraft-Cockpit. Vor Reihenbeginn in das vorgesehene geschützte Dateisystem übertragen und die öffentlichen Dateien sowie Links entfernen. Auch Generator, ZIP-Paket und Abbildungen gehören zum Prüfungspaket. Bereits veröffentlichte Git-Versionen und frühere Deployments bleiben möglicherweise erreichbar. Für eine vertrauliche Prüfung daher vor dem Einsatz eine neue Aufgabenvariante ausschließlich im geschützten System erstellen.')
-D.add_page_break();D.add_heading('Kompetenzraster',0)
-rows=[['1 Stamm','Sechs Bereiche zuordnen','Kambium und Splintholz erklären','Folge einer Bastschädigung erklären'],['2 Jahresringe','Ringe zählen und Alter angeben','Ringbreite mit Wachstum verbinden','Ursache und sichere Aussage unterscheiden'],['3 Produktionsweg','Sechs Schritte ordnen','Einschnitt und Verschnitt erklären','Ausbeute und Brettmaß abwägen'],['4 Prüfen','Beobachtungen entnehmen','Härte aus Beobachtung ableiten','Vergleichsbedingungen beurteilen'],['5 Holz arbeitet','Quellen und Schwinden benennen','Trocknungsdaten erklären','Problem und Vorsorge übertragen'],['6 Holzfehler','Drei Fehler zuordnen','Technische Folge erklären','Verwendbarkeit abhängig vom Zweck beurteilen'],['7 Beratung','Anforderungen erkennen','Materialwahl begründen','Alternativen anhand gleicher Kriterien abwägen']]
-table(['Kompetenz','Mindeststandard a','Regelstandard b','Expertenstandard c'],rows,[1.1,1.4,1.6,1.7],height=21)
-p('Beleggrundlage: die jeweilige Teilaufgabe 1a bis 7c. Rückmeldung mit E, T oder N je Feld; keine automatische Gesamtstufe.')
-solutions=[
-('1 Aufbau des Stamms','a Mindeststandard: 1 Borke, 2 Bast, 3 Kambium, 4 Splintholz, 5 Kernholz, 6 Mark. E: sechs richtig; T: zwei bis fünf richtig; N: höchstens eine richtige Zuordnung.', 'b Regelstandard: Kambium bildet neue Zellen und ermöglicht Dickenwachstum. Splintholz transportiert Wasser und Mineralstoffe von den Wurzeln nach oben. E: beide Funktionen im Kern korrekt; T: nur eine Funktion korrekt oder beide erkennbar unvollständig.', 'c Expertenstandard: Der Bast transportiert Zucker aus den Blättern zu anderen Baumteilen. Eine ringförmige Unterbrechung beeinträchtigt die Versorgung, insbesondere der Wurzeln. E: Transportfunktion und Folge verbunden; T: Versorgungsschaden erkannt, aber Transport oder Zusammenhang unklar.'),
-('2 Jahresringe lesen','a Mindeststandard: zwölf Jahresringe; ungefähr zwölf Jahre an dieser Schnittstelle. E: beides stimmt; T: Ringzählung mit einem Zählfehler und dazu passender Altersangabe oder nur eine der beiden Angaben.', 'b Regelstandard: Ring 8 zeigt geringeren Dickenzuwachs als die Nachbarringe. E: Dickenzuwachs und Vergleich genannt; T: nur allgemein „weniger gewachsen“. Keine Aussage über die Baumhöhe ableiten.', 'c Expertenstandard: Wassermangel ist möglich, aber nicht sicher aus der Ringbreite abzulesen. Auch Licht, Temperatur oder Konkurrenz kommen infrage. E: Unsicherheit begründet, etwa mit einer anderen Ursache; T: „nicht sicher“ oder mögliche andere Ursache ohne Erklärung.'),
-('3 Vom Baum zum Brett','a Mindeststandard: Baum → Fällen → Transport → Sägewerk → Einschnitt → Schnittholz. E: vollständig richtig; T: überwiegend sinnvolle Abfolge mit mindestens drei richtigen direkten Nachbarschaften; N: weniger.', 'b Regelstandard: Beim Einschnitt wird der Stamm aufgesägt. Runde Randbereiche und die Schnittbreite des Sägeblatts führen zu Material, das nicht zu den vorgesehenen Brettern wird. E: Vorgang und mindestens eine schlüssige Verschnittursache; T: nur eines davon.', 'c Expertenstandard: Plan B; 14 cm erfüllen die Mindestbreite von 12 cm, 9 cm bei A nicht. Die höhere Ausbeute von A hilft bei diesem Auftrag nicht. E: Wahl mit Maßvergleich und Abwägung; T: B mit nur einer passenden Begründung.'),
-('4 Holz prüfen','a Mindeststandard: Q hat die größere Masse. P hat die deutlichere Druckspur. E: beides korrekt; T: eine Angabe korrekt.', 'b Regelstandard: Q ist im Versuch härter, weil die Münze kaum eine Spur hinterlässt. E: Eigenschaft und passende Beobachtung verbunden; T: Q ohne Begründung. Eine größere Masse allein begründet keine Härte.', 'c Expertenstandard: Die größere Probe kann allein wegen ihres Volumens mehr wiegen. Gleich große und ähnlich trockene Proben vergleichen; alternativ Dichte bei vergleichbarer Feuchte bestimmen. E: Problem und passende Verbesserung; T: nur Problem oder Verbesserung.'),
-('5 Quellen und Schwinden','a Mindeststandard: Quellen; Schwinden. E: beide Begriffe richtig; T: einer richtig.', 'b Regelstandard: Masse sinkt um 12 g, Breite um 1 mm. Wasserabgabe senkt die Masse; Wasserabgabe aus den Zellwänden kann Schwinden bewirken. E: beide Veränderungen mit zutreffender Erklärung; T: korrekte Veränderungen ohne Erklärung oder nur ein erklärter Zusammenhang. Die Zahlen der Differenzen sind nicht zwingend, wenn die Veränderungen eindeutig beschrieben sind.', 'c Expertenstandard: Aufnahme von Feuchtigkeit kann das Holz quellen lassen; dadurch kann die Schublade klemmen. Vorsorge: ausreichend Spiel für Bewegung oder passend getrocknetes Holz. E: Ursache, Klemmen und passende Vorsorge; T: nur Erklärung oder passende Vorsorge.'),
-('6 Holzfehler beurteilen','a Mindeststandard: A Riss, B Ast, C Verwerfen. E: alle drei richtig; T: eine oder zwei richtige Zuordnungen.', 'b Regelstandard: Zum Beispiel Riss schwächt eine belastete Verbindung; verworfenes Brett liegt nicht plan auf; loser Ast kann herausfallen. E: Fehler, Produktbezug und konkrete technische Folge; T: plausible Folge ohne klaren Produktbezug. „Sieht schlecht aus“ allein genügt nicht.', 'c Expertenstandard: Nicht automatisch aussortieren. Ein fester Ast kann bei einer dekorativen Fläche akzeptabel sein; an einer belasteten Verbindung hängt die Eignung von Lage und Zustand ab. E: zweckbezogene Entscheidung mit Beispiel; T: bedingte Entscheidung ohne ausgeführtes Beispiel.'),
-('7 Holzberatung','a Mindeststandard: Zwei Anforderungen aus dem Auftrag, etwa harte und glatte Oberfläche oder Eignung für tägliche Nutzung. E: zwei passende Anforderungen; T: eine.', 'b Regelstandard: Beispiel Buche: hart gegen Druckspuren, feine gleichmäßige Struktur, gut glatt bearbeitbar. Nachteil: arbeitet bei wechselnder Feuchte. E: begründete Wahl mit drei passenden Eigenschaften und einem Nachteil; T: grundsätzlich passende Wahl, aber unvollständige Begründung. Eiche ist bei schlüssiger Begründung ebenfalls möglich; Fichte erfüllt die geforderte Härte nicht.', 'c Expertenstandard: Beispiel Buche und Fichte: Beide bearbeitbar; Buche ist härter, Fichte preiswerter. Für den häufigen Gebrauch ist hier die Härte wichtiger. E: zwei Holzarten anhand mindestens eines gemeinsamen Kriteriums verglichen und Entscheidung abgewogen; T: Unterschied genannt, aber nicht für den Auftrag abgewogen.')]
-for i,(title,a,b,c) in enumerate(solutions):
- if i%2==0:D.add_page_break()
- h(title)
- for txt in [a,b,c]:p(txt)
-D.add_page_break();D.add_heading('Deine Rückmeldung',0);p('Name: ____________________________  Datum: ______________')
-p('E = erreicht   T = teilweise erreicht   N = noch nicht erreicht')
-table(['Kompetenz','Mindeststandard','Regelstandard','Expertenstandard'],[[r[0],'','',''] for r in rows],[1.3,1,1,1],height=12)
-h('Das kannst du schon sicher');lines(3)
-h('Dein nächster Lernschritt');p('Übe zuerst: _________________________  Auftrag: __________');p('Nutze U.1 für dein Ergebnis. Prüfe es danach mit einem Partner oder deiner Lehrkraft.');lines(2)
-p('Passendes Material: 1 → A1 | 2 → A2 | 3 → A3/A4 | 4 → A5/A6 | 5 → A7 | 6 → A8 | 7 → A9/A10')
-p('Rückblick: Das kann ich nach der Übung besser:');lines(2)
+
+D=document(True);D.add_heading('Erwartungshorizont Holz',0)
+p('Zur vierseitigen Lernerfolgskontrolle mit 30 Minuten Arbeitszeit und 30 Punkten. Erlaubt ist das gedruckte Material der Mappe. iPad und andere digitale Geräte sind ausgeschlossen.')
+h('Durchführung und Zeitplanung')
+p('Die vier Seiten gemeinsam ausgeben. Orientierung: Aufgaben 1 und 2 etwa 7 Minuten, 3 und 4 etwa 8 Minuten, 5 und 6 etwa 7 Minuten, Aufgabe 7 etwa 5 Minuten, abschließende Kontrolle etwa 3 Minuten. Das Nachschlagen ist in diesen Planwerten enthalten; nach dem ersten Einsatz prüfen. Vereinbarte Nachteilsausgleiche beachten.')
+h('Bewertung')
+p('Sinngemäße Lückenfüllungen anerkennen. Rechtschreibfehler nicht abziehen, sofern der Fachbegriff eindeutig ist. Jeder Teil wird getrennt bewertet. Ein falsches Kreuz in 4a verhindert nicht den Punkt für eine fachlich passende Begründung in 4b. Kein automatisch abgeleiteter Notenschlüssel.')
+p('Einfachauswahl: Nur das richtige und kein weiteres Feld angekreuzt ergibt die genannten Punkte. Mehrfachauswahl 2c und 4c: je richtig gesetztem Kreuz 1 Punkt, je falsch gesetztem Kreuz 1 Punkt Abzug innerhalb der Teilaufgabe; mindestens 0, höchstens 2 Punkte. Nicht gesetzte Kreuze geben keine Punkte. Ein vollständig leeres Feld ergibt 0 Punkte. So wird nicht wahlloses Ankreuzen belohnt.')
+h('Lösungen zu Aufgaben 1 bis 4')
+for title,text in [
+('1 Aufbau des Stamms   4 Punkte','1a Kambium; Splintholz: je 1 P. 1b Erste Aussage: Die Wurzeln bekommen zu wenig Zucker aus den Blättern; 2 P bei eindeutiger Auswahl. Die Störung des Zuckertransports wird aus der Funktion des Basts abgeleitet.'),
+('2 Jahresringe   4 Punkte','2a 12 Jahre: 1 P. 2b Erste Aussage (geringerer Dickenzuwachs): 1 P. 2c Erste und dritte Aussage: Wassermangel ist möglich, andere Ursachen kommen ebenfalls infrage; bis 2 P nach Mehrfachregel.'),
+('3 Produktionsweg und Schnittplan   6 Punkte','3a In der gedruckten Reihenfolge: 3, 6, 1, 5, 2, 4. Je korrekt eingetragener Zahl 0,5 P, insgesamt 3 P. 3b Späne / Sägespäne: 1 P. 3c Plan B: 1 P; 14 cm: 1 P. Die höhere Ausbeute von A genügt bei einer Mindestbreite von 12 cm nicht.'),
+('4 Holzproben   4 Punkte','4a Probe Q: 1 P. 4b kaum: 1 P. 4c Erste und dritte Aussage: Größere Masse kann durch größeres Volumen entstehen; gleiche Größe und ähnliche Trockenheit erlauben einen fairen Vergleich; bis 2 P nach Mehrfachregel.')]:
+ h(title);p(text)
+page('Lösungen und Kompetenzbelege')
+for title,text in [
+('5 Holz arbeitet   4 Punkte','5a Wasser; Schwinden: je 1 P. Auch „Feuchtigkeit“ bzw. „schwinden“ sinngemäß akzeptieren. 5b quellen / größer werden; Spiel / Platz / Abstand: je 1 P. Das Quellen kann zum Klemmen führen; die Bewegungsreserve ist eine passende Vorsorge.'),
+('6 Holzfehler   4 Punkte','6a A = 3, B = 1, C = 2: je 1 P. 6b Zweite Aussage: Lage und Nutzung entscheiden; 1 P bei eindeutiger Auswahl. Ein fest verwachsener Ast ist kein pauschaler Ausschussgrund.'),
+('7 Materialentscheidung   4 Punkte','7a Buche: 1 P. Nach Tabelle erfüllen Buche und Eiche Härte und glatte Bearbeitbarkeit; Buche ist von beiden preiswerter. 7b hart; glatt: je 1 P. 7c stark / deutlich: 1 P. Die Lückensätze werden unabhängig von 7a bewertet; kein mehrfacher Abzug eines Auswahlfehlers.')]:
+ h(title);p(text)
+h('Was die kurze Arbeit nachweisen kann')
+p('Die geschlossene oder stark gestützte Antwortform prüft Verstehen und Anwenden mit wenig Schreibaufwand. Sie belegt keine frei formulierte ausführliche Erklärung. Die früheren 21 Teilaufgaben a bis c und deren Raster gelten für diese Fassung nicht mehr. Eine Gesamtpunktzahl wird deshalb nicht automatisch in einen Kompetenzstandard übersetzt.')
+table(['Anforderung','Belege in dieser Arbeit'],[
+ ['Mindeststandard','Funktionen ergänzen (1a), Ringe zählen (2a), Schritte ordnen (3a), Begriffe und Bilder zuordnen (6a)'],
+ ['Regelstandard','Ringbreite deuten (2b), Schnittbreite erklären (3b), Härte aus Druckspur ableiten (4a/b), Trocknungsdaten erklären (5a), Eigenschaften mit Auftrag verbinden (7b/c)'],
+ ['Expertenstandard','Folge einer Bastschädigung ableiten (1b), Grenze einer Aussage prüfen (2c), Mindestbreite gegen Ausbeute abwägen (3c), Vergleichsbedingungen prüfen (4c), Vorsorge übertragen (5b), Verwendbarkeit beurteilen (6b), mehrere Anforderungen abwägen (7a)']], [43,127])
+p('Die Expertenbelege sind hier kurze, gestützte Entscheidungen. Für Aussagen über selbstständiges Argumentieren zusätzlich die Mappe oder ein Gespräch heranziehen.')
+page('Individuelle Rückmeldung')
+p('Name: ____________________________  Datum: ______________')
+p('Punkte: ______ / 30')
+table(['Bereich','Punkte','Dein nächster Übungsauftrag'],[
+ ['Stamm','____ / 4','A1'],['Jahresringe','____ / 4','A2'],['Produktionsweg und Schnittplan','____ / 6','A3 und A4'],['Holzproben','____ / 4','A5 und A6'],['Holzfeuchte','____ / 4','A7'],['Holzfehler','____ / 4','A8'],['Materialentscheidung','____ / 4','A9 und A10']], [75,25,70])
+h('Das gelingt dir schon')
+p('________________________________________________________________\n________________________________________________________________')
+h('Deine nächsten Schritte')
+p('Übe zuerst: _____________________________________________________\nPassender Auftrag: ______________________________________________')
+p('Wenn nötig, übe danach: __________________________________________')
+p('Erkläre einen dieser Zusammenhänge in zwei eigenen Sätzen auf U.1. Besprich deine Erklärung mit einem Partner oder deiner Lehrkraft.')
 D.save(OUT/'erwartungshorizont.docx')
-print('Zwei Dokumente erstellt.')
+print('Exam: 4 planned pages. Answer key: 3 planned pages. Total: 30 points.')

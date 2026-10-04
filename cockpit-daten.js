@@ -238,7 +238,7 @@ window.HOLZ_COCKPIT = {
         "Zeit für gezieltes Üben und Abschlussreflexion reservieren.",
         "Spielkarten S11 und S12 doppelseitig drucken; passende Rückseiten prüfen und am Tisch auslegen."
       ],
-      "pitfall": "Das Lehrkraft-Cockpit ist öffentlich. Prüfungspaket vor Reihenbeginn geschützt ablegen; ältere öffentliche Versionen können fortbestehen. 60 Minuten Kontrolle in der Doppelstunde einplanen.",
+      "pitfall": "Das Lehrkraft-Cockpit ist öffentlich. Prüfungspaket vor Reihenbeginn geschützt ablegen; ältere öffentliche Versionen können fortbestehen. 30 Minuten Open-Book-Kontrolle einplanen: gedruckte Mappe erlaubt, iPad nicht.",
       "job": null,
       "jobtext": "",
       "jobquestion": "",
@@ -252,9 +252,10 @@ window.HOLZ_COCKPIT = {
       "wednesday": [
         "5 Min. offener Anfang: Spielkarten S11 / S12",
         "5 Min. Organisation",
-        "60 Min. Lernerfolgskontrolle",
-        "10 Min. Abschlussreflexion",
-        "10 Min. Mappe ordnen und Ausblick"
+        "30 Min. Open-Book-Lernerfolgskontrolle (gedruckte Mappe erlaubt, kein iPad)",
+        "15 Min. Abschlussreflexion",
+        "25 Min. Mappe ordnen und Anschlussprojekt kennenlernen",
+        "10 Min. Ausblick"
       ],
       "games": "Wahrheitswächter und Knack den Holzcode",
       "games_path": "materialien/offener-anfang/woche-6.pdf"
@@ -484,7 +485,7 @@ window.HOLZ_COCKPIT = {
       "week": 6,
       "kind": "Lehrkraft",
       "status": "Vorhanden",
-      "desc": "7 Aufgabenblöcke, 60 Minuten. Erkennen, Erklären und Weiterdenken. Vor Reihenbeginn geschützt ablegen.",
+      "desc": "4 Seiten, 30 Minuten Open Book. Gedruckte Mappe erlaubt, kein iPad. Zahlenfolgen, Lückensätze und eindeutige Auswahlaufgaben. Vor Reihenbeginn geschützt ablegen.",
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
@@ -493,7 +494,7 @@ window.HOLZ_COCKPIT = {
       "week": 6,
       "kind": "Lehrkraft",
       "status": "Vorhanden",
-      "desc": "Mindeststandard, Regelstandard und Expertenstandard; Lösungen, Kriterien und Rückmeldebogen.",
+      "desc": "Lösungen und Bewertung für die 30-Minuten-Fassung mit 30 Punkten; Kompetenzbelege und Rückmeldebogen.",
       "path": "lehrkraft-material/pruefung/erwartungshorizont.pdf"
     },
     {

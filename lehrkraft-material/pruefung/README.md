@@ -1,6 +1,10 @@
 # Prüfungspaket Holz
 
-7 Seiten Lernerfolgskontrolle, 60 Minuten. 7 Seiten Erwartungshorizont einschließlich Kompetenzraster und individueller Rückmeldung. Standards: Mindeststandard, Regelstandard, Expertenstandard. PDF zum Drucken; DOCX zum Bearbeiten.
+4 Seiten Lernerfolgskontrolle, 30 Minuten, 30 Punkte. Open Book: Das gedruckte Material der Mappe darf genutzt werden; iPad und andere digitale Geräte sind nicht erlaubt. 3 Seiten Erwartungshorizont einschließlich Kompetenzbelegen und individueller Rückmeldung. PDF zum Drucken; DOCX zum Bearbeiten.
+
+Reihenfolgeaufgaben werden nur nummeriert. Kurze Erklärungen und Begründungen erfolgen in Lückensätzen. Jede Auswahlaufgabe nennt ausdrücklich Einfach- oder Mehrfachauswahl. Die Bewertung der Mehrfachauswahl ist im Schülerblatt und Erwartungshorizont beschrieben. Keine freie Langantwort. Nachschlagen, Bearbeiten und Prüfen sind in den 30 Minuten enthalten.
+
+Die frühere a/b/c-Struktur wurde durch eine kürzere Aufgabenfolge ersetzt. Belege für Mindest-, Regel- und Expertenstandard stehen im Erwartungshorizont; die geschlossenen Antwortformate belegen kein selbstständiges ausführliches Argumentieren.
 
 ## Vor Reihenbeginn übertragen
 
@@ -13,4 +17,4 @@ Der aktuelle Lehrkraftbereich ist nicht zugriffsgeschützt. Die Dateien sind aus
 
 ## Bearbeiten
 
-Die DOCX-Dateien können direkt bearbeitet werden. generate.py ist die reproduzierbare Quelle und enthält auch Lösungen; benötigt python-docx, Pillow sowie den table_geometry-Helfer des Documents-Skills. Nach Änderungen DOCX rendern und alle Seiten visuell prüfen; PDF und ZIP anschließend aktualisieren.
+Die DOCX-Dateien können direkt bearbeitet werden. generate.py ist die reproduzierbare Quelle und enthält auch Lösungen; benötigt python-docx sowie den table_geometry-Helfer des Documents-Skills. Nach Änderungen DOCX rendern und alle Seiten visuell prüfen; PDF und ZIP anschließend aktualisieren.

@@ -29,7 +29,7 @@ Für schwache Leser: mit Stufe 1 beginnen, Partner liest bei Bedarf vor. Die ers
 - Woche 5: S09 Kundenpantomime, S10 Wer bin ich aus Holz
 - Woche 6: S11 Wahrheitswächter, S12 Knack den Holzcode
 
-Die Wochenplanung berücksichtigt fünf Minuten offenen Anfang in jedem Termin. Der Montag bleibt 45 Minuten, der Mittwoch 90 Minuten. Mittwoch in Woche 6: anschließend fünf Minuten Prüfungsorganisation, 60 Minuten Kontrolle, zehn Minuten Reflexion und zehn Minuten Abschluss.
+Die Wochenplanung berücksichtigt fünf Minuten offenen Anfang in jedem Termin. Der Montag bleibt 45 Minuten, der Mittwoch 90 Minuten. Mittwoch in Woche 6: anschließend fünf Minuten Prüfungsorganisation, 30 Minuten Open-Book-Kontrolle (gedruckte Mappe erlaubt, kein iPad), 15 Minuten Reflexion, 25 Minuten Mappe ordnen und Anschlussprojekt kennenlernen sowie zehn Minuten Ausblick.
 
 ## Dateien weiterentwickeln
 
