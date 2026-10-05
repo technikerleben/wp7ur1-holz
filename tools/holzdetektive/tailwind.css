@@ -1,0 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components { .station { @apply rounded-xl bg-teal-50 px-4 py-3 font-bold text-teal-900 transition hover:bg-teal-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-700 disabled:opacity-50; } .choice { @apply w-full rounded-xl border border-stone-300 px-4 py-3 text-left font-bold transition hover:border-teal-600 hover:bg-teal-50; } }
+[hidden]{display:none!important} th,td{padding:6px 8px 6px 0} #scene svg,#scene canvas{display:block;width:100%;height:100%;touch-action:none} button,a,summary{touch-action:manipulation} button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b45309;outline-offset:3px}
