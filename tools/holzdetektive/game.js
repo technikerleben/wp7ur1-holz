@@ -24,7 +24,7 @@ scene.add(new THREE.HemisphereLight(0xffffff,0x627766,1.35));const light=new THR
 const mat=(color)=>new THREE.MeshLambertMaterial({color});
 function box(w,h,d,color,parent,x=0,y=0,z=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d,w>190?12:1,h>80?6:1,d>180?8:1),mat(color));m.position.set(x,y,z);parent.add(m);return m;}
 function line(points,color,parent){const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color}));parent.add(l);return l;}
-const lab=new THREE.Group();scene.add(lab);box(470,15,255,0xb5c6b2,lab,0,-10,0);box(450,7,235,0xf2e5cb,lab,0,1,0);
+const lab=new THREE.Group();scene.add(lab);const tabletop=new THREE.Mesh(new THREE.PlaneGeometry(470,255,12,8),mat(0xe7d8b9));tabletop.rotation.x=-Math.PI/2;tabletop.position.y=5;lab.add(tabletop);
 for(const x of [-185,185])for(const z of [-85,85])box(14,70,14,0x697f75,lab,x,-45,z);
 // Scale on the left, coin press on the right; the sample itself is 200 × 50 × 18 mm.
 box(105,16,90,0x4f746c,lab,-125,13,-30);box(95,7,80,0xbac8c6,lab,-125,25,-30);box(65,13,3,0x163d39,lab,-125,13,16);
@@ -35,7 +35,7 @@ const sample=new THREE.Group();lab.add(sample);
 const plank=new THREE.Mesh(new THREE.BoxGeometry(200,18,50,24,1,4),mat(0xd9b77d));sample.add(plank);
 const originals=Float32Array.from(plank.geometry.attributes.position.array);
 const grain=new THREE.Group();sample.add(grain);
-for(let i=0;i<8;i++){const z=-21+i*6;line([[-96,9.2,z],[-40,9.2,z+2],[20,9.2,z-1],[97,9.2,z+1]],0x91704b,grain);}
+for(let i=0;i<8;i++){const z=-21+i*6;for(let x=-96;x<85;x+=30)line([[x,10,z],[x+28,10,z+Math.sin(x)*.8]],0x91704b,grain);}
 const knot=new THREE.Group();sample.add(knot);knot.position.set(-35,9.5,0);
 for(let r=5;r<=17;r+=4){const points=[];for(let i=0;i<=32;i++){const t=i/32*Math.PI*2;points.push([Math.cos(t)*r,0,Math.sin(t)*r*.6]);}line(points,0x68472a,knot);}
 const crack=line([[-99,9.7,12],[-65,9.7,10],[-30,9.7,14],[0,9.7,11],[38,9.7,13]],0x372e27,sample);
