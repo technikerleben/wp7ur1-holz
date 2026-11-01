@@ -485,7 +485,7 @@ window.HOLZ_COCKPIT = {
       "week": 6,
       "kind": "Lehrkraft",
       "status": "Vorhanden",
-      "desc": "4 Seiten, 30 Minuten Open Book. A1 bis A8 Pflicht; A9/A10 freiwilliger Bonus. Gedruckte Mappe erlaubt, kein iPad. Zahlenfolgen, Lückensätze und eindeutige Auswahlaufgaben. Vor Reihenbeginn geschützt ablegen.",
+      "desc": "5 Seiten, 30 Minuten Open Book. A1 bis A8 Pflicht; A9/A10 freiwilliger Bonus. Gedruckte Mappe erlaubt, kein iPad. Zahlenfolgen, Lückensätze und eindeutige Auswahlaufgaben. Vor Reihenbeginn geschützt ablegen.",
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
