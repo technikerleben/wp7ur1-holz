@@ -1,5 +1,8 @@
 # Möbelbau – Projektangebote für WP Technik 7
 
+> **Neue zusammengeführte Anschlussphase (01.11.2026):** [Alles aus Dachlatte – Möbelwerkstatt in zwei Größen](werkstatt.html) · [ausführliches Unterrichtskonzept](ALLES-AUS-DACHLATTE.md). Schülerinnen und Schüler wählen zwischen einem Modell aus Eisstielen und einem kleinen Gebrauchsgegenstand aus Dachlatten. Die 21 Projekte unten bleiben als **erweiterter Material- und Ideenkatalog** erhalten; die bisher genannten Sperrholz-/Leimholzmaterialien und Preise sind **nicht automatisch** Dachlatten-Projektangaben.
+
+
 Anschluss an „Vom Baum zum Brett“ · Planungsstand: 04.10.2026
 
 Dieser Katalog stellt **21 Projektangebote** nach steigendem Anspruch vor. Er dient zunächst der Auswahl durch die Lehrkraft. Die kurzen Projektaufträge können anschließend für die Lernenden genutzt werden. Die Nummern P01–P21 sind neue Katalognummern; die Zuordnung zur ursprünglichen Ideensammlung steht am Ende.
