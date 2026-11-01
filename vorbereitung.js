@@ -76,6 +76,8 @@
   $('exam-prep').addEventListener('input',event=>{if(event.target.id==='prep-question'){question=event.target.value;save();}});
   const notice=$('exam-notice'),memory=new Set(),ackPrefix='hbg_holz_pruefung_gelesen_';
   notice.addEventListener('cancel',event=>event.preventDefault());
+  notice.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();}},true);
+  notice.addEventListener('close',()=>queueMicrotask(showNotice));
   function showNotice(){
     const day=berlinDay();if(!noticeDay(day)||memory.has(day))return;
     try{if(localStorage.getItem(ackPrefix+day)==='mappe')return;}catch{}

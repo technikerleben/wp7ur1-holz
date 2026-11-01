@@ -12,6 +12,7 @@ function setup(when='2026-11-01T10:00:00Z',memory={}){
 for(const date of ['2026-10-31T12:00:00Z','2026-11-03T12:00:00Z','2026-11-04T12:00:00Z']){const t=setup(date);assert.equal(t.$('#exam-notice').open,false);t.dom.window.close();}
 let t=setup();assert.equal(t.$('#exam-notice').open,true);
 assert.equal(t.$('#exam-notice').dispatchEvent(new t.w.Event('cancel',{cancelable:true})),false);assert.equal(t.$('#exam-notice').open,true);
+assert.equal(t.$('#exam-key').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})),false);
 t.unlock('iPad');assert.equal(t.$('#exam-notice').open,true);assert.match(t.$('#exam-key-feedback').textContent,/Wo sammelst/);assert.equal(t.w.localStorage.getItem('hbg_holz_pruefung_gelesen_2026-11-01'),null);
 t.unlock('  mApPe  ');assert.equal(t.$('#exam-notice').open,false);assert.equal(t.$('#exam-prep').hidden,false);assert.match(t.$('#exam-prep').textContent,/Prüflabor geöffnet/);
 let mem=t.memory(),reloaded=setup('2026-11-01T12:00:00Z',mem);assert.equal(reloaded.$('#exam-notice').open,false);reloaded.day('2026-11-02T08:00:00Z');assert.equal(reloaded.$('#exam-notice').open,true);reloaded.unlock('MAPPE');reloaded.day('2026-11-03T08:00:00Z');assert.equal(reloaded.$('#exam-notice').open,false);reloaded.dom.window.close();
