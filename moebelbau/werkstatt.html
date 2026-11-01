@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#214d3e">
+<title>Alles aus Dachlatte · Möbelwerkstatt 7</title>
+<style>
+:root{color-scheme:light;--green:#214d3e;--ink:#203f33;--muted:#52645b;--bg:#f7f7f2;--line:#d3ded5;--mint:#e6f3ed;--orange:#fff0de}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+a{color:#145e48;text-underline-offset:3px}
+a:focus-visible,select:focus-visible{outline:3px solid #d4853b;outline-offset:3px}
+header{background:var(--green);color:white;padding:24px clamp(18px,4vw,56px) 38px}
+nav{display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap;font-size:14px}
+header a{color:#e2f4e9}
+h1{font-size:clamp(32px,5vw,58px);line-height:1.12;max-width:920px;margin:22px 0 16px;letter-spacing:-.035em}
+.lead{max-width:850px;font-size:19px;line-height:1.5;color:#e3efe8}
+.kicker{text-transform:uppercase;letter-spacing:.13em;font-weight:800;font-size:12px;color:#a9d7c2}
+main{max-width:1180px;margin:auto;padding:24px clamp(16px,3vw,30px) 60px}
+h2{font-size:clamp(23px,3vw,30px);line-height:1.25;margin:0 0 12px}
+h3{font-size:21px;line-height:1.28;margin:5px 0 10px}
+p{margin:8px 0 14px}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 24px}
+.route{background:white;border:1px solid var(--line);padding:19px;border-radius:13px}
+.route.model{background:#f0f7f2}.route.original{background:#fff8ed}
+.route strong{font-size:20px;display:block;margin-bottom:7px}
+.route p{margin:0}
+.notice{padding:17px 20px;background:white;border-left:5px solid #8ca894;border-radius:8px;margin:16px 0 27px}
+.controls{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.controls label{font-size:14px;font-weight:700;display:grid;gap:5px;min-width:205px}
+select{appearance:auto;font:inherit;background:white;color:var(--ink);border:1px solid #889c90;border-radius:6px;min-height:44px;padding:8px}
+#count{margin:16px 0;color:var(--muted);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.project{background:white;border:1px solid var(--line);border-radius:13px;padding:20px;scroll-margin-top:20px}
+.topline{display:flex;gap:8px;justify-content:space-between;align-items:start;flex-wrap:wrap}
+.tag{border-radius:5px;background:#e8eee7;padding:3px 9px;font-weight:700;font-size:12px}
+.problem{color:#334e40;margin-bottom:18px}
+.variant{border-radius:9px;padding:13px;margin:11px 0}
+.variant.model{background:#eff7f2}
+.variant.original{background:#fff4e6}
+.variant b{display:block;margin-bottom:5px}
+.variant p{margin:0}
+.check{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;font-size:14px}
+.challenge{font-size:14px;margin:7px 0 0}
+.timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 30px}
+.phase{background:white;border:1px solid var(--line);border-radius:10px;padding:14px}
+.phase strong{display:block;margin-bottom:4px}
+.phase small{font-size:13px;color:var(--muted)}
+ul{padding-left:22px}
+.table-scroll{overflow:auto}
+table{border-collapse:collapse;width:100%;background:white;font-size:14px;margin-top:15px}
+th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#ecf1ec}
+footer{border-top:1px solid var(--line);margin-top:32px;padding-top:18px;color:var(--muted);font-size:14px}
+#empty{background:white;padding:20px;border-radius:10px}
+@media(max-width:800px){.intro,.grid{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.timeline{grid-template-columns:1fr}.controls label{width:100%}header{padding:22px 18px 30px}h1{font-size:34px}}
+@media print{header{background:white;color:black;padding:0 0 10px}header a{color:black}.controls{display:none}.grid{grid-template-columns:1fr 1fr}.project{break-inside:avoid}.route,.variant{background:white!important}.timeline{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<nav><a href="../index.html">← Zur Reihe „Vom Baum zum Holz“</a><a href="index.html">21 weitere Möbelideen ↗</a></nav>
+<p class="kicker">WP 7 · praktische Anschlusswerkstatt</p>
+<h1>Alles aus Dachlatte.<br>Möbel bauen – in zwei Größen.</h1>
+<p class="lead">Du entwickelst ein Möbelstück für einen echten Bedarf. Entscheide dich für ein Modell aus Eisstielen oder ein kleines Möbel in Originalgröße aus Dachlatten. Du planst, baust, prüfst und verbesserst deine Konstruktion.</p>
+</header>
+<main>
+<section aria-label="Deine Materialwahl">
+<div class="intro">
+<div class="route model"><strong>Weg M · Modell aus Eisstielen</strong><p>Du planst Proportionen und ggf. einen Maßstab, baust stabile Baugruppen und untersuchst die Funktion deines Modells. Holzleim und Klammern sind deine wichtigsten Verbindungsmittel.</p></div>
+<div class="route original"><strong>Weg O · Original aus Dachlatten</strong><p>Du verwendest trockene, unbehandelte Dachlatten aus Fichte oder Tanne. Du planst echte Nutzmaße, sichere Verbindungen und eine begrenzte Gebrauchslast. Schrauben, kleine Beschläge und Achsen dürfen ergänzen.</p></div>
+</div>
+<p class="notice"><strong>Wichtig:</strong> Beide Wege sind gleichwertig. Nicht die Größe, sondern deine Planung, Fertigung, technische Funktion und Verbesserung zählen. Ein Modell ist kein belastbares Sitzmöbel. Echte Sitzmöbel aus Dachlatten sind nicht Teil der regulären Projektauswahl.</p>
+</section>
+
+<section aria-labelledby="title-select">
+<h2 id="title-select">1 · Wähle deine Möbelidee</h2>
+<p>Du kannst alle Projekte ansehen oder nach Materialweg und Anforderungsniveau filtern. Die angegebenen Stufen sind Empfehlungen: Sprich mit deiner Lehrkraft, wenn du eine Idee anspruchsvoller gestalten möchtest.</p>
+<form class="controls" id="filters">
+<label for="mode">Materialweg<select id="mode"><option value="both">Beide Wege zeigen</option><option value="model">Modell aus Eisstielen</option><option value="original">Original aus Dachlatten</option></select></label>
+<label for="level">Empfohlenes Niveau<select id="level"><option value="all">Alle Niveaus</option><option value="1">1 · Anwenden</option><option value="2">2 · Konstruieren</option><option value="3">3 · Optimieren</option></select></label>
+</form>
+<p id="count" role="status" aria-live="polite"></p>
+<div id="projects" class="grid"></div><p id="empty" hidden>Für diese Auswahl gibt es keinen Eintrag. Ändere deinen Filter.</p>
+<noscript><p>Für die interaktive Auswahl ist JavaScript erforderlich. Du kannst die <a href="ALLES-AUS-DACHLATTE.md">vollständige Projektplanung</a> lesen.</p></noscript>
+</section>
+
+<section aria-labelledby="process" style="margin-top:36px">
+<h2 id="process">2 · So arbeitest du</h2>
+<div class="timeline">
+<div class="phase"><strong>Planen</strong><small>Bedarf klären, Weg und Niveau wählen, Skizze und erste Maße erstellen.</small></div>
+<div class="phase"><strong>Freigeben lassen</strong><small>Zeichnung, Stückliste, Materialmenge und zwei Prüfkriterien vorlegen.</small></div>
+<div class="phase"><strong>Bauen &amp; testen</strong><small>Bauteile herstellen, montieren, Funktion prüfen und Schwachstelle finden.</small></div>
+<div class="phase"><strong>Verbessern</strong><small>Änderung begründen, erneut testen, Materialverbrauch und Ergebnis auswerten.</small></div>
+</div>
+<h2>3 · So steigt der Anspruch</h2>
+<div class="table-scroll"><table><thead><tr><th>Niveau 1 · Anwenden</th><th>Niveau 2 · Konstruieren</th><th>Niveau 3 · Optimieren</th></tr></thead><tbody><tr><td>Du nutzt eine Ausgangsskizze, passt ein Maß an und führst einen Funktionstest durch.</td><td>Du entwickelst Maße und Verbindungen selbst, erstellst eine Stückliste und verbesserst eine Schwachstelle.</td><td>Du vergleichst zwei Konstruktionsideen, prüfst sie und belegst eine Verbesserung; Material und Verschnitt begründest du.</td></tr></tbody></table></div>
+<p>In deiner Papiermappe hältst du Zeichnungen, Maße, Materialbedarf, Testergebnisse und Reflexion fest. Die Website unterstützt dich bei der Auswahl – sie ersetzt deine Mappe nicht.</p>
+</section>
+
+<section aria-labelledby="rules" style="margin-top:32px">
+<h2 id="rules">Vor dem Bauen beachten</h2>
+<ul>
+<li><strong>Holz prüfen:</strong> Risse, starke Äste, Verzug und Splitter erkennen; ungeeignete Dachlatten aussortieren.</li>
+<li><strong>Modell:</strong> Eisstiele mit Klammern sichern und nach dem Leimen ausreichend trocknen lassen. Kleine Stiele nicht frei an Sägemaschinen schneiden.</li>
+<li><strong>Original:</strong> Latten sicher einspannen, passende Säge und Verbindung wählen, Schraubstellen vorbohren und Kanten sorgfältig bearbeiten. Nur für deine Werkstatt freigegebene Maschinen verwenden.</li>
+<li><strong>Belastung:</strong> Prüflasten gemeinsam mit deiner Lehrkraft festlegen. Ein Modelltest beweist keine Tragfähigkeit in Originalgröße. Nicht zum Sitzen, Klettern oder als hohe freistehende Konstruktion nutzen.</li>
+</ul>
+</section>
+<footer>Didaktische Zusammenführung der bisherigen Möbelideen mit dem Projekt „Alles aus Dachlatte“. <a href="index.html">Bisheriger Projektkatalog mit 21 Anregungen</a> · <a href="ALLES-AUS-DACHLATTE.md">Ausführliche Lehrkraftplanung</a>. Preise und Stücklisten werden erst für den gewählten Entwurf festgelegt.</footer>
+</main>
+<script>
+const projects=[
+{id:"M01",name:"Buch- und Tabletständer",level:1,problem:"Ein Buch oder ein Gerät soll in einem passenden Winkel stehen, ohne nach hinten zu kippen.",model:"Baue einen kleinen Ständer mit zwei gleich hohen Seiten und einer festen oder verstellbaren Auflage. Nutze eine Modellkarte als Prüflast.",original:"Baue einen niedrigen Tischständer aus kurzen Dachlatten, mit Anschlag und sicherem Stand. Miss vorher das zu tragende Buch oder Gerät aus.",focus:"Winkel, Standfläche, gleicher Zuschnitt, Anschlag",test:"Steht das Testobjekt stabil? Kann es ohne Verrutschen herausgenommen werden?",challenge:"Vergleiche zwei Aufstellwinkel oder entwickle eine sichere Verstellung."},
+{id:"M02",name:"Materialablage für den Schreibtisch",level:1,problem:"Häufig genutztes Material soll einen festen, übersichtlichen Platz bekommen.",model:"Baue eine offene Ablage für kleine Modellgegenstände. Verbinde mehrere Eisstiele zu Flächen und stabilen Seitenteilen.",original:"Baue einen niedrigen Organizer oder eine Latten-Ablage für Bücher, Mappen oder größere Dinge. Kleine Gegenstände brauchen ggf. einen gesonderten Einsatz.",focus:"Nutzmaß, rechtwinklige Verbindung, Wiederholgenauigkeit",test:"Passt der vorgesehene Inhalt hinein? Steht die Ablage eben und hält sie die vereinbarte Modell- bzw. Nutzlast?",challenge:"Plane ein zweites kompatibles Fach und reduziere den Verschnitt."},
+{id:"M03",name:"Kleines Regalmöbel",level:2,problem:"Gegenstände sollen auf mindestens zwei Ebenen geordnet werden.",model:"Konstruiere ein maßstäbliches kleines Bücher- oder Materialregal. Baue zwei gleiche Seiten und sichere die Böden gegen Verrutschen.",original:"Entwickle ein niedriges, freistehendes Ablageregal mit Lattenböden und Aussteifung. Keine hohen oder kippgefährdeten Regale.",focus:"Rechtwinkligkeit, Querstreben, Aussteifung, Kippsicherheit",test:"Steht das Regal gerade? Ist es unter vereinbarter Prüflast stabil und kippt es nicht bei vorgesehener Nutzung?",challenge:"Vergleiche zwei Aussteifungen oder entwickle zwei passende Module."},
+{id:"M04",name:"Kleiner Beistelltisch",level:2,problem:"Eine kleine Ablage soll auf vier Beinen sicher stehen.",model:"Entwickle einen Modell-Beistelltisch im gewählten Maßstab. Nutze Querstreben, um wackelnde Beine zu verhindern.",original:"Entwirf einen kleinen Ablagetisch aus Dachlatten für eine ausdrücklich geringe, vereinbarte Nutzlast. Die Tischfläche besteht aus parallelen Latten.",focus:"Beinabstände, Rahmen, Diagonalverstärkung, ebene Auflage",test:"Stehen alle Beine auf? Wie verändert eine Querstrebe die seitliche Stabilität?",challenge:"Vergleiche zwei Bein- oder Rahmenkonstruktionen anhand gleicher Testbedingungen."},
+{id:"M05",name:"Klappbarer oder verstellbarer Ständer",level:3,problem:"Ein Möbel soll zwei nutzbare Positionen erhalten, ohne unkontrolliert zusammenzuklappen.",model:"Baue einen klappbaren Modellständer mit einer kleinen Drehachse und sicheren Endlagen. Zeige beide Funktionsstellungen.",original:"Entwickle einen verstellbaren Buchständer aus Dachlatten und geeigneten kleinen Beschlägen. Die Arretierung muss unter der vereinbarten Nutzlast halten.",focus:"Drehachse, Bewegungsraum, Anschläge, Arretierung",test:"Kannst du zwischen zwei Stellungen wechseln? Bleibt die Konstruktion nach dem Loslassen in der gewählten Position?",challenge:"Vergleiche zwei Arretierungen und dokumentiere, warum eine zuverlässiger funktioniert."},
+{id:"M06",name:"Modulares Möbel-System",level:3,problem:"Zwei Möbelmodule sollen einzeln und zusammen sinnvoll funktionieren.",model:"Entwickle zwei maßstäbliche Regale, Tische oder Ablagen, die zusammenpassen und in einem Lernraum-Modell umgestellt werden können.",original:"Baue zwei kleine Ablage- oder Regalelemente aus Dachlatten. Sie sollen mit einem gemeinsamen Maßraster nebeneinander oder in einer sicheren festgelegten Kombination genutzt werden.",focus:"Maßraster, wiederholte Bauteile, Toleranzen, Qualitätssicherung",test:"Passen die Module ohne Nacharbeit zusammen? Funktionieren Einzel- und Kombinationseinsatz?",challenge:"Erstelle einen Zuschnittplan für zehn Module und berechne eine materialärmere Fertigungsfolge."}
+];
+const mode=document.getElementById('mode'),level=document.getElementById('level'),list=document.getElementById('projects');
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+ const chosen=projects.filter(p=>level.value==='all'||String(p.level)===level.value);
+ list.innerHTML=chosen.map(p=>{
+ const m=mode.value!=='original'?'<div class="variant model"><b>Weg M · Eisstiele</b><p>'+escapeHTML(p.model)+'</p></div>':'';
+ const o=mode.value!=='model'?'<div class="variant original"><b>Weg O · Dachlatten</b><p>'+escapeHTML(p.original)+'</p></div>':'';
+ return '<article class="project" id="'+p.id+'"><div class="topline"><span class="tag">'+p.id+'</span><span class="tag">Niveau '+p.level+'</span></div><h3>'+escapeHTML(p.name)+'</h3><p class="problem"><b>Dein Problem:</b> '+escapeHTML(p.problem)+'</p>'+m+o+'<p class="check"><b>Technik:</b> '+escapeHTML(p.focus)+'<br><b>Prüfung:</b> '+escapeHTML(p.test)+'</p><p class="challenge"><b>Zusatz-Challenge:</b> '+escapeHTML(p.challenge)+'</p></article>';
+ }).join('');
+ document.getElementById('count').textContent=chosen.length+' von '+projects.length+' Möbelideen · '+(mode.value==='both'?'beide Materialwege':mode.value==='model'?'Modellbau':'Originalgröße');
+ document.getElementById('empty').hidden=chosen.length!==0;
+}
+mode.addEventListener('change',render);
+level.addEventListener('change',render);
+render();
+</script>
+</body>
+</html>
