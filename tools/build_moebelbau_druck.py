@@ -1,4 +1,5 @@
-"""Druckmaterial Möbelwerkstatt: Projektübersicht + Projektbogen (DOCX + PDF).
+"""Druckmaterial Möbelwerkstatt: Projektübersicht, Werkstattheft, Erwartungshorizont,
+Buchungsliste (DOCX + PDF).
 
 Stil wie tools/build_mappe.py: A4, Arial, monochrome Überschriften,
 Schreiblinien, Zeichenwörter (MAPPE, HALTEPUNKT, HILFE, KONTROLLE).
@@ -68,6 +69,7 @@ class Builder:
         self.D = D
         self.width = width
         self._pb = False
+        self.line_h = 23
 
     def _para(self, text='', style=None):
         z = self.D.add_paragraph(text, style)
@@ -111,12 +113,12 @@ class Builder:
             b.append(a)
         pp.append(b)
 
-    def lines(self, n=2):
+    def lines(self, n=2, h=None):
         for _ in range(n):
             z = self.p()
             pf = z.paragraph_format
             pf.space_after = pf.space_before = Pt(0)
-            pf.line_spacing = Pt(23)
+            pf.line_spacing = Pt(h or self.line_h)
             self._border(z, ['bottom', 'between'], 'AAAAAA', '3')
 
     def box(self, label=None, height=50, hint=None):
@@ -331,7 +333,7 @@ def build_uebersicht():
     b.h1('Dein Projektweg')
     plan = [
         ['1', 'Ideen finden: Bedarf entdecken, mindestens drei eigene Ideen skizzieren, Team bilden',
-         'Projektbogen Teil 1–2'],
+         'Werkstattheft 1A–1B'],
         ['2', 'Planen: Zeichnung mit Maßen, Stückliste, Aufgaben im Team verteilen, '
               'nötige Lehrgänge buchen',
          'HALTEPUNKT Freigabe'],
@@ -388,7 +390,7 @@ def build_uebersicht():
         'wenn dein Projekt ihn braucht.', size=10.5)
     b.note('PFLICHT', f'{PFLICHT_TXT} benutzt du erst, wenn du den Lehrgang gemacht hast und '
                       'die Lehrkraft im Werkstattpass unterschrieben hat.')
-    b.p('So buchst du: Im Projektbogen (5.4) planst du, welche Lehrgänge du brauchst, und kreuzt sie '
+    b.p('So buchst du: Im Werkstattheft (2C) planst du, welche Lehrgänge du brauchst, und kreuzt sie '
         'im Werkstattpass an. Dann trägst du dich auf der Buchungsliste ein – spätestens eine Stunde '
         'vorher. Am Ende zeigst du dein Probestück, die Lehrkraft unterschreibt. Lehrgänge des anderen '
         'Wegs darfst du auch buchen. Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.',
@@ -441,59 +443,133 @@ def build_uebersicht():
         z = b.p('• ' + s_, size=10)
         z.paragraph_format.space_after = Pt(2)
     b.note('HALTEPUNKT', 'Das Großprojekt braucht eine eigene Freigabe der Lehrkraft für die '
-           'Gesamtplanung – vor dem ersten Zuschnitt. Jede Person führt ihren eigenen Projektbogen.')
+           'Gesamtplanung – vor dem ersten Zuschnitt. Jede Person führt ihr eigenes Werkstattheft.')
     path = OUT / 'projektuebersicht.docx'
     D.save(path)
     return path
 
 
-# ============================================================== Projektbogen
-def build_bogen():
-    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Projektbogen')
+# ============================================================== Werkstattheft
+# Arbeitseinheiten: (Nr., Woche, Tag, Minuten, Input/Schwerpunkt, Arbeitsseiten)
+EINHEITEN = [
+    (1, 1, 'Montag', 45, 'Projektstart: Galerie, Sicherheit, Modell oder Original?', 'Start, 1A'),
+    (2, 1, 'Mittwoch', 90, 'Bedarf entdecken, Ideen skizzieren, Team bilden, entscheiden', '1A, 1B'),
+    (3, 2, 'Montag', 45, 'Maße, Maßstab und Holzquerschnitt klären', '2A, 2B'),
+    (4, 2, 'Mittwoch', 90, 'Zeichnung, Stückliste, Lehrgänge buchen, Freigabe', '2B, 2C, 2D'),
+    (5, 3, 'Montag', 45, 'Reihenfolge der Baugruppen, Arbeitsplatz vorbereiten', '2C, Werkstattpass'),
+    (6, 3, 'Mittwoch', 90, 'Bauen I: Lehrgänge, Bauteile herstellen, erste Verbindungen', 'Werkstattpass'),
+    (7, 4, 'Montag', 45, 'Zwischencheck: Liege ich im Plan?', '4A'),
+    (8, 4, 'Mittwoch', 90, 'Bauen II: montieren, aussteifen, schleifen', '–'),
+    (9, 5, 'Montag', 45, 'Prüfkriterien und sichere Prüfanordnung festlegen', '5A'),
+    (10, 5, 'Mittwoch', 90, 'Erster Funktionstest, Schwachstelle finden', '5A'),
+    (11, 6, 'Montag', 45, 'Verbessern, Oberfläche ölen oder lasieren, Bilanz', '6A'),
+    (12, 6, 'Mittwoch', 90, 'Abnahme, kurze Vorstellung, Rückblick', '6B, Bewertung'),
+]
+
+# Bewertung: (Code, Kriterium, max. Punkte, Beschreibung für Lernende)
+BEWERTUNG_A = [
+    ('A1', 'Bedarf, Ideen und Entscheidung', 6,
+     'echter Bedarf, mindestens drei Ideen, Entscheidung begründet'),
+    ('A2', 'Konstruktionszeichnung', 6, 'vollständig, alle wichtigen Maße, Baugruppen erkennbar'),
+    ('A3', 'Stückliste, Materialbedarf, Arbeitsplan', 4, 'passt zur Zeichnung, realistisch'),
+    ('A4', 'Stundenprotokolle P1–P12', 12,
+     'konkrete Ziele, Durchführung festgehalten, ehrliche Reflexion mit nächstem Schritt'),
+    ('A5', 'Funktionstest und Verbesserung', 6, 'Ergebnisse, Schwachstelle, Vorher-nachher'),
+    ('A6', 'Materialbilanz und Rückblick', 4, 'Verbrauch ausgewertet, eigene Entscheidungen erklärt'),
+    ('A7', 'Eigenständigkeit', 2, 'eigene Idee, gewähltes Niveau, Hilfen gezielt genutzt'),
+]
+BEWERTUNG_B = [
+    ('B1', 'Funktion', 15, 'erfüllt deine eigenen Prüfkriterien (nach der Verbesserung)'),
+    ('B2', 'Maßhaltigkeit', 10, 'entspricht deiner Zeichnung'),
+    ('B3', 'Verbindungen', 12, 'fest, sauber und fachgerecht ausgeführt'),
+    ('B4', 'Oberfläche und Kanten', 8, 'geschliffen, Kanten gebrochen, behandelt'),
+    ('B5', 'Stabilität und Sicherheit', 8, 'steht sicher, kippt und wackelt nicht'),
+    ('B6', 'Arbeitsweise in der Werkstatt', 7, 'sicher, sauber, Lehrgänge und Regeln beachtet'),
+]
+
+
+def build_werkstattheft():
+    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Werkstattheft')
     b = Builder(D)
 
-    def page(code, title, goal=None, first=False):
-        if not first:
-            b.brk()
+    def page(code, title, goal=None):
+        b.brk()
         b.h1(f'{code}  |  {title}')
         if goal:
             b.p(goal, bold_lead='Lernziel: ')
 
-    # --- Deckblatt
-    b.p('MEIN PROJEKTBOGEN', 'Subtitle')
+    def phase(nr, word, sub):
+        z = b.p(sub, bold_lead=f'{nr}  {word}   ', size=10)
+        z.runs[0].font.size = Pt(12)
+        z.runs[-1].font.color.rgb = RGBColor.from_string('666666')
+        pf = z.paragraph_format
+        pf.space_before = Pt(6); pf.space_after = Pt(2); pf.left_indent = Mm(3)
+        b._border(z, ['left'], INK, '24')
+        return z
+
+    def field(label, n=1, size=10):
+        b.p(label, size=size).paragraph_format.space_after = Pt(0)
+        b.lines(n)
+
+    # ---------------------------------------------------------- Deckblatt
+    b.p('MEIN WERKSTATTHEFT', 'Subtitle')
     D.add_paragraph('Möbelwerkstatt', 'Title')
-    b.p('Alles aus Dachlatte · Modell oder Original')
+    b.p('WP Technik 7 · Alles aus Dachlatte · Modell oder Original')
     b.p('Name: ___________________________________   Klasse: __________')
     b.p('Mein Team: ______________________________________________________')
-    b.h('So arbeitest du')
-    b.p('Jede Person führt einen eigenen Projektbogen. Entscheidungen im Team schreibt ihr alle auf. '
-        'Der Bogen ist deine Planung, dein Bautagebuch und dein Nachweis. Er gehört in die Mappe.')
-    b.note('DU ENTSCHEIDEST',
-           'Was du baust, entscheidest du. Auf diesen Seiten findest du Fragen, die dir beim '
-           'Entscheiden helfen. Es gibt keine fertige Bauanleitung.')
-    b.h('Meine Meilensteine')
-    ms = [
-        ['1', 'Idee und Entscheidung', 'Teil 1–2', '', ''],
-        ['2', 'Freigabe der Planung', 'Teil 3–5', '', ''],
-        ['3', 'Erster Funktionstest', 'Teil 7', '', ''],
-        ['4', 'Verbesserung und Abnahme', 'Teil 8–9', '', ''],
-    ]
-    b.table(['Nr.', 'Meilenstein', 'Seiten', 'Datum', 'Kürzel Lehrkraft'], ms,
-            [0.5, 2.6, 1.1, 1.2, 1.5], height=11)
+    b.h('So arbeitest du in jeder Stunde')
+    t = b.table(['1  PLANEN', '2  DURCHFÜHREN', '3  REFLEKTIEREN'], [[
+        'Zu Beginn: Ich schreibe auf, was ich mir für heute vornehme und woran ich merke, '
+        'dass ich es geschafft habe.',
+        'Während der Arbeit: Ich arbeite meine Schritte ab, halte fest, was ich geschafft habe '
+        'und wie ich Probleme gelöst habe.',
+        'Am Ende: Ich prüfe, ob ich mein Ziel erreicht habe, und lege meinen nächsten Schritt fest.']],
+        [1, 1, 1], size=10)
+    b.p('Dafür gibt es für jede Stunde ein Stundenprotokoll (P1 bis P12). '
+        'Dazwischen liegen die Arbeitsseiten für dein Projekt (1A bis 6B).', size=10)
+    b.h('Dein Heft ist deine Lernerfolgskontrolle')
+    b.note('WICHTIG', 'Dieses Werkstattheft ist zusammen mit deinem Werkstück die zweite '
+           'Klassenarbeit. Das Heft zählt 40 %, das Werkstück 60 %. Die Kriterien findest du '
+           'auf der letzten Seite – lies sie schon jetzt.')
+    for s_ in ['Jede Person führt ein eigenes Heft – auch im Team. Teamentscheidungen schreibt ihr alle auf, '
+               'Protokolle und Reflexion schreibst du allein.',
+               'Schreibe ehrlich. Ein Ziel, das du nicht erreicht hast, ist kein Fehler – '
+               'wenn du erklärst, was du daraus machst.',
+               'Das Heft bleibt im Technikraum. Fotos vom Arbeitsstand darfst du einkleben.']:
+        z = b.p('• ' + s_, size=10)
+        z.paragraph_format.space_after = Pt(2)
     b.h('Hier findest du Hilfe')
-    b.p('Hilfekarten im Lernnavigator: H1 Von der Idee zur Zeichnung · H2 Maßstab · '
-        'H3 Dachlatten prüfen · H4 Verbindungen · H5 Aussteifen · H6 Kippen und Prüfen · '
-        'H7 Zuschnitt und Kosten · H8 Verbessern mit Test', size=10)
-    b.p('Erst selbst probieren, dann die Hilfekarte, dann das Team, dann die Lehrkraft.', size=10)
-    b.p('Arbeitsgänge lernst du in Lehrgängen. Du buchst sie auf der Buchungsliste. '
-        'Was du schon darfst, steht in deinem Werkstattpass auf der nächsten Seite.', size=10)
+    b.p('Erst selbst probieren → Hilfekarte H1–H8 im Lernnavigator → Team → Lehrkraft. '
+        'Arbeitsgänge lernst du in Lehrgängen (Werkstattpass).', size=10)
 
-    # --- Werkstattpass
+    # ---------------------------------------------------------- Überblick
+    page('Start', 'Mein Projekt auf einen Blick', 'Ich behalte mein ganzes Projekt im Blick.')
+    b.p('Fülle den oberen Teil aus, sobald du dich entschieden hast (Woche 1).', size=10)
+    b.table(None, [
+        ['Ich baue:', ''], ['für (Person / Ort):', ''],
+        ['Materialweg:', '[  ] Weg M – Modell aus Eisstielen     [  ] Weg O – Original aus Dachlatte'],
+        ['Teamgröße:', '[  ] allein   [  ] zu zweit   [  ] zu dritt   [  ] Teilteam im Großprojekt'],
+        ['Mein Startniveau:', '[  ] 1 Anwenden   [  ] 2 Konstruieren   [  ] 3 Optimieren'],
+        ['Meine Baugruppe:', ''],
+    ], [1.3, 5], height=9, size=10)
+    b.h('Mein Zeitplan')
+    b.p('Plane in Woche 1 grob, was du in jeder Woche schaffen willst. Kreuze am Ende jeder Woche an, '
+        'wo du stehst. So merkst du früh, ob du deinen Plan ändern musst.', size=10)
+    b.table(['Woche', 'Das will ich schaffen', 'Das habe ich geschafft', 'im Plan?'],
+            [[str(w), '', '', '[  ] ja\n[  ] knapp\n[  ] nein'] for w in range(1, 7)],
+            [0.6, 2.6, 2.6, 1], height=17, size=9.5, pad=1.5)
+    b.h('Meilensteine')
+    b.table(['Haltepunkt', 'Seite', 'Datum', 'Kürzel Lehrkraft'], [
+        ['Entscheidung steht', '1B', '', ''], ['Freigabe der Planung', '2D', '', ''],
+        ['Funktionstest', '5A', '', ''], ['Abnahme', '6B', '', '']],
+        [2.6, 0.8, 1.3, 1.6], height=8, size=10, pad=1.5)
+
+    # ---------------------------------------------------------- Werkstattpass
     page('Werkstattpass', 'Meine Lehrgänge', 'Ich lerne Arbeitsgänge, bevor ich sie brauche.')
     b.note('PFLICHT', f'{PFLICHT_TXT}: Du benutzt sie erst, wenn hier die Unterschrift '
                       'der Lehrkraft steht.')
-    b.p('Kreuze an, was du für dein Projekt brauchst. Buche dann einen Termin. '
-        'Nach dem Lehrgang zeigst du dein Probestück. Die Lehrkraft trägt Datum und Kürzel ein.',
+    b.p('Kreuze an, was du brauchst. Buche einen Termin auf der Buchungsliste. '
+        'Nach dem Lehrgang zeigst du dein Probestück, die Lehrkraft trägt Datum und Kürzel ein.',
         size=10)
     for key, label in GRUPPEN:
         b.h3(label)
@@ -506,184 +582,310 @@ def build_bogen():
     b.table(['Arbeitsgang', 'Warum brauche ich ihn?', 'bestanden am', 'Kürzel Lehrkraft'],
             [['', '', '', ''] for _ in range(2)], [2, 2.9, 1.3, 1.3], height=8, size=9, pad=1.5)
 
-    # --- Teil 1
-    page('Teil 1', 'Bedarf entdecken', 'Ich finde eine echte Aufgabe für ein Möbelstück.')
-    b.h('1.1 | MAPPE  Wo fehlt etwas?')
+    # ---------------------------------------------------------- Stundenprotokoll
+    def protokoll(nr, woche, tag, minuten, inhalt, seiten):
+        b.line_h = 21
+        b.brk()
+        b.h1(f'P{nr}  |  Stundenprotokoll')
+        b.p(f'Woche {woche} · {tag} · {minuten} Minuten        Datum: ______________', size=10.5)
+        z = b.p(f'Heute: {inhalt}  ·  Arbeitsseiten: {seiten}', size=10)
+        z.runs[0].bold = True
+        phase('1', 'PLANEN', 'zu Beginn der Stunde')
+        if nr > 1:
+            b.p('Das habe ich mir letzte Stunde als nächsten Schritt vorgenommen:', size=10)
+            b.lines(1)
+        b.p('Mein Ziel für heute – am Ende der Stunde habe ich …', size=10)
+        b.lines(2)
+        b.table(['Meine Schritte heute', 'erledigt?'],
+                [['1.', '[  ] ja  [  ] teils  [  ] nein'], ['2.', '[  ] ja  [  ] teils  [  ] nein'],
+                 ['3.', '[  ] ja  [  ] teils  [  ] nein']], [4.3, 2.2], height=7.5, size=9.5, pad=1.5)
+        b.p('Das brauche ich (Material, Werkzeug, Lehrgang L__): _____________________________', size=10)
+        b.p('Daran erkenne ich, dass ich mein Ziel erreicht habe:', size=10)
+        b.lines(1)
+        phase('2', 'DURCHFÜHREN', 'während der Arbeit')
+        b.p('Das habe ich geschafft:', size=10)
+        b.lines(2)
+        b.p('Problem und meine Lösung – oder: Das mache ich nächstes Mal anders:', size=10)
+        b.lines(2)
+        b.p('Hilfe genutzt:   [  ] Hilfekarte H___   [  ] Team   [  ] Lehrkraft   [  ] keine nötig',
+            size=10)
+        phase('3', 'REFLEKTIEREN', 'am Ende der Stunde')
+        b.table(['', 'noch nicht', 'teilweise', 'gut', 'sehr gut'], [
+            ['Ich habe mein Ziel erreicht.', '[  ]', '[  ]', '[  ]', '[  ]'],
+            ['Ich habe konzentriert gearbeitet.', '[  ]', '[  ]', '[  ]', '[  ]'],
+            ['Ich habe sicher und ordentlich gearbeitet.', '[  ]', '[  ]', '[  ]', '[  ]'],
+            ['Im Team lief es gut. (nur bei Teamarbeit)', '[  ]', '[  ]', '[  ]', '[  ]'],
+        ], [3.6, 0.9, 0.9, 0.7, 0.8], size=9.5, pad=1.5)
+        b.p('Mein nächster Schritt (schreibe ihn nächstes Mal oben ab):', size=10)
+        b.lines(1)
+        b.line_h = 23
+
+    E = {e[0]: e for e in EINHEITEN}
+
+    # ---------------------------------------------------------- Woche 1
+    protokoll(*E[1])
+    page('1A', 'Bedarf entdecken und Ideen finden', 'Ich finde eine echte Aufgabe für ein Möbelstück.')
     b.p('Schau dich um: in deinem Zimmer, im Klassenraum, im Werkraum, bei Familie oder Freunden. '
-        'Was liegt herum? Was ist unpraktisch? Wem könntest du helfen?')
+        'Was liegt herum? Was ist unpraktisch? Wem könntest du helfen?', size=10.5)
     b.table(['Ort', 'Das Problem', 'Wer hätte etwas davon?'],
-            [['', '', ''] for _ in range(3)], [1.3, 3, 2], height=13)
-    b.h('1.2 | MAPPE  Meine drei Ideen')
+            [['', '', ''] for _ in range(3)], [1.3, 3, 2], height=12)
+    b.h('Meine drei Ideen')
     b.p('Skizziere mindestens drei unterschiedliche Ideen. Schnelle Skizzen reichen. '
-        'Mindestens eine Idee soll ganz von dir sein – nicht aus dem Ideenspeicher.')
-    t = b.table(['Idee 1', 'Idee 2', 'Idee 3'], [['', '', '']], [1, 1, 1], height=62)
-    b.p('Name: ____________________    Name: ____________________    Name: ____________________',
-        size=9.5)
-    b.note('HILFE', 'Kein Einfall? Frage: Was nervt mich jeden Tag? '
-                    'Oder öffne den Ideenspeicher auf der Projektübersicht.')
+        'Mindestens eine Idee ist ganz von dir – nicht aus dem Ideenspeicher.', size=10.5)
+    b.table(['Idee 1: ____________', 'Idee 2: ____________', 'Idee 3: ____________'],
+            [['', '', '']], [1, 1, 1], height=95)
+    b.note('HILFE', 'Kein Einfall? Frage dich: Was nervt mich jeden Tag? '
+                    'Erst dann: Ideenspeicher in der Projektübersicht.')
 
-    # --- Teil 2
-    page('Teil 2', 'Entscheiden', 'Ich treffe eine begründete Entscheidung.')
-    b.h('2.1 | MAPPE  Ideen vergleichen')
-    b.p('Bewerte jede Idee: ++ sehr gut · + gut · – eher nicht. Ergänze ein eigenes Kriterium.')
+    page('1B', 'Entscheiden', 'Ich treffe eine begründete Entscheidung.')
+    b.p('Bewerte jede Idee: ++ sehr gut · + gut · – eher nicht. Ergänze ein eigenes Kriterium.', size=10.5)
     b.table(['Kriterium', 'Idee 1', 'Idee 2', 'Idee 3'], [
-        ['Löst ein echtes Problem', '', '', ''],
-        ['Ist in 6 Wochen schaffbar', '', '', ''],
-        ['Passt zu unserer Teamgröße', '', '', ''],
-        ['Ist sicher baubar', '', '', ''],
-        ['Ist neu oder eigen', '', '', ''],
-        ['Eigenes Kriterium: ____________', '', '', ''],
-    ], [3, 1, 1, 1], height=9)
-    b.h('2.2 | MAPPE  Unsere Entscheidung')
-    b.p('Wir bauen: ____________________________________________________________')
-    b.p('für (Person/Ort): _____________________________________________________')
-    b.p('Materialweg:   [  ] Weg M – Modell aus Eisstielen     [  ] Weg O – Original aus Dachlatte')
-    b.p('Teamgröße:   [  ] allein     [  ] zu zweit     [  ] zu dritt     '
-        '[  ] Teilteam im Großprojekt')
-    b.p('Ich starte auf:   [  ] Niveau 1 Anwenden   [  ] Niveau 2 Konstruieren   '
-        '[  ] Niveau 3 Optimieren')
-    b.p('Darum haben wir uns so entschieden:')
+        ['löst ein echtes Problem', '', '', ''], ['in 6 Wochen schaffbar', '', '', ''],
+        ['passt zu unserer Teamgröße', '', '', ''], ['sicher baubar', '', '', ''],
+        ['neu oder eigen', '', '', ''], ['eigenes Kriterium: ____________', '', '', ''],
+    ], [3, 1, 1, 1], height=8.5)
+    b.p('Wir bauen: __________________________________________________________', size=10.5)
+    b.p('Darum haben wir uns so entschieden:', size=10.5)
     b.lines(3)
-    b.p('Das ist an unserer Idee neu oder eigen:')
+    b.p('Das ist an unserer Idee neu oder eigen:', size=10.5)
     b.lines(2)
-    b.note('KONTROLLE', 'Passt der Umfang zur Teamgröße? Schau in die Tabelle auf der Projektübersicht.')
+    b.p('Übertrage deine Entscheidung auf die Seite „Mein Projekt auf einen Blick“.', size=10)
+    b.note('HALTEPUNKT', 'Zeige deine Entscheidung der Lehrkraft. Passt der Umfang zur Teamgröße? '
+                         '(Tabelle in der Projektübersicht)')
+    b.p('Entscheidung besprochen am: ____________   Kürzel Lehrkraft: ____________', size=10)
+    protokoll(*E[2])
 
-    # --- Teil 3
-    page('Teil 3', 'Anforderungen und Team', 'Ich lege fest, was mein Möbel können muss.')
-    b.h('3.1 | MAPPE  Was muss unser Möbel können?')
-    b.table(['Muss es können', 'Wäre schön'], [['', ''] for _ in range(3)], [1, 1], height=10)
-    b.h('3.2 | MAPPE  Unsere Prüfkriterien')
-    b.p('Schreibe mindestens zwei Kriterien, die man prüfen kann. '
-        'Beispiel: „Der Ständer hält ein Buch mit 1 kg, ohne zu kippen.“')
+    # ---------------------------------------------------------- Woche 2
+    protokoll(*E[3])
+    page('2A', 'Anforderungen, Prüfkriterien, Team', 'Ich lege fest, was mein Möbel können muss.')
+    b.h('Was muss unser Möbel können?')
+    b.table(['Muss es können', 'Wäre schön'], [['', ''] for _ in range(3)], [1, 1], height=9)
+    b.h('Unsere Prüfkriterien')
+    b.p('Mindestens zwei Kriterien, die man mit ja oder nein prüfen kann. '
+        'Beispiel: „Der Ständer hält ein Buch mit 1 kg, ohne zu kippen.“', size=10)
     b.table(['Nr.', 'Prüfkriterium', 'So prüfen wir es'],
-            [['1', '', ''], ['2', '', ''], ['3', '', '']], [0.5, 3.2, 2.8], height=12)
-    b.h('3.3 | MAPPE  Teamvertrag')
-    b.p('Bei Einzelarbeit: Notiere nur deine Hauptbaugruppen und lass die Regeln weg. '
-        'Im Großprojekt: Tragt hier euer Teilteam ein und notiert, welches Modul oder welche '
-        'Aufgabe ihr übernehmt.', size=10)
+            [['1', '', ''], ['2', '', ''], ['3', '', '']], [0.5, 3.2, 2.8], height=11)
+    b.h('Teamvertrag')
+    b.p('Bei Einzelarbeit: nur deine Hauptbaugruppen eintragen. Im Großprojekt: euer Teilteam und '
+        'eure Aufgabe.', size=10)
     b.table(['Name', 'Ich bin verantwortlich für (Baugruppe / Möbelteil)', 'Unterschrift'],
-            [['', '', ''] for _ in range(3)], [1.6, 3.4, 1.5], height=12)
-    b.p('Unsere Regeln für die Zusammenarbeit:')
+            [['', '', ''] for _ in range(3)], [1.6, 3.4, 1.5], height=10)
+    b.p('Unsere Regeln: Wenn wir uns nicht einig sind, machen wir es so:', size=10)
     b.lines(2)
-    b.p('Wenn wir uns nicht einig sind, machen wir es so:')
-    b.lines(1)
 
-    # --- Teil 4
-    page('Teil 4', 'Konstruktionszeichnung', 'Ich zeichne mein Möbel maßhaltig.')
-    b.h('4.1 | MAPPE  Zeichnung mit Maßen')
-    b.p('Zeichne dein Möbel in einer Ansicht oder als Skizze von schräg. Trage alle wichtigen Maße '
-        'in mm ein. Markiere die Baugruppen und wer sie baut.')
-    b.box(None, 330)
-    b.p('Gesamtmaße (B × T × H): ______ × ______ × ______ mm      '
-        'Nur Weg M – Maßstab: 1 : ______', size=10.5)
+    page('2B', 'Konstruktionszeichnung', 'Ich zeichne mein Möbel maßhaltig.')
+    b.p('Zeichne dein Möbel in einer Ansicht oder schräg von vorn. Trage alle wichtigen Maße in mm ein. '
+        'Markiere die Baugruppen und wer sie baut.', size=10.5)
+    b.box(None, 360)
+    b.p('Gesamtmaße (B × T × H): ______ × ______ × ______ mm      Nur Weg M – Maßstab: 1 : ______',
+        size=10.5)
     b.note('HILFE', 'H1 Von der Idee zur Zeichnung · H2 Maßstab umrechnen')
 
-    # --- Teil 5
-    page('Teil 5', 'Stückliste und Arbeitsplan', 'Ich plane Material und Arbeitsschritte.')
-    b.h('5.1 | MAPPE  Stückliste')
+    page('2C', 'Stückliste, Arbeitsplan, Lehrgänge', 'Ich plane Material, Schritte und Lehrgänge.')
+    b.h('Stückliste')
     b.table(['Nr.', 'Bauteil', 'Anzahl', 'Länge (mm)', 'Material', 'Wer?'],
             [[str(i), '', '', '', '', ''] for i in range(1, 9)],
-            [0.5, 2.4, 0.8, 1.2, 1.6, 1.1], height=7.5, size=9.5)
-    b.h('5.2 | MAPPE  Materialbedarf')
-    b.p('Weg O: Dachlatte gesamt ______ m (plus ca. 10 % Verschnitt = ______ m)')
-    b.p('Weg M: Eisstiele gesamt ______ Stück      Sonstiges: _______________________________')
-    b.p('Verbindungen (z. B. leimen, schrauben, Scharnier): ______________________________')
-    b.h('5.3 | MAPPE  Reihenfolge der Arbeitsschritte')
-    b.table(['Schritt', 'Was wird gemacht?', 'Werkzeug', 'Wer?'],
-            [[str(i), '', '', ''] for i in range(1, 7)], [0.6, 3.4, 1.6, 1], height=8, size=9.5)
-    b.h('5.4 | MAPPE  Meine Lehrgänge')
-    b.p('Für meine Arbeitsschritte brauche ich diese Lehrgänge (z. B. L3, L9):  '
-        '__________________________')
-    b.p('Kreuze sie im Werkstattpass an und trage dich auf der Buchungsliste ein.', size=10)
+            [0.5, 2.4, 0.8, 1.2, 1.6, 1.1], height=7, size=9.5, pad=1.5)
+    b.p('Weg O: Dachlatte gesamt ______ m (+ ca. 10 % Verschnitt = ______ m)      '
+        'Weg M: Eisstiele ______ Stück', size=10)
+    b.p('Verbindungen (z. B. leimen, schrauben, dübeln): ____________________________________', size=10)
+    b.h('Reihenfolge der Arbeitsschritte')
+    b.table(['Schritt', 'Was wird gemacht?', 'Werkzeug / Maschine', 'Lehrgang', 'Wer?'],
+            [[str(i), '', '', 'L___', ''] for i in range(1, 7)], [0.6, 3, 1.6, 0.9, 0.9],
+            height=7.5, size=9.5, pad=1.5)
+    b.p('Kreuze die nötigen Lehrgänge im Werkstattpass an und trage dich auf der Buchungsliste ein.',
+        size=10)
     b.note('HILFE', 'H3 Dachlatten prüfen · H4 Verbindungen · H7 Zuschnitt und Kosten · '
-                    'Lehrgangsübersicht: Projektübersicht Seite 3')
+                    'Lehrgänge: Projektübersicht Seite 3')
 
-    # --- Teil 6 Freigabe
-    page('Teil 6', 'Freigabe', 'Ich prüfe meine Planung, bevor ich säge.')
-    b.note('HALTEPUNKT', 'Zeige deine Planung der Lehrkraft. Erst nach der Freigabe '
-                         'schneidest du Material zu.')
-    b.h('6.1 | KONTROLLE  Unsere Planung ist vollständig')
-    b.table(['Prüfpunkt', 'Wir', 'Lehrkraft'], [
-        ['Das Möbel löst ein echtes Problem (Teil 1–2).', '[  ]', '[  ]'],
+    page('2D', 'Freigabe', 'Ich prüfe meine Planung, bevor ich säge.')
+    b.note('HALTEPUNKT', 'Zeige deine Planung der Lehrkraft. Erst nach der Freigabe schneidest du '
+                         'Material zu.')
+    b.table(['Prüfpunkt', 'Ich', 'Lehrkraft'], [
+        ['Das Möbel löst ein echtes Problem (1A, 1B).', '[  ]', '[  ]'],
         ['Der Umfang passt zur Teamgröße.', '[  ]', '[  ]'],
-        ['Die Zeichnung hat alle wichtigen Maße.', '[  ]', '[  ]'],
-        ['Stückliste und Zeichnung passen zusammen.', '[  ]', '[  ]'],
-        ['Es gibt mindestens zwei prüfbare Prüfkriterien.', '[  ]', '[  ]'],
+        ['Die Zeichnung hat alle wichtigen Maße (2B).', '[  ]', '[  ]'],
+        ['Stückliste und Zeichnung passen zusammen (2C).', '[  ]', '[  ]'],
+        ['Es gibt mindestens zwei prüfbare Prüfkriterien (2A).', '[  ]', '[  ]'],
         ['Jede Person hat eine eigene Baugruppe.', '[  ]', '[  ]'],
-        ['Nötige Lehrgänge sind im Werkstattpass angekreuzt und gebucht.', '[  ]', '[  ]'],
-        ['Wer eine Maschine nutzt, macht vorher den Pflicht-Lehrgang.', '[  ]', '[  ]'],
+        ['Nötige Lehrgänge sind angekreuzt und gebucht.', '[  ]', '[  ]'],
         ['Kein Sitzmöbel, kein hohes Regal in Originalgröße.', '[  ]', '[  ]'],
-    ], [5, 0.8, 1.1], height=8.5)
-    b.h('6.2 | Rückmeldung der Lehrkraft')
-    b.p('Materialrahmen: _________________________________________________________')
-    b.p('Bitte noch ändern:')
+    ], [5, 0.8, 1.1], height=8)
+    b.h('Rückmeldung der Lehrkraft')
+    b.p('Materialrahmen: _______________________________________________________', size=10.5)
+    b.p('Bitte noch ändern:', size=10.5)
     b.lines(4)
-    b.p('[  ] Freigegeben      Datum: ______________      Kürzel: ______________')
+    b.p('[  ] Freigegeben      Datum: ______________      Kürzel: ______________', size=10.5)
+    protokoll(*E[4])
 
-    # --- Bautagebuch
-    page('Bautagebuch', 'Was habe ich geschafft?', 'Ich plane meine nächsten Schritte selbst.')
-    b.p('Fülle am Ende jeder Bauphase eine Zeile aus. So weißt du beim nächsten Mal sofort weiter.')
-    b.table(['Datum', 'Das habe ich geschafft', 'Problem und meine Lösung', 'Nächster Schritt'],
-            [['', '', '', ''] for _ in range(7)], [0.9, 2.1, 2.1, 1.6], height=31, size=9.5)
+    # ---------------------------------------------------------- Woche 3 und 4
+    protokoll(*E[5])
+    protokoll(*E[6])
+    protokoll(*E[7])
+    page('4A', 'Zwischencheck', 'Ich überprüfe meinen Plan und passe ihn an.')
+    b.p('Halbzeit beim Bauen. Vergleiche mit deinem Zeitplan auf der Seite „Mein Projekt auf einen Blick“.',
+        size=10.5)
+    b.table(['Frage', 'Meine Antwort'], [
+        ['Wo stehe ich? Was ist schon fertig?', ''],
+        ['Was fehlt noch bis zum Test in Woche 5?', ''],
+        ['Liege ich im Plan?', '[  ] ja     [  ] knapp     [  ] nein'],
+        ['Was kann ich vereinfachen oder weglassen, ohne dass die Funktion leidet?', ''],
+        ['Welche Hilfe oder welchen Lehrgang brauche ich noch?', ''],
+    ], [2.4, 4], height=20, size=10)
+    b.h('Mein angepasster Plan bis zum Test')
+    b.table(['Stunde', 'Das erledige ich'], [['Woche 4 · Mittwoch', ''], ['Woche 5 · Montag', '']],
+            [1.6, 4.8], height=14, size=10)
+    b.p('Zwischencheck besprochen mit: ______________   Kürzel Lehrkraft: ______________', size=10)
+    protokoll(*E[8])
 
-    # --- Teil 7 Test
-    page('Teil 7', 'Funktionstest', 'Ich prüfe mein Möbel ehrlich und finde Schwachstellen.')
+    # ---------------------------------------------------------- Woche 5
+    protokoll(*E[9])
+    page('5A', 'Funktionstest', 'Ich prüfe mein Möbel ehrlich und finde Schwachstellen.')
     b.note('HALTEPUNKT', 'Plant den Test mit der Lehrkraft. Testet nur mit der vereinbarten Last.')
-    b.h('7.1 | MAPPE  Erster Test')
-    b.table(['Prüfkriterium (aus 3.2)', 'Ergebnis', 'Erfüllt?'],
-            [['', '', 'ja / teils / nein'] for _ in range(3)], [3, 2.6, 1.2], height=15)
-    b.h('7.2 | MAPPE  Schwachstelle')
-    b.p('Diese Stelle hat nicht gut funktioniert:')
-    b.lines(2)
-    b.p('Ich vermute als Ursache:')
-    b.lines(2)
-    b.box('7.3 | MAPPE  Meine Verbesserungsidee (Skizze)', 190)
+    b.p('Vereinbarte Prüflast / Prüfanordnung: ______________________________________', size=10.5)
+    b.table(['Prüfkriterium (aus 2A)', 'Ergebnis', 'Erfüllt?'],
+            [['', '', 'ja / teils / nein'] for _ in range(3)], [3, 2.6, 1.2], height=13)
+    b.h('Schwachstelle')
+    field('Diese Stelle hat nicht gut funktioniert:', 2, 10.5)
+    field('Ich vermute als Ursache:', 2, 10.5)
+    b.box('Meine Verbesserungsidee (Skizze)', 150)
     b.note('HILFE', 'H5 Aussteifen · H6 Kippen und Prüfen · H8 Verbessern mit Test')
+    protokoll(*E[10])
 
-    # --- Teil 8 Verbesserung
-    page('Teil 8', 'Verbessern und erneut testen', 'Ich zeige mit einem Test, dass es besser geworden ist.')
-    b.h('8.1 | MAPPE  Vorher – nachher')
-    b.table(['', 'Vorher', 'Nachher'], [
-        ['Was habe ich verändert?', '', ''],
-        ['Testergebnis', '', ''],
-    ], [1.6, 2.5, 2.5], height=20)
-    b.h('8.2 | MAPPE  Materialbilanz')
-    b.table(['', 'Geplant (5.2)', 'Verbraucht', 'Verschnitt / Rest'],
-            [['Dachlatte (m) oder Eisstiele (Stück)', '', '', '']], [2.4, 1.3, 1.3, 1.5], height=12)
-    b.p('Hier haben wir Material gespart oder verschwendet:')
-    b.lines(2)
-    b.h('8.3 | MAPPE  Oberfläche')
-    b.p('Unsere Oberfläche:   [  ] geölt     [  ] lasiert     [  ] furniert     [  ] unbehandelt')
-    b.p('Darum haben wir uns so entschieden:')
-    b.lines(2)
-    b.h('8.4 | MAPPE  Was wäre, wenn wir es zehnmal bauen?')
-    b.p('Wie könnte man euer Möbel zehnmal herstellen? Denkt an gleiche Längen, '
-        'Schablonen, Reihenfolge und Qualitätskontrolle.')
-    b.lines(3)
+    # ---------------------------------------------------------- Woche 6
+    protokoll(*E[11])
+    page('6A', 'Verbessern, Oberfläche, Bilanz', 'Ich zeige mit einem Test, dass es besser geworden ist.')
+    b.h('Vorher – nachher')
+    b.table(['', 'Vorher', 'Nachher'], [['Was habe ich verändert?', '', ''], ['Testergebnis', '', '']],
+            [1.6, 2.5, 2.5], height=18)
+    b.h('Oberfläche')
+    b.p('[  ] geölt     [  ] lasiert     [  ] furniert     [  ] unbehandelt,  weil ____________________',
+        size=10.5)
+    b.h('Materialbilanz')
+    b.table(['', 'Geplant (2C)', 'Verbraucht', 'Rest / Verschnitt'],
+            [['Dachlatte (m) oder Eisstiele (Stück)', '', '', '']], [2.4, 1.3, 1.3, 1.5], height=11)
+    field('Hier habe ich Material gespart oder verschwendet:', 2, 10.5)
+    b.h('Was wäre, wenn wir es zehnmal bauen?')
+    field('Wie könnte man euer Möbel zehnmal herstellen? Denkt an gleiche Längen, Schablonen, '
+          'Reihenfolge und Qualitätskontrolle.', 3, 10.5)
 
-    # --- Teil 9 Reflexion
-    page('Teil 9', 'Abnahme und Rückblick', 'Ich schätze meine Arbeit ehrlich ein.')
-    b.h('9.1 | MAPPE  Meine Selbsteinschätzung')
+    page('6B', 'Abnahme und Rückblick', 'Ich schätze meine Arbeit ehrlich ein.')
+    b.note('HALTEPUNKT', 'Abnahme: Du stellst dein Werkstück in 2–3 Minuten vor und erklärst eine '
+                         'Entscheidung, auf die du stolz bist.')
     b.table(['Ich kann …', 'noch nicht', 'teilweise', 'sicher'], [
         ['eine eigene Möbelidee aus einem Bedarf entwickeln.', '[  ]', '[  ]', '[  ]'],
         ['eine Zeichnung mit Maßen und eine Stückliste erstellen.', '[  ]', '[  ]', '[  ]'],
-        ['maßgenau und sicher fertigen.', '[  ]', '[  ]', '[  ]'],
+        ['meine Stunden planen und meinen Plan anpassen.', '[  ]', '[  ]', '[  ]'],
         ['die Arbeitsgänge aus meinen Lehrgängen sicher anwenden.', '[  ]', '[  ]', '[  ]'],
-        ['mein Möbel mit eigenen Kriterien prüfen.', '[  ]', '[  ]', '[  ]'],
-        ['eine Schwachstelle verbessern und das begründen.', '[  ]', '[  ]', '[  ]'],
-        ['sparsam mit Material umgehen.', '[  ]', '[  ]', '[  ]'],
+        ['maßgenau und sauber fertigen.', '[  ]', '[  ]', '[  ]'],
+        ['mein Möbel prüfen und eine Schwachstelle verbessern.', '[  ]', '[  ]', '[  ]'],
         ['im Team Verantwortung übernehmen (falls Team).', '[  ]', '[  ]', '[  ]'],
-    ], [4, 0.9, 0.9, 0.9], height=8)
-    b.h('9.2 | MAPPE  Rückblick')
-    for q, n in [('Diese Entscheidung habe ich selbst getroffen:', 2),
-                 ('Darauf bin ich stolz:', 1),
-                 ('Das würde ich beim nächsten Mal anders machen:', 2)]:
-        b.p(q)
-        b.lines(n)
-    b.h('9.3 | Feedback')
-    b.table(['Von meinem Team', 'Von der Lehrkraft'], [['', '']], [1, 1], height=48)
+    ], [4, 0.9, 0.9, 0.9], height=7.5, size=9.5, pad=1.5)
+    for q, n in [('Diese Entscheidung habe ich selbst getroffen:', 2), ('Darauf bin ich stolz:', 1),
+                 ('Das hat mir beim Planen meiner Stunden geholfen:', 1),
+                 ('Das würde ich beim nächsten Projekt anders machen:', 2)]:
+        field(q, n, 10.5)
+    b.table(['Feedback von meinem Team', 'Feedback der Lehrkraft'], [['', '']], [1, 1], height=34)
+    protokoll(*E[12])
 
-    path = OUT / 'projektbogen.docx'
+    # ---------------------------------------------------------- Bewertung
+    page('Bewertung', 'Meine Lernerfolgskontrolle')
+    b.p('Werkstattheft (Teil A, 40 Punkte) und Werkstück (Teil B, 60 Punkte) ergeben zusammen '
+        '100 Punkte. Schätze dich vor der Abgabe selbst ein: ++ sicher erfüllt · + erfüllt · '
+        'o teilweise · – noch nicht.', size=10)
+
+    def bew(titel, rows):
+        b.h3(titel)
+        t = b.table(['', 'Kriterium', 'Daran erkennt man es', 'max.', 'Ich', 'Punkte'],
+                    [[c, k, d, str(m), '', ''] for c, k, m, d in rows] + [['', 'Summe', '', str(sum(r[2] for r in rows)), '', '']],
+                    [0.45, 1.7, 3.1, 0.5, 0.5, 0.7], size=9, pad=1.5)
+        b.bold_cells(t, col=1)
+        for c in t.rows[-1].cells:
+            for q in c.paragraphs:
+                for r in q.runs:
+                    r.bold = True
+
+    bew('Teil A · Werkstattheft (40 %)', BEWERTUNG_A)
+    bew('Teil B · Werkstück (60 %)', BEWERTUNG_B)
+    b.p('Im Team wird beim Werkstück deine eigene Baugruppe und das gemeinsame Ergebnis bewertet. '
+        'Das Werkstattheft wird für jede Person einzeln bewertet.', size=9.5)
+    b.p('Gesamt: ________ / 100 Punkte        Note: ____________        Datum, Kürzel: ______________',
+        size=10.5)
+
+    path = OUT / 'werkstattheft.docx'
+    D.save(path)
+    return path
+
+
+# ===================================================== Erwartungshorizont
+STUFEN = {
+    'A1': ('echter, konkret beschriebener Bedarf; mind. drei verschiedene Ideen, davon eine eigene; '
+           'Entscheidung mit Kriterien begründet', 'Bedarf und drei Ideen vorhanden, Begründung knapp',
+           'Bedarf unklar oder weniger als drei Ideen; keine Begründung'),
+    'A2': ('vollständige, saubere Zeichnung; alle für den Bau nötigen Maße; Baugruppen und ggf. Maßstab angegeben',
+           'Zeichnung verständlich, einzelne Maße fehlen', 'Skizze ohne verwertbare Maße'),
+    'A3': ('Stückliste vollständig und passend zur Zeichnung; Materialbedarf mit Verschnitt; sinnvolle Reihenfolge '
+           'mit Lehrgängen', 'weitgehend vollständig, kleinere Widersprüche', 'lückenhaft oder passt nicht zur Zeichnung'),
+    'A4': ('nahezu alle Protokolle; Ziele konkret und überprüfbar; Durchführung nachvollziehbar; Reflexion ehrlich, '
+           'nächster Schritt wird in der Folgestunde aufgegriffen', 'Protokolle überwiegend vorhanden; Ziele teils '
+           'allgemein („weiterbauen“)', 'viele Protokolle fehlen oder bleiben formelhaft'),
+    'A5': ('Testergebnisse zu allen Prüfkriterien; Schwachstelle mit Ursache; Verbesserung mit Vorher-nachher belegt',
+           'Test dokumentiert, Verbesserung beschrieben, aber nicht erneut geprüft', 'Test oder Verbesserung fehlt'),
+    'A6': ('Materialbilanz ausgewertet und bewertet; Rückblick benennt eigene Entscheidungen und Konsequenzen',
+           'Bilanz ausgefüllt, Rückblick allgemein', 'fehlt weitgehend'),
+    'A7': ('eigene Idee umgesetzt, Niveau passend gewählt oder gesteigert, Hilfen gezielt eingesetzt',
+           'teilweise eigenständig', 'überwiegend nach Vorgabe oder mit dauerhafter Anleitung'),
+    'B1': ('alle eigenen Prüfkriterien erfüllt (ggf. nach Verbesserung)', 'überwiegend erfüllt',
+           'Hauptfunktion nicht erfüllt'),
+    'B2': ('Abweichung zur Zeichnung höchstens ca. ±2 mm (Original) bzw. ±1 mm (Modell)',
+           'einzelne größere Abweichungen ohne Funktionsverlust', 'deutliche Abweichungen, Funktion beeinträchtigt'),
+    'B3': ('Verbindungen fest, rechtwinklig, sauber (keine Risse, kein Leimüberschuss, Schrauben bündig)',
+           'fest, aber mit sichtbaren Mängeln', 'lose oder fehlerhaft'),
+    'B4': ('Flächen sauber geschliffen, Kanten gebrochen, Oberfläche gleichmäßig behandelt',
+           'überwiegend sauber, einzelne Splitter/Kratzer', 'raue Flächen, scharfe Kanten'),
+    'B5': ('steht sicher, wackelt und kippt nicht bei vorgesehener Nutzung', 'leichte Mängel',
+           'instabil oder nicht sicher nutzbar'),
+    'B6': ('arbeitet sicher und selbstständig, hält Lehrgangs- und Werkstattregeln ein, Arbeitsplatz ordentlich',
+           'meist regelgerecht, gelegentliche Erinnerung nötig', 'wiederholte Regelverstöße'),
+}
+
+
+def build_erwartungshorizont():
+    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Erwartungshorizont (Lehrkraft)')
+    b = Builder(D)
+    b.p('LEHRKRAFT · LERNERFOLGSKONTROLLE 2', 'Subtitle')
+    D.add_paragraph('Erwartungshorizont Werkstattheft und Werkstück', 'Title')
+    b.p('Die zweite Klassenarbeit wird durch eine Projektleistung ersetzt: Werkstattheft (Teil A, 40 Punkte) '
+        'und Werkstück (Teil B, 60 Punkte). Bewertet wird nicht Größe, Traglast oder Verzierung, sondern '
+        'Planung, Fertigung, Funktion, Materialeinsatz und Reflexion.', size=10.5)
+    b.h('Hinweise zur Durchführung')
+    for s_ in ['Jede Person führt ein eigenes Heft. Teamentscheidungen dürfen gleich lauten; Stundenprotokolle, '
+               'Reflexion und Rückblick werden individuell bewertet.',
+               'Werkstück im Team: Bewertet werden die eigene Baugruppe (laut Teamvertrag 2A) und das '
+               'Gesamtergebnis. B6 wird individuell über die Projektzeit beobachtet.',
+               'Abnahme (Woche 6): kurzes Fachgespräch (2–3 Min.) am Werkstück; das Gespräch stützt die '
+               'Bewertung von A1, A7 und B1.',
+               'Das gewählte Niveau fließt in A7 ein. Eine gut umgesetzte Niveau-1-Aufgabe kann trotzdem '
+               'sehr gut bewertet werden.',
+               'Stichproben während der Arbeit: Heft am Ende einer Stunde einsammeln oder einsehen, '
+               'kurze Rückmeldung zum Ziel geben (A4).']:
+        z = b.p('• ' + s_, size=10)
+        z.paragraph_format.space_after = Pt(2)
+
+    def stufen(titel, rows):
+        b.h(titel)
+        t = b.table(['', 'Kriterium (max.)', 'volle Punktzahl', 'etwa die Hälfte', 'wenige / keine'],
+                    [[c, f'{k} ({m})', *STUFEN[c]] for c, k, m, d in rows],
+                    [0.45, 1.4, 2.6, 1.8, 1.8], size=8.5, pad=1.5)
+        b.bold_cells(t, col=1)
+
+    stufen('Teil A · Werkstattheft (40 Punkte)', BEWERTUNG_A)
+    stufen('Teil B · Werkstück (60 Punkte)', BEWERTUNG_B)
+    b.h('Notenschlüssel (Vorschlag – an Fachschaftsbeschluss anpassen)')
+    b.table(['Punkte', '100–87', '86–73', '72–59', '58–45', '44–20', '19–0'],
+            [['Note', 'sehr gut', 'gut', 'befriedigend', 'ausreichend', 'mangelhaft', 'ungenügend']],
+            [1, 1, 1, 1.2, 1.2, 1.2, 1.2], size=9.5)
+    path = OUT / 'werkstattheft-erwartungshorizont.docx'
     D.save(path)
     return path
 
@@ -722,6 +924,7 @@ def build_buchungsliste():
 
 
 if __name__ == '__main__':
-    for path in [build_uebersicht(), build_bogen(), build_buchungsliste()]:
+    for path in [build_uebersicht(), build_werkstattheft(), build_erwartungshorizont(),
+                 build_buchungsliste()]:
         to_pdf(path)
         print('erstellt:', path.relative_to(ROOT), '+ PDF')

@@ -2,8 +2,8 @@
 
 **WP Wirtschaft und Arbeitswelt · Technik · Jahrgang 7 · Anschluss an „Vom Baum zum Brett“**  
 **Arbeitsstand:** 01.11.2026 · **Schülerzugang:** [Interaktive Projektwerkstatt](werkstatt.html) · **Bisheriger Ideenkatalog:** [21 Projekte](index.html)  
-**Druckmaterial:** [Projektübersicht](druck/projektuebersicht.pdf) · [Projektbogen mit Werkstattpass](druck/projektbogen.pdf) · [Buchungsliste Lehrgänge](druck/lehrgang-buchungsliste.pdf) (Quelle: `tools/build_moebelbau_druck.py`)  
-**Einführungspräsentation:** [input-moebelwerkstatt.html](input-moebelwerkstatt.html) – 31 Folien mit Sprechernotizen (Taste N), Lehrgänge L1–L13 mit Abbildungen von Wikimedia Commons (online eingebunden)
+**Druckmaterial:** [Projektübersicht](druck/projektuebersicht.pdf) · [Werkstattheft mit Werkstattpass](druck/werkstattheft.pdf) · [Erwartungshorizont (Lehrkraft)](druck/werkstattheft-erwartungshorizont.pdf) · [Buchungsliste Lehrgänge](druck/lehrgang-buchungsliste.pdf) (Quelle: `tools/build_moebelbau_druck.py`)  
+**Einführungspräsentation:** [input-moebelwerkstatt.html](input-moebelwerkstatt.html) – 32 Folien mit Sprechernotizen (Taste N), Lehrgänge L1–L13 mit Abbildungen von Wikimedia Commons (online eingebunden)
 
 ## Leitidee
 
@@ -80,11 +80,20 @@ Ein schnelleres Team erhält eine technische Zusatzanforderung (z. B. verstellba
 - H7: Zuschnittplan, Meterverbrauch und Materialkosten
 - H8: Technische Verbesserung mit Vorher-Nachher-Test
 
-Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlichen Arbeitsprodukte gehören in die vorhandene Mappe beziehungsweise einen ergänzenden Projektbogen; die Website dient dem Orientieren und Erkunden.
+Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlichen Arbeitsprodukte gehören ins Werkstattheft; die Website dient dem Orientieren und Erkunden.
+
+## Werkstattheft und Lernerfolgskontrolle
+
+Das **Werkstattheft** (A4, 26 Seiten, ersetzt den früheren Projektbogen) ist Planungsinstrument, Projektdokumentation und – zusammen mit dem Werkstück – die **zweite Klassenarbeit** (Heft 40 %, Werkstück 60 %).
+
+- **SRL-Struktur jeder Arbeitseinheit:** 12 Stundenprotokolle P1–P12 (Mo 45 / Mi 90 Min.) mit den Phasen *Planen* (Ziel der Stunde, Schritte, Material/Lehrgang, Erfolgskriterium), *Durchführen* (Geschafftes, Problem und Lösung, genutzte Hilfe) und *Reflektieren* (Zielerreichung, Arbeitsweise, nächster Schritt – dieser wird in der Folgestunde oben übernommen).
+- **Arbeitsseiten:** 1A Bedarf & Ideen · 1B Entscheidung · 2A Anforderungen, Prüfkriterien, Teamvertrag · 2B Konstruktionszeichnung · 2C Stückliste, Arbeitsplan, Lehrgänge · 2D Freigabe · 4A Zwischencheck · 5A Funktionstest · 6A Verbessern, Oberfläche, Materialbilanz · 6B Abnahme und Rückblick.
+- **Übergreifend:** „Mein Projekt auf einen Blick“ mit Wochen-Zeitplan (geplant / geschafft / im Plan?), Meilensteine, Werkstattpass.
+- **Bewertung:** Teil A Werkstattheft (A1–A7, 40 P.), Teil B Werkstück (B1–B6, 60 P.) mit Selbsteinschätzung; Stufenbeschreibungen und Notenschlüssel-Vorschlag im [Erwartungshorizont](druck/werkstattheft-erwartungshorizont.pdf). Hefte werden individuell bewertet, im Team zählt beim Werkstück die eigene Baugruppe plus Gesamtergebnis.
 
 ## Teamgröße und Projektumfang
 
-Gearbeitet wird allein, zu zweit oder zu dritt (maximal drei Personen). Der Umfang wächst mit der Teamgröße: In Einzelarbeit entstehen kleine Modelle bzw. Kleinmöbel wie ein Beistelltisch; zu zweit oder zu dritt sind größere Möbel, kombinierbare Module oder mehrteilige Modelle möglich. „Größer“ bedeutet mehr Baugruppen, nicht mehr Höhe oder Last. In Teams verantwortet jede Person mindestens eine eigene Baugruppe (Teamvertrag im Projektbogen). Was gebaut wird, entscheiden die Lernenden selbst; die Freigabe prüft Sicherheit und Machbarkeit.
+Gearbeitet wird allein, zu zweit oder zu dritt (maximal drei Personen). Der Umfang wächst mit der Teamgröße: In Einzelarbeit entstehen kleine Modelle bzw. Kleinmöbel wie ein Beistelltisch; zu zweit oder zu dritt sind größere Möbel, kombinierbare Module oder mehrteilige Modelle möglich. „Größer“ bedeutet mehr Baugruppen, nicht mehr Höhe oder Last. In Teams verantwortet jede Person mindestens eine eigene Baugruppe (Teamvertrag im Werkstattheft, Seite 2A). Was gebaut wird, entscheiden die Lernenden selbst; die Freigabe prüft Sicherheit und Machbarkeit.
 
 ### Großprojekt (mehr als drei Personen): Taschenregal für den Technikraum A3
 
@@ -93,11 +102,11 @@ Vorschlag für ein Gemeinschaftsprojekt: ein Regal mit **20 Ablagefächern für 
 - **Lastenheft:** 20 Fächer für je einen Schulrucksack; Höhe höchstens ca. 1,20 m; Module untereinander verbunden, Wandbefestigung durch Lehrkraft/Hausmeister; Dachlatten, Platten nur nach Absprache; gebrochene Kanten, geölt oder lasiert; Bodenabstand zum Reinigen.
 - **Teilteams (Vorschlag):** Planung (Wand vermessen, Rucksäcke messen und wiegen, Maßraster, Gesamtzeichnung, Materialliste) · Modulbau (3–5 Teams, z. B. 5 gleiche Module mit je 2 × 2 Fächern nebeneinander) · Qualität (Schablonen, Prüflehren, Maßkontrolle, Verbinden der Module).
 - **Schwerpunkte:** gemeinsames Maßraster, Serienfertigung mit Schablone und Anschlag, kurze Teamtreffen zu Beginn jeder Mittwochsstunde, Lastannahme anhand der gewogenen Rucksäcke.
-- **Freigabe:** Die Gesamtplanung braucht eine gesonderte fachliche Freigabe vor dem ersten Zuschnitt (vgl. Grenze „keine sicherheitsrelevanten Tragkonstruktionen ohne gesonderte Freigabe“). Jede Person führt ihren eigenen Projektbogen.
+- **Freigabe:** Die Gesamtplanung braucht eine gesonderte fachliche Freigabe vor dem ersten Zuschnitt (vgl. Grenze „keine sicherheitsrelevanten Tragkonstruktionen ohne gesonderte Freigabe“). Jede Person führt ihr eigenes Werkstattheft.
 
 ## Lehrgänge („buchbare“ Kurzunterweisungen)
 
-Arbeitsgänge werden in kurzen Lehrgängen bei der Lehrkraft gelernt: ca. 10–15 Minuten, höchstens 4 Personen, während der Arbeitsphase. Die Lernenden ermitteln in Teil 5 des Projektbogens, welche Arbeitsgänge ihr Entwurf erfordert, kreuzen sie im **Werkstattpass** an und tragen sich auf der **Buchungsliste** ein. Am Ende zeigen sie ein Probestück; die Lehrkraft quittiert im Werkstattpass. Lehrgänge des anderen Wegs dürfen gebucht werden, wenn der Entwurf sie braucht; eigene Lehrgangswünsche sind ausdrücklich vorgesehen.
+Arbeitsgänge werden in kurzen Lehrgängen bei der Lehrkraft gelernt: ca. 10–15 Minuten, höchstens 4 Personen, während der Arbeitsphase. Die Lernenden ermitteln im Werkstattheft (Seite 2C), welche Arbeitsgänge ihr Entwurf erfordert, kreuzen sie im **Werkstattpass** an und tragen sich auf der **Buchungsliste** ein. Am Ende zeigen sie ein Probestück; die Lehrkraft quittiert im Werkstattpass. Lehrgänge des anderen Wegs dürfen gebucht werden, wenn der Entwurf sie braucht; eigene Lehrgangswünsche sind ausdrücklich vorgesehen.
 
 **Pflicht vor dem ersten Einsatz:** Stichsäge, Handschleifgerät, Tellerschleifer, Standbohrmaschine, Akkuschrauber, Dekupiersäge. Ohne Kürzel im Werkstattpass keine Benutzung. Wer den Bohrmaschinen-Führerschein aus Klasse 5 hat, erhält für L6 direkt das Kürzel.
 
