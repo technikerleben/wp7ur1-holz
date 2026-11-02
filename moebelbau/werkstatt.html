@@ -54,7 +54,9 @@ th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;vertical-
 th{background:#ecf1ec}
 footer{border-top:1px solid var(--line);margin-top:32px;padding-top:18px;color:var(--muted);font-size:14px}
 #empty{background:white;padding:20px;border-radius:10px}
-@media(max-width:800px){.intro,.grid{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}}
+.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:8px 0 14px}
+.courses ul{margin:6px 0 0;padding-left:20px}.courses li{margin:3px 0}
+@media(max-width:800px){.intro,.grid,.courses{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}}
 @media(max-width:500px){.timeline{grid-template-columns:1fr}.controls label{width:100%}header{padding:22px 18px 30px}h1{font-size:34px}}
 @media print{header{background:white;color:black;padding:0 0 10px}header a{color:black}.controls{display:none}.grid{grid-template-columns:1fr 1fr}.project{break-inside:avoid}.route,.variant{background:white!important}.timeline{grid-template-columns:repeat(4,1fr)}}
 </style>
@@ -100,12 +102,25 @@ footer{border-top:1px solid var(--line);margin-top:32px;padding-top:18px;color:v
 <p>In deiner Papiermappe hältst du Zeichnungen, Maße, Materialbedarf, Testergebnisse und Reflexion fest. Die Website unterstützt dich bei der Auswahl – sie ersetzt deine Mappe nicht.</p>
 </section>
 
+<section aria-labelledby="courses" style="margin-top:32px">
+<h2 id="courses">4 · Lehrgänge buchen</h2>
+<p>Arbeitsgänge lernst du in kurzen Lehrgängen bei deiner Lehrkraft (10–15 Minuten, höchstens 4 Personen). Plane in deinem Projektbogen, welche du brauchst, kreuze sie im Werkstattpass an und trage dich auf der Buchungsliste ein. Nach dem Lehrgang zeigst du ein Probestück – dann unterschreibt die Lehrkraft.</p>
+<p class="notice"><strong>Pflicht:</strong> Stichsäge, Handschleifgerät, Akkuschrauber und Dekupiersäge benutzt du erst nach dem Lehrgang und mit Unterschrift im Werkstattpass.</p>
+<div class="courses">
+<div class="route"><strong>Für alle</strong><ul><li>L1 Richtig schleifen</li><li>L2 Oberflächen ölen oder lasieren</li></ul></div>
+<div class="route original"><strong>Weg O · Original</strong><ul><li>L3 Stichsäge <span class="tag">Pflicht</span></li><li>L4 Handschleifgerät <span class="tag">Pflicht</span></li><li>L5 Akkuschrauber <span class="tag">Pflicht</span></li><li>L6 Leimen</li><li>L7 Verschrauben</li><li>L8 Holzdübel</li></ul></div>
+<div class="route model"><strong>Weg M · Modell</strong><ul><li>L9 Dekupiersäge <span class="tag">Pflicht</span></li><li>L10 Platten durch Kreuzverleimung</li><li>L11 Furnier aufbringen</li></ul></div>
+</div>
+<p>Du brauchst einen Lehrgang aus dem anderen Weg? Buche ihn. Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.</p>
+</section>
+
 <section aria-labelledby="rules" style="margin-top:32px">
 <h2 id="rules">Vor dem Bauen beachten</h2>
 <ul>
 <li><strong>Holz prüfen:</strong> Risse, starke Äste, Verzug und Splitter erkennen; ungeeignete Dachlatten aussortieren.</li>
-<li><strong>Modell:</strong> Eisstiele mit Klammern sichern und nach dem Leimen ausreichend trocknen lassen. Kleine Stiele nicht frei an Sägemaschinen schneiden.</li>
-<li><strong>Original:</strong> Latten sicher einspannen, passende Säge und Verbindung wählen, Schraubstellen vorbohren und Kanten sorgfältig bearbeiten. Nur für deine Werkstatt freigegebene Maschinen verwenden.</li>
+<li><strong>Modell:</strong> Eisstiele mit Klammern sichern und nach dem Leimen ausreichend trocknen lassen. Einzelne Stiele von Hand kürzen; an die Dekupiersäge kommen nur verleimte Platten und sicher geführte Teile.</li>
+<li><strong>Original:</strong> Latten sicher einspannen, passende Säge und Verbindung wählen, Schraubstellen vorbohren und Kanten sorgfältig bearbeiten. Maschinen nur nach dem Lehrgang verwenden.</li>
+<li><strong>Oberfläche:</strong> Öl-Lappen können sich selbst entzünden – ausgebreitet trocknen lassen oder in den geschlossenen Metallbehälter.</li>
 <li><strong>Belastung:</strong> Prüflasten gemeinsam mit deiner Lehrkraft festlegen. Ein Modelltest beweist keine Tragfähigkeit in Originalgröße. Nicht zum Sitzen, Klettern oder als hohe freistehende Konstruktion nutzen.</li>
 </ul>
 </section>

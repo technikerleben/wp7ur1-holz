@@ -10,6 +10,7 @@ from docx import Document
 from docx.shared import Mm, Pt, RGBColor
 from docx.enum.table import WD_ROW_HEIGHT_RULE
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.section import WD_ORIENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
@@ -21,10 +22,12 @@ TEXT_W = 170  # mm
 
 
 # ---------------------------------------------------------------- Grundgerüst
-def new_doc(header):
+def new_doc(header, landscape=False):
     D = Document()
     sec = D.sections[0]
-    sec.page_width, sec.page_height = Mm(210), Mm(297)
+    sec.page_width, sec.page_height = (Mm(297), Mm(210)) if landscape else (Mm(210), Mm(297))
+    if landscape:
+        sec.orientation = WD_ORIENT.LANDSCAPE
     sec.top_margin = sec.bottom_margin = Mm(16)
     sec.left_margin = sec.right_margin = Mm(20)
     sec.header_distance = sec.footer_distance = Mm(8)
@@ -61,11 +64,20 @@ def new_doc(header):
 
 
 class Builder:
-    def __init__(self, D):
+    def __init__(self, D, width=TEXT_W):
         self.D = D
+        self.width = width
+        self._pb = False
+
+    def _para(self, text='', style=None):
+        z = self.D.add_paragraph(text, style)
+        if self._pb:
+            z.paragraph_format.page_break_before = True
+            self._pb = False
+        return z
 
     def p(self, text='', style=None, bold_lead=None, size=None, align=None):
-        z = self.D.add_paragraph(style=style)
+        z = self._para(style=style)
         if bold_lead:
             z.add_run(bold_lead).bold = True
         if text:
@@ -78,16 +90,16 @@ class Builder:
         return z
 
     def h1(self, t):
-        return self.D.add_paragraph(t, 'Heading 1')
+        return self._para(t, 'Heading 1')
 
     def h(self, t):
-        return self.D.add_paragraph(t, 'Heading 2')
+        return self._para(t, 'Heading 2')
 
     def h3(self, t):
-        return self.D.add_paragraph(t, 'Heading 3')
+        return self._para(t, 'Heading 3')
 
     def brk(self):
-        self.D.add_page_break()
+        self._pb = True
 
     def _border(self, z, edges, color='999999', sz='4'):
         pp = z._p.get_or_add_pPr()
@@ -124,7 +136,7 @@ class Builder:
         self._border(z, ['left'], INK, '18')
         return z
 
-    def table(self, headers, rows, widths=None, height=None, size=10, header_bold=True):
+    def table(self, headers, rows, widths=None, height=None, size=10, header_bold=True, pad=2.5):
         D = self.D
         t = D.add_table(rows=1 if headers else 0, cols=len(widths or headers or rows[0]))
         t.style = 'Table Grid'
@@ -137,7 +149,7 @@ class Builder:
                 c.text = str(txt)
         n = len(t.columns)
         widths = widths or [1] * n
-        mm = [TEXT_W * w / sum(widths) for w in widths]
+        mm = [self.width * w / sum(widths) for w in widths]
         # feste Spaltenbreiten (Word + LibreOffice)
         t.autofit = False
         tblPr = t._tbl.tblPr
@@ -150,7 +162,7 @@ class Builder:
                 c.width = Mm(w)
                 for q in c.paragraphs:
                     pf = q.paragraph_format
-                    pf.space_after = pf.space_before = Pt(2.5)
+                    pf.space_after = pf.space_before = Pt(pad)
                     pf.line_spacing = 1.1
                     for r in q.runs:
                         r.font.size = Pt(size)
@@ -162,7 +174,9 @@ class Builder:
                 row.height_rule = WD_ROW_HEIGHT_RULE.AT_LEAST
         if headers:
             t.rows[0]._tr.get_or_add_trPr().append(OxmlElement('w:tblHeader'))
-        self.p().paragraph_format.space_after = Pt(2)
+        sp = self.p()
+        pf = sp.paragraph_format
+        pf.space_after = Pt(4); pf.space_before = Pt(0); pf.line_spacing = Pt(4)
         return t
 
     def bold_cells(self, t, col=0, start=1):
@@ -182,8 +196,10 @@ def to_pdf(docx_path):
 WEGE = [
     ['', 'Weg M: Modell', 'Weg O: Originalgröße'],
     ['Hauptmaterial', 'Holz-Eisstiele', 'Dachlatten (Fichte/Tanne, z. B. 24 × 48 mm)'],
-    ['Dazu', 'Holzleim, Klammern; für Bewegliches kleine Achsen',
-     'Schrauben, kleine Scharniere; anderes Material nur, wenn du es begründest'],
+    ['Dazu', 'Holzleim, Klammern, Furnier; für Bewegliches kleine Achsen',
+     'Leim, Schrauben, Holzdübel, kleine Scharniere; anderes Material nur, wenn du es begründest'],
+    ['Arbeitsgänge', 'Dekupiersäge, Platten durch Kreuzverleimung, Furnier aufbringen',
+     'Stichsäge, Handschleifgerät, Akkuschrauber, Leimen, Verschrauben, Holzdübel'],
     ['Darauf kommt es an', 'Proportionen, Maßstab (z. B. 1:5 oder 1:10), Leimen, Aussteifen',
      'Nutzmaße, Zuschnitt, Vorbohren, Schrauben, Standfestigkeit'],
     ['So wird geprüft', 'passend zum Modell, z. B. mit Modellfigur oder kleiner Prüflast',
@@ -204,6 +220,59 @@ TEAM = [
      '… verantwortet mindestens eine eigene Baugruppe.',
      '… verantwortet mindestens eine eigene Baugruppe bzw. ein eigenes Möbelteil.'],
 ]
+
+# Lehrgänge: (Code, Name, Gruppe, Pflicht, Das lernst du, Das zeigst du am Ende)
+# Pflicht = Maschine/Elektrowerkzeug: erst nach Lehrgang + Unterschrift im Werkstattpass.
+GRUPPEN = [('alle', 'Für alle'), ('O', 'Weg O – Original aus Dachlatte'), ('M', 'Weg M – Modell aus Eisstielen')]
+LEHRGAENGE = [
+    ('L1', 'Richtig schleifen', 'alle', False,
+     'von grob nach fein schleifen (z. B. Körnung 80 → 120 → 180), immer mit der Faser, '
+     'mit Schleifklotz, Kanten brechen',
+     'Probestück ohne Querkratzer, Kanten gebrochen'),
+    ('L2', 'Oberflächen ölen oder lasieren', 'alle', False,
+     'Staub entfernen, dünn auftragen, Überschuss abnehmen, trocknen lassen; '
+     'Öl-Lappen richtig entsorgen',
+     'gleichmäßig behandeltes Probestück; du erklärst die Lappen-Regel'),
+    ('L3', 'Stichsäge', 'O', True,
+     'Latte fest einspannen, Schutzbrille, Fußplatte aufsetzen, erst einschalten, dann sägen; '
+     'Blatt nur ohne Akku/Stecker wechseln',
+     'gerader Schnitt entlang einer Anrisslinie'),
+    ('L4', 'Handschleifgerät', 'O', True,
+     'Schleifpapier wechseln, Werkstück sichern, Absaugung nutzen, ohne Druck führen',
+     'Fläche glatt geschliffen, Kanten nicht abgerundet'),
+    ('L5', 'Akkuschrauber', 'O', True,
+     'Bohrer und Bit einsetzen, Drehrichtung und Drehmoment einstellen, Werkstück einspannen',
+     'Loch gerade vorgebohrt, Schraube bündig eingedreht'),
+    ('L6', 'Leimen', 'O', False,
+     'Leim dünn auftragen, Zwingen mit Zulagen ansetzen, Winkel prüfen, Leimreste feucht abwischen',
+     'rechtwinklige Leimverbindung'),
+    ('L7', 'Verschrauben', 'O', False,
+     'anreißen, Randabstand beachten, vorbohren, senken, passende Schraubenlänge wählen '
+     '(vorher L5)',
+     'Lattenecke ohne Riss verschraubt'),
+    ('L8', 'Holzdübel', 'O', False,
+     'Bohrstellen mit Dübelmarker übertragen, Bohrtiefe begrenzen, Dübel mit Leim einsetzen, '
+     'pressen (vorher L5 und L6)',
+     'bündige Dübelverbindung'),
+    ('L9', 'Dekupiersäge', 'M', True,
+     'Niederhalter einstellen, Blatt prüfen, Finger seitlich vom Blatt, langsam vorschieben, '
+     'Schutzbrille, lange Haare zusammenbinden',
+     'Kurve sauber nach Anriss aus einer Platte gesägt'),
+    ('L10', 'Platten durch Kreuzverleimung', 'M', False,
+     'Eisstiele in Lagen quer zueinander verleimen, pressen, trocknen lassen; '
+     'verstehen, warum Kreuzlagen stabiler sind',
+     'ebene, zweilagige Platte; du erklärst das Prinzip'),
+    ('L11', 'Furnier aufbringen', 'M', False,
+     'Furnier mit Cutter am Stahllineal zuschneiden, Faserrichtung wählen, dünn leimen, pressen, '
+     'Überstand bündig schleifen',
+     'furniertes Probestück ohne Blasen'),
+]
+PFLICHT_TXT = 'Stichsäge, Handschleifgerät, Akkuschrauber und Dekupiersäge'
+
+
+def lehrgang_name(code, name, pflicht):
+    return f'{code}  {name}' + ('\nPFLICHT' if pflicht else '')
+
 
 IDEEN = [
     ['Schreibtischständer', 'für Buch oder Tablet, fest oder neigbar'],
@@ -234,6 +303,8 @@ def build_uebersicht():
     b.h('Zwei Wege – gleich viel wert')
     t = b.table(WEGE[0], WEGE[1:], [1.1, 2, 2.4], size=9.5)
     b.bold_cells(t)
+    b.p('Für alle: richtig schleifen und die Oberfläche ölen oder lasieren. '
+        'Alle Arbeitsgänge lernst du in kurzen Lehrgängen (Seite 3).', size=10)
     b.p('Ein Modell ist keine leichte Ersatzaufgabe. Ein großes Möbel ist nicht automatisch besser. '
         'Gute Planung, saubere Arbeit und ein ehrlicher Test zählen.', size=10)
 
@@ -250,12 +321,15 @@ def build_uebersicht():
     plan = [
         ['1', 'Ideen finden: Bedarf entdecken, mindestens drei eigene Ideen skizzieren, Team bilden',
          'Projektbogen Teil 1–2'],
-        ['2', 'Planen: Zeichnung mit Maßen, Stückliste, Aufgaben im Team verteilen',
+        ['2', 'Planen: Zeichnung mit Maßen, Stückliste, Aufgaben im Team verteilen, '
+              'nötige Lehrgänge buchen',
          'HALTEPUNKT Freigabe'],
-        ['3', 'Bauen I: Bauteile herstellen, erste Verbindungen', 'Bautagebuch'],
-        ['4', 'Bauen II: montieren und aussteifen', 'Bautagebuch'],
+        ['3', 'Bauen I: Lehrgänge besuchen, Bauteile herstellen, erste Verbindungen',
+         'Werkstattpass, Bautagebuch'],
+        ['4', 'Bauen II: montieren, aussteifen, schleifen', 'Bautagebuch'],
         ['5', 'Testen: eigene Prüfkriterien prüfen, Schwachstelle finden', 'HALTEPUNKT Test'],
-        ['6', 'Verbessern, erneut testen, vorstellen', 'HALTEPUNKT Abnahme'],
+        ['6', 'Verbessern, erneut testen, Oberfläche ölen oder lasieren, vorstellen',
+         'HALTEPUNKT Abnahme'],
     ]
     b.table(['Woche', 'Das machst du', 'Meilenstein'], plan, [0.7, 4.2, 1.6], size=10)
     b.p('Vor der Freigabe wird nichts endgültig zugeschnitten. Wer früher fertig ist, '
@@ -269,10 +343,13 @@ def build_uebersicht():
         'Modell möglich. Noch besser: eine Idee, die es hier nicht gibt.', size=10)
 
     b.h('Sicher arbeiten')
-    for s in ['Sägen: Handsäge, Stichsäge und Dekupiersäge – Maschinen nur nach Unterweisung. '
-              'Keine Kreissägen.',
-              'Eisstiele schneidest du nicht an der Maschine. Kurze Lattenstücke spannst du fest ein.',
+    for s in [f'{PFLICHT_TXT} benutzt du erst nach dem Lehrgang und mit Unterschrift '
+              'im Werkstattpass. Keine Kreissägen.',
+              'Einzelne Eisstiele kürzt du von Hand. An die Dekupiersäge kommen nur verleimte Platten '
+              'und sicher geführte Teile. Kurze Lattenstücke spannst du fest ein.',
               'Dachlatten vorher prüfen: Äste, Risse, Splitter, Verzug. Kanten sorgfältig schleifen.',
+              'Öl-Lappen können sich selbst entzünden: ausgebreitet trocknen lassen oder in den '
+              'geschlossenen Metallbehälter.',
               'Keine Sitzmöbel, Kletterteile oder hohen Regale in Originalgröße. '
               'Modelle werden nicht wie echte Möbel belastet.']:
         z = b.p('• ' + s, size=10)
@@ -291,6 +368,31 @@ def build_uebersicht():
     b.bold_cells(t, start=0)
     b.p('Nicht bewertet werden Größe, absolute Traglast, Verzierung oder die Anzahl verbrauchter Stiele.',
         size=9.5)
+
+    # --- Seite 3: Lehrgänge
+    b.brk()
+    b.h1('Lehrgänge – kurz lernen, sicher bauen')
+    b.p('Ein Lehrgang ist eine kurze Einführung bei der Lehrkraft: etwa 10 bis 15 Minuten, '
+        'höchstens 4 Personen, während der Arbeitsphase. Du buchst ihn selbst – dann, '
+        'wenn dein Projekt ihn braucht.', size=10.5)
+    b.note('PFLICHT', f'{PFLICHT_TXT} benutzt du erst, wenn du den Lehrgang gemacht hast und '
+                      'die Lehrkraft im Werkstattpass unterschrieben hat.')
+    b.h('So buchst du einen Lehrgang')
+    for i, s in enumerate([
+            'Plane im Projektbogen (Teil 5): Welche Arbeitsgänge brauche ich? Kreuze sie im Werkstattpass an.',
+            'Trage dich auf der Buchungsliste ein – spätestens eine Stunde vorher.',
+            'Mach beim Lehrgang mit und zeige am Ende dein Probestück.',
+            'Die Lehrkraft unterschreibt im Werkstattpass. Jetzt darfst du den Arbeitsgang selbst nutzen.'], 1):
+        z = b.p(f'{i}.  {s}', size=10)
+        z.paragraph_format.space_after = Pt(2)
+    b.p('Lehrgänge des anderen Wegs darfst du auch buchen, wenn dein Entwurf sie braucht. '
+        'Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.', size=10)
+    for key, label in GRUPPEN:
+        b.h3(label)
+        rows = [[lehrgang_name(c, n, pf), inh, nw] for c, n, g, pf, inh, nw in LEHRGAENGE if g == key]
+        t = b.table(['Lehrgang', 'Das lernst du', 'Das zeigst du am Ende'], rows,
+                    [1.5, 3.6, 1.9], size=8.5, pad=1.5)
+        b.bold_cells(t)
     path = OUT / 'projektuebersicht.docx'
     D.save(path)
     return path
@@ -334,6 +436,26 @@ def build_bogen():
         'H3 Dachlatten prüfen · H4 Verbindungen · H5 Aussteifen · H6 Kippen und Prüfen · '
         'H7 Zuschnitt und Kosten · H8 Verbessern mit Test', size=10)
     b.p('Erst selbst probieren, dann die Hilfekarte, dann das Team, dann die Lehrkraft.', size=10)
+    b.p('Arbeitsgänge lernst du in Lehrgängen. Du buchst sie auf der Buchungsliste. '
+        'Was du schon darfst, steht in deinem Werkstattpass auf der nächsten Seite.', size=10)
+
+    # --- Werkstattpass
+    page('Werkstattpass', 'Meine Lehrgänge', 'Ich lerne Arbeitsgänge, bevor ich sie brauche.')
+    b.note('PFLICHT', f'{PFLICHT_TXT}: Du benutzt sie erst, wenn hier die Unterschrift '
+                      'der Lehrkraft steht.')
+    b.p('Kreuze an, was du für dein Projekt brauchst. Buche dann einen Termin. '
+        'Nach dem Lehrgang zeigst du dein Probestück. Die Lehrkraft trägt Datum und Kürzel ein.',
+        size=10)
+    for key, label in GRUPPEN:
+        b.h3(label)
+        rows = [[lehrgang_name(c, n, pf), '[  ]', '', '', '']
+                for c, n, g, pf, inh, nw in LEHRGAENGE if g == key]
+        t = b.table(['Lehrgang', 'brauche ich', 'gebucht für', 'bestanden am', 'Kürzel Lehrkraft'],
+                    rows, [2.6, 1, 1.3, 1.3, 1.3], height=9, size=9.5)
+        b.bold_cells(t)
+    b.h3('Mein eigener Lehrgangswunsch')
+    b.table(['Arbeitsgang', 'Warum brauche ich ihn?', 'bestanden am', 'Kürzel Lehrkraft'],
+            [['', '', '', ''] for _ in range(2)], [2, 2.9, 1.3, 1.3], height=9, size=9.5)
 
     # --- Teil 1
     page('Teil 1', 'Bedarf entdecken', 'Ich finde eine echte Aufgabe für ein Möbelstück.')
@@ -417,7 +539,12 @@ def build_bogen():
     b.h('5.3 | MAPPE  Reihenfolge der Arbeitsschritte')
     b.table(['Schritt', 'Was wird gemacht?', 'Werkzeug', 'Wer?'],
             [[str(i), '', '', ''] for i in range(1, 7)], [0.6, 3.4, 1.6, 1], height=8, size=9.5)
-    b.note('HILFE', 'H3 Dachlatten prüfen · H4 Verbindungen · H7 Zuschnitt und Kosten')
+    b.h('5.4 | MAPPE  Meine Lehrgänge')
+    b.p('Für meine Arbeitsschritte brauche ich diese Lehrgänge (z. B. L3, L7):  '
+        '__________________________')
+    b.p('Kreuze sie im Werkstattpass an und trage dich auf der Buchungsliste ein.', size=10)
+    b.note('HILFE', 'H3 Dachlatten prüfen · H4 Verbindungen · H7 Zuschnitt und Kosten · '
+                    'Lehrgangsübersicht: Projektübersicht Seite 3')
 
     # --- Teil 6 Freigabe
     page('Teil 6', 'Freigabe', 'Ich prüfe meine Planung, bevor ich säge.')
@@ -431,7 +558,8 @@ def build_bogen():
         ['Stückliste und Zeichnung passen zusammen.', '[  ]', '[  ]'],
         ['Es gibt mindestens zwei prüfbare Prüfkriterien.', '[  ]', '[  ]'],
         ['Jede Person hat eine eigene Baugruppe.', '[  ]', '[  ]'],
-        ['Wir nutzen nur freigegebene Werkzeuge und Maschinen.', '[  ]', '[  ]'],
+        ['Nötige Lehrgänge sind im Werkstattpass angekreuzt und gebucht.', '[  ]', '[  ]'],
+        ['Wer eine Maschine nutzt, macht vorher den Pflicht-Lehrgang.', '[  ]', '[  ]'],
         ['Kein Sitzmöbel, kein hohes Regal in Originalgröße.', '[  ]', '[  ]'],
     ], [5, 0.8, 1.1], height=8.5)
     b.h('6.2 | Rückmeldung der Lehrkraft')
@@ -471,11 +599,15 @@ def build_bogen():
     b.table(['', 'Geplant (5.2)', 'Verbraucht', 'Verschnitt / Rest'],
             [['Dachlatte (m) oder Eisstiele (Stück)', '', '', '']], [2.4, 1.3, 1.3, 1.5], height=12)
     b.p('Hier haben wir Material gespart oder verschwendet:')
-    b.lines(3)
-    b.h('8.3 | MAPPE  Was wäre, wenn wir es zehnmal bauen?')
+    b.lines(2)
+    b.h('8.3 | MAPPE  Oberfläche')
+    b.p('Unsere Oberfläche:   [  ] geölt     [  ] lasiert     [  ] furniert     [  ] unbehandelt')
+    b.p('Darum haben wir uns so entschieden:')
+    b.lines(2)
+    b.h('8.4 | MAPPE  Was wäre, wenn wir es zehnmal bauen?')
     b.p('Wie könnte man euer Möbel zehnmal herstellen? Denkt an gleiche Längen, '
         'Schablonen, Reihenfolge und Qualitätskontrolle.')
-    b.lines(6)
+    b.lines(3)
 
     # --- Teil 9 Reflexion
     page('Teil 9', 'Abnahme und Rückblick', 'Ich schätze meine Arbeit ehrlich ein.')
@@ -484,6 +616,7 @@ def build_bogen():
         ['eine eigene Möbelidee aus einem Bedarf entwickeln.', '[  ]', '[  ]', '[  ]'],
         ['eine Zeichnung mit Maßen und eine Stückliste erstellen.', '[  ]', '[  ]', '[  ]'],
         ['maßgenau und sicher fertigen.', '[  ]', '[  ]', '[  ]'],
+        ['die Arbeitsgänge aus meinen Lehrgängen sicher anwenden.', '[  ]', '[  ]', '[  ]'],
         ['mein Möbel mit eigenen Kriterien prüfen.', '[  ]', '[  ]', '[  ]'],
         ['eine Schwachstelle verbessern und das begründen.', '[  ]', '[  ]', '[  ]'],
         ['sparsam mit Material umgehen.', '[  ]', '[  ]', '[  ]'],
@@ -503,7 +636,39 @@ def build_bogen():
     return path
 
 
+# ========================================================= Buchungsliste
+def build_buchungsliste():
+    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Buchungsliste Lehrgänge', landscape=True)
+    b = Builder(D, width=257)
+    kurz = {'alle': 'für alle', 'O': 'Original', 'M': 'Modell'}
+    seiten = [('Lehrgänge für alle und Weg O (Original)', ('alle', 'O'), 2),
+              ('Lehrgänge Weg M (Modell)', ('M',), 3)]
+    for i, (titel, gruppen, termine) in enumerate(seiten):
+        if i:
+            b.brk()
+        b.h1(f'Buchungsliste · {titel}')
+        z = b.p('Trage deinen Namen spätestens eine Stunde vorher ein. Höchstens 4 Personen pro Termin. '
+                'PFLICHT = Maschine: erst nach dem Lehrgang benutzen.', size=10)
+        rows = []
+        for c, n, g, pf, inh, nw in LEHRGAENGE:
+            if g not in gruppen:
+                continue
+            for k in range(termine):
+                label = f'{c}  {n} · {kurz[g]}' + (' · PFLICHT' if pf else '') if k == 0 else ''
+                rows.append([label, '', '', '', '', '', ''])
+        t = b.table(['Lehrgang', 'Termin', 'Platz 1', 'Platz 2', 'Platz 3', 'Platz 4', 'erledigt'],
+                    rows, [2.6, 1.2, 2, 2, 2, 2, 1], height=9 if termine == 2 else 10, size=8.5, pad=1.5)
+        b.bold_cells(t)
+        if 'M' in gruppen:
+            b.h('Eigener Lehrgangswunsch')
+            b.table(['Arbeitsgang', 'Wer wünscht ihn?', 'Warum?', 'Termin', 'erledigt'],
+                    [['', '', '', '', ''] for _ in range(3)], [2.2, 2.4, 3.6, 1.2, 1], height=9, size=9)
+    path = OUT / 'lehrgang-buchungsliste.docx'
+    D.save(path)
+    return path
+
+
 if __name__ == '__main__':
-    for path in [build_uebersicht(), build_bogen()]:
+    for path in [build_uebersicht(), build_bogen(), build_buchungsliste()]:
         to_pdf(path)
         print('erstellt:', path.relative_to(ROOT), '+ PDF')

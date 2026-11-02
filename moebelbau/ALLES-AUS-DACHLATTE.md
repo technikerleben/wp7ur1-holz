@@ -1,7 +1,8 @@
 # Alles aus Dachlatte – Möbelwerkstatt in zwei Größen
 
 **WP Wirtschaft und Arbeitswelt · Technik · Jahrgang 7 · Anschluss an „Vom Baum zum Brett“**  
-**Arbeitsstand:** 01.11.2026 · **Schülerzugang:** [Interaktive Projektwerkstatt](werkstatt.html) · **Bisheriger Ideenkatalog:** [21 Projekte](index.html)
+**Arbeitsstand:** 01.11.2026 · **Schülerzugang:** [Interaktive Projektwerkstatt](werkstatt.html) · **Bisheriger Ideenkatalog:** [21 Projekte](index.html)  
+**Druckmaterial:** [Projektübersicht](druck/projektuebersicht.pdf) · [Projektbogen mit Werkstattpass](druck/projektbogen.pdf) · [Buchungsliste Lehrgänge](druck/lehrgang-buchungsliste.pdf) (Quelle: `tools/build_moebelbau_druck.py`)
 
 ## Leitidee
 
@@ -80,9 +81,35 @@ Ein schnelleres Team erhält eine technische Zusatzanforderung (z. B. verstellba
 
 Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlichen Arbeitsprodukte gehören in die vorhandene Mappe beziehungsweise einen ergänzenden Projektbogen; die Website dient dem Orientieren und Erkunden.
 
+## Teamgröße und Projektumfang
+
+Gearbeitet wird allein, zu zweit oder zu dritt (maximal drei Personen). Der Umfang wächst mit der Teamgröße: In Einzelarbeit entstehen kleine Modelle bzw. Kleinmöbel wie ein Beistelltisch; zu zweit oder zu dritt sind größere Möbel, kombinierbare Module oder mehrteilige Modelle möglich. „Größer“ bedeutet mehr Baugruppen, nicht mehr Höhe oder Last. In Teams verantwortet jede Person mindestens eine eigene Baugruppe (Teamvertrag im Projektbogen). Was gebaut wird, entscheiden die Lernenden selbst; die Freigabe prüft Sicherheit und Machbarkeit.
+
+## Lehrgänge („buchbare“ Kurzunterweisungen)
+
+Arbeitsgänge werden in kurzen Lehrgängen bei der Lehrkraft gelernt: ca. 10–15 Minuten, höchstens 4 Personen, während der Arbeitsphase. Die Lernenden ermitteln in Teil 5 des Projektbogens, welche Arbeitsgänge ihr Entwurf erfordert, kreuzen sie im **Werkstattpass** an und tragen sich auf der **Buchungsliste** ein. Am Ende zeigen sie ein Probestück; die Lehrkraft quittiert im Werkstattpass. Lehrgänge des anderen Wegs dürfen gebucht werden, wenn der Entwurf sie braucht; eigene Lehrgangswünsche sind ausdrücklich vorgesehen.
+
+**Pflicht vor dem ersten Einsatz:** Stichsäge, Handschleifgerät, Akkuschrauber, Dekupiersäge. Ohne Kürzel im Werkstattpass keine Benutzung.
+
+| Nr. | Lehrgang | Weg | Inhalt (Kurzfassung) | Nachweis |
+|---|---|---|---|---|
+| L1 | Richtig schleifen | alle | Körnungsfolge grob → fein, mit der Faser, Schleifklotz, Kanten brechen | Probestück ohne Querkratzer |
+| L2 | Ölen oder lasieren | alle | entstauben, dünn auftragen, Überschuss abnehmen, Trocknung; Öl-Lappen ausgebreitet trocknen bzw. in geschlossenem Metallbehälter (Selbstentzündung) | behandeltes Probestück, Lappen-Regel erklärt |
+| L3 | Stichsäge · **Pflicht** | O | einspannen, Schutzbrille, Fußplatte aufsetzen, Blattwechsel nur stromlos | gerader Schnitt nach Anriss |
+| L4 | Handschleifgerät · **Pflicht** | O | Papierwechsel stromlos, Werkstück sichern, Absaugung, ohne Druck führen | plane Fläche, Kanten nicht verrundet |
+| L5 | Akkuschrauber · **Pflicht** | O | Bohrer/Bit, Drehrichtung, Drehmoment, Werkstück einspannen | gerade vorgebohrt, Schraube bündig |
+| L6 | Leimen | O | dünn auftragen, Zwingen mit Zulagen, Winkel prüfen, Leimreste entfernen | rechtwinklige Leimverbindung |
+| L7 | Verschrauben | O | anreißen, Randabstand, vorbohren, senken, Schraubenlänge (setzt L5 voraus) | Lattenecke ohne Riss |
+| L8 | Holzdübel | O | Dübelmarker, Bohrtiefe begrenzen, Dübel mit Leim, pressen (setzt L5, L6 voraus) | bündige Dübelverbindung |
+| L9 | Dekupiersäge · **Pflicht** | M | Niederhalter, Blatt prüfen, Finger seitlich, langsam vorschieben, Haare zusammen | Kurve nach Anriss aus Platte |
+| L10 | Platten durch Kreuzverleimung | M | Eisstiele lagenweise quer verleimen, pressen; Prinzip Sperrholz | ebene zweilagige Platte |
+| L11 | Furnier aufbringen | M | Zuschnitt mit Cutter am Stahllineal, Faserrichtung, dünn leimen, pressen, bündig schleifen | Probestück ohne Blasen |
+
+Organisation: Lehrgänge bevorzugt mittwochs in festen Fenstern (z. B. 2 × 15 Minuten); im Co-Teaching übernimmt eine Lehrkraft die Lehrgänge, die andere die Werkstattbetreuung. Pflicht-Lehrgänge sollten bis Woche 3 angeboten sein.
+
 ## Werkstatt- und Sicherheitsgrenzen
 
-Die vorhandene Kursplanung lässt Handsägen sowie – jeweils nur in dafür geeigneten Arbeitsvorgängen und nach Unterweisung – **Pendelhubstichsäge und Dekupiersäge** zu. Kreissägen, Handkreissägen, Tischkreissägen, Tauchsägen und Kappsägen werden **nicht** für Schülerarbeiten eingeplant. Kleine Eisstiele werden nicht frei an Sägemaschinen geschnitten; kurze Dachlattenabschnitte sicher in einer geeigneten Sägehilfe fixieren. Bohr- und Schraubvorgänge nur entsprechend den tatsächlich freigegebenen Werkstattverfahren.
+Die vorhandene Kursplanung lässt Handsägen sowie – jeweils nur in dafür geeigneten Arbeitsvorgängen und nach Unterweisung – **Pendelhubstichsäge und Dekupiersäge** zu. Kreissägen, Handkreissägen, Tischkreissägen, Tauchsägen und Kappsägen werden **nicht** für Schülerarbeiten eingeplant. Einzelne Eisstiele werden von Hand gekürzt; an die Dekupiersäge kommen nur kreuzverleimte Platten und sicher geführte Teile. Kurze Dachlattenabschnitte sicher in einer geeigneten Sägehilfe fixieren. Stichsäge, Handschleifgerät, Akkuschrauber und Dekupiersäge nur nach absolviertem Lehrgang (Kürzel im Werkstattpass).
 
 Dachlatten vor Verwendung auf Äste, Risse, Splitter, Verzug und Feuchte prüfen, beschädigte Stücke aussortieren und auf passende Schraubabstände achten. Die Kombination aus sägerauer Oberfläche, tragenden Verbindungen und weichem Nadelholz erfordert sorgfältige Kantenbearbeitung. **Keine Sitzmöbel, Kletterelemente, hohen freistehenden Regale oder anderen sicherheitsrelevanten Tragkonstruktionen ohne gesonderte fachliche Freigabe.** Modelle werden nicht mit der Gebrauchslast eines Originalmöbels getestet.
 
