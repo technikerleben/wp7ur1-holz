@@ -2,7 +2,8 @@
 
 **WP Wirtschaft und Arbeitswelt · Technik · Jahrgang 7 · Anschluss an „Vom Baum zum Brett“**  
 **Arbeitsstand:** 01.11.2026 · **Schülerzugang:** [Interaktive Projektwerkstatt](werkstatt.html) · **Bisheriger Ideenkatalog:** [21 Projekte](index.html)  
-**Druckmaterial:** [Projektübersicht](druck/projektuebersicht.pdf) · [Projektbogen mit Werkstattpass](druck/projektbogen.pdf) · [Buchungsliste Lehrgänge](druck/lehrgang-buchungsliste.pdf) (Quelle: `tools/build_moebelbau_druck.py`)
+**Druckmaterial:** [Projektübersicht](druck/projektuebersicht.pdf) · [Projektbogen mit Werkstattpass](druck/projektbogen.pdf) · [Buchungsliste Lehrgänge](druck/lehrgang-buchungsliste.pdf) (Quelle: `tools/build_moebelbau_druck.py`)  
+**Einführungspräsentation:** [input-moebelwerkstatt.html](input-moebelwerkstatt.html) – 31 Folien mit Sprechernotizen (Taste N), Lehrgänge L1–L13 mit Abbildungen von Wikimedia Commons (online eingebunden)
 
 ## Leitidee
 

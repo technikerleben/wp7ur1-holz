@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2c3d4c">
+<title>WP Technik 7 · Möbelwerkstatt · Einführung</title>
+<style>
+:root{--ink:#2c3d4c;--muted:#536574;--paper:#f4f6f7;--line:#d4dde3;--rust:#9e4e22;--sage:#315b48;--pale:#eaf1ed;--warn:#fff1df;--white:#fff;--shadow:0 18px 55px rgba(44,61,76,.14)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,a{font:inherit}
+.presentation{width:100%;height:100%;position:relative}
+.slide{display:none;position:absolute;inset:0;padding:clamp(26px,4vw,60px) clamp(30px,5.5vw,90px) 84px;background:radial-gradient(circle at 91% 9%,rgba(49,91,72,.08),transparent 26%),linear-gradient(180deg,#fff 0%,#f8faf9 100%);overflow:auto}
+.slide.active{display:block;animation:fade .22s ease}@keyframes fade{from{opacity:.25;transform:translateY(4px)}to{opacity:1;transform:none}}
+.kicker{font-size:clamp(13px,1.3vw,18px);font-weight:850;letter-spacing:.11em;color:var(--rust);text-transform:uppercase;margin:0 0 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+h1{font-size:clamp(40px,5.8vw,84px);line-height:1.02;letter-spacing:-.045em;margin:0 0 22px;max-width:1150px}
+h2{font-size:clamp(30px,4vw,56px);line-height:1.06;letter-spacing:-.035em;margin:0 0 16px}
+h3{font-size:clamp(20px,2vw,30px);line-height:1.15;margin:0 0 10px}
+.lead{font-size:clamp(20px,2.1vw,31px);line-height:1.35;color:var(--muted);max-width:1100px;margin:0 0 18px}
+.big-question{font-size:clamp(30px,4.3vw,64px);line-height:1.13;font-weight:800;max-width:1150px;margin:24px 0}
+.hero{color:#fff;background:linear-gradient(90deg,rgba(27,45,37,.97) 0 48%,rgba(27,45,37,.72) 72%,rgba(27,45,37,.3)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Stock_of_lumber.JPG?width=1600") center/cover,#24392f}
+.hero .lead{color:#e4eee9}.hero .kicker{color:#efbd93}.hero-inner{min-height:calc(100vh - 160px);display:flex;flex-direction:column;justify-content:center}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,40px);align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(16px,2vw,28px);box-shadow:0 7px 25px rgba(44,61,76,.06)}
+.card.sage{border-top:7px solid var(--sage)}.card.rust{border-top:7px solid var(--rust)}
+.card p,.card li{font-size:clamp(16px,1.5vw,22px);line-height:1.35;color:var(--muted)}.card p{margin:0}.card ul{margin:6px 0 0;padding-left:1.1em}.card li{margin:5px 0}
+.icon{font-size:clamp(36px,4.2vw,60px);display:block;margin-bottom:10px}
+/* Bilder */
+.pic{margin:0;position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.pic img{display:block;width:100%;height:min(42vh,400px);object-fit:cover;background:#eef2f0}
+.pic.contain img{object-fit:contain;padding:12px}
+.pic.small img{height:min(24vh,220px)}
+.pic figcaption{padding:9px 14px;font-size:clamp(13px,1.1vw,16px);color:var(--muted);border-top:1px solid var(--line)}
+.pic .fallback{display:none;height:min(42vh,400px);place-items:center;text-align:center;background:var(--pale);color:var(--sage);font-weight:800;font-size:clamp(20px,2vw,30px);padding:20px}
+.pic.small .fallback{height:min(24vh,220px)}
+.pic.failed img{display:none}.pic.failed .fallback{display:grid}
+.pic .fallback span{display:block;font-size:clamp(46px,5vw,80px);margin-bottom:6px}
+/* Lehrgang */
+.lg{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr);gap:clamp(18px,3vw,40px);align-items:start}
+.use{font-size:clamp(17px,1.6vw,24px);line-height:1.3;color:var(--muted);margin:0 0 10px}
+.do{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.do li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 12px;font-size:clamp(15px,1.4vw,21px);line-height:1.28;display:flex;gap:12px;align-items:flex-start}
+.do li>b{flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--sage);color:#fff;font-size:17px}
+.never{margin-top:8px;background:var(--warn);border-left:7px solid var(--rust);border-radius:0 12px 12px 0;padding:8px 14px;font-size:clamp(15px,1.35vw,20px);line-height:1.28}
+.proof{margin-top:8px;background:var(--pale);border-left:7px solid var(--sage);border-radius:0 12px 12px 0;padding:8px 14px;font-size:clamp(15px,1.35vw,20px);line-height:1.28}
+.badge{display:inline-block;border-radius:999px;padding:4px 12px;font-size:clamp(12px,1.1vw,16px);font-weight:900;letter-spacing:.06em;background:var(--rust);color:#fff}
+.badge.sage{background:var(--sage)}.badge.grey{background:#6c7b86}
+.rule{display:flex;align-items:flex-start;gap:16px;background:var(--warn);border-left:7px solid var(--rust);padding:16px 22px;border-radius:0 14px 14px 0;font-size:clamp(18px,1.8vw,27px);max-width:1150px;margin-top:22px}
+.steps{display:grid;gap:9px;max-width:1150px}.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 18px;font-size:clamp(17px,1.6vw,24px);display:flex;gap:16px;align-items:center}.step b{flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--rust);color:#fff}
+table.t{border-collapse:separate;border-spacing:0;width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:clamp(15px,1.45vw,21px)}
+.t th,.t td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}.t th{background:var(--pale)}.t tr:last-child td{border-bottom:0}.t td:first-child{font-weight:800}
+.week{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:10px}.week div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;font-size:clamp(14px,1.3vw,19px);line-height:1.3;color:var(--muted)}.week b{display:block;color:var(--ink);font-size:clamp(16px,1.5vw,22px);margin-bottom:6px}.week .hp{border-color:var(--rust);border-width:2px}
+.machines{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.machines .pic img,.machines .pic .fallback{height:min(21vh,190px)}.machines figcaption{font-weight:800;color:var(--ink)}.machines .pic .fallback{font-size:clamp(13px,1.15vw,17px);padding:8px}.machines .pic .fallback span{font-size:clamp(34px,3.4vw,52px)}
+.quiz{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.quiz .card p{color:var(--ink)}
+.answer{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--pale);font-size:clamp(15px,1.4vw,20px);line-height:1.35}.answer.open{display:block}
+.reveal{margin-top:12px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 14px;cursor:pointer;font-weight:800;color:var(--sage)}
+.sources{columns:2;column-gap:32px;font-size:clamp(12px,1.05vw,16px);line-height:1.35;padding-left:1.2em}.sources li{break-inside:avoid;margin-bottom:7px}.sources a{color:var(--sage)}
+svg.diagram{width:100%;height:auto;max-height:36vh;background:#fff;border:1px solid var(--line);border-radius:18px}
+.note{display:none;position:absolute;left:24px;right:24px;bottom:72px;background:#fff9df;border:2px solid #d0a82a;border-radius:12px;padding:14px 18px;font-size:16px;line-height:1.4;box-shadow:var(--shadow);z-index:30;max-height:45vh;overflow:auto}
+body.notes .slide.active .note{display:block}
+.controls{position:fixed;left:0;right:0;bottom:0;height:58px;background:rgba(244,246,247,.95);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 18px;z-index:50}
+.controls button{border:1px solid var(--line);background:#fff;border-radius:9px;min-width:42px;height:38px;cursor:pointer;color:var(--ink);font-weight:800;padding:0 12px}.controls button:hover{background:var(--pale)}
+.controls select{height:38px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);max-width:40vw}
+.counter{margin-left:auto;color:var(--muted);font-size:14px}.progress{position:fixed;bottom:58px;left:0;height:5px;background:var(--sage);z-index:51;transition:width .2s}
+.muted{color:var(--muted)}.small{font-size:clamp(14px,1.2vw,17px);color:var(--muted)}
+@media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr}.machines{grid-template-columns:repeat(3,1fr)}.week{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px),(orientation:portrait){html,body{overflow:auto}.slide{position:relative;min-height:100vh}.grid2,.grid3,.grid4,.lg,.quiz{grid-template-columns:1fr}.machines{grid-template-columns:1fr 1fr}.week{grid-template-columns:1fr 1fr}.sources{columns:1}}
+@media print{html,body{overflow:visible;height:auto;background:#fff}.presentation{height:auto}.slide{display:block!important;position:relative;min-height:190mm;page-break-after:always;overflow:hidden;padding:14mm}.controls,.progress,.note,.reveal{display:none!important}.answer{display:block}}
+</style>
+</head>
+<body>
+<main class="presentation" aria-live="polite">
+
+<!-- 1 -->
+<section class="slide hero active" data-title="Start">
+<div class="hero-inner">
+<p class="kicker">WP Technik 7 · Anschlussprojekt Möbelbau</p>
+<h1>Alles aus Dachlatte.<br>Die Möbelwerkstatt.</h1>
+<p class="lead">Du entwickelst ein Möbelstück für einen echten Bedarf – als Modell aus Eisstielen oder in Originalgröße aus Dachlatten. Du planst, baust, prüfst und verbesserst.</p>
+<p class="lead" style="margin-top:18px">6 Wochen · montags 45 Minuten · mittwochs 90 Minuten</p>
+</div>
+<div class="note">Einstieg: Bezug zur Reihe „Vom Baum zum Holz“ herstellen – jetzt wird aus dem Wissen über Holz ein eigenes Produkt. Ziel der heutigen Stunde: Alle wissen, wie das Projekt abläuft, welche Entscheidungen sie selbst treffen und wie Lehrgänge funktionieren.</div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-title="Leitfrage">
+<p class="kicker">Die Leitfrage</p>
+<p class="big-question">Wie kannst du aus Holz etwas bauen, das einen echten Bedarf erfüllt?</p>
+<div class="grid4" style="margin-top:30px">
+<div class="card sage"><span class="icon">🪑</span><h3>Was?</h3><p>Du entscheidest, welches Möbel du baust.</p></div>
+<div class="card sage"><span class="icon">🧭</span><h3>Welcher Weg?</h3><p>Modell aus Eisstielen oder Original aus Dachlatte.</p></div>
+<div class="card sage"><span class="icon">👥</span><h3>Mit wem?</h3><p>Allein, zu zweit oder zu dritt.</p></div>
+<div class="card sage"><span class="icon">📈</span><h3>Wie anspruchsvoll?</h3><p>Du wählst dein Startniveau 1, 2 oder 3.</p></div>
+</div>
+<div class="rule"><span>💡</span><span>Es gibt <b>keine fertige Bauanleitung</b>. Die Lehrkraft prüft bei der Freigabe nur zwei Dinge: Ist es sicher? Ist es in 6 Wochen schaffbar?</span></div>
+<div class="note">Betonen: Eigeninitiative und Kreativität stehen im Mittelpunkt. Die Ideen, die später gezeigt werden, sind nur ein Notfall-Speicher. Frage an die Klasse: „Was würdet ihr gern bauen, wenn ihr frei wählen dürftet?“ – 2–3 Antworten sammeln.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-title="Zwei Wege">
+<p class="kicker">Zwei Wege · gleich viel wert</p>
+<h2>Modell oder Originalgröße?</h2>
+<div class="grid2">
+<div>
+<figure class="pic small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Popsicle-sticks.jpg?width=900" alt="Holz-Eisstiele" loading="lazy"><div class="fallback"><div><span>🍦</span>Holz-Eisstiele</div></div><figcaption>Weg M: Holz-Eisstiele</figcaption></figure>
+<div class="card sage" style="margin-top:14px"><h3>Weg M · Modell</h3><ul><li>Proportionen, ggf. Maßstab 1:5 oder 1:10</li><li>Leimen, Platten herstellen, Furnier</li><li>Dekupiersäge für Platten</li><li>Test mit Modellfigur oder kleiner Prüflast</li></ul></div>
+</div>
+<div>
+<figure class="pic small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Konterlattung_Dachlatten.jpg?width=900" alt="Dachlatten" loading="lazy"><div class="fallback"><div><span>🪵</span>Dachlatten</div></div><figcaption>Weg O: Dachlatten aus Fichte oder Tanne, z. B. 24 × 48 mm</figcaption></figure>
+<div class="card rust" style="margin-top:14px"><h3>Weg O · Original</h3><ul><li>echte Nutzmaße</li><li>Stichsäge, Schleifgeräte, Bohren, Schrauben, Dübeln</li><li>Standfestigkeit und sichere Verbindungen</li><li>Test mit einer vereinbarten kleinen Last</li></ul></div>
+</div>
+</div>
+<div class="note">Dachlatten sind günstiges Bauholz (meist Fichte/Tanne), das eigentlich auf Dächern verwendet wird – Bild zeigt sie im Einsatz. Wichtig: Ein Modell ist keine „leichte“ Ersatzaufgabe; Modelle können sehr anspruchsvoll sein (Maßstab, Mechanik). Für alle gilt: schleifen und Oberfläche ölen oder lasieren.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-title="Was zählt?">
+<p class="kicker">Bewertung</p>
+<h2>Was zählt – und was nicht?</h2>
+<div class="grid3">
+<div class="card sage"><span class="icon">💡</span><h3>Eigene Idee</h3><p>Du hast einen echten Bedarf gefunden und selbst entschieden.</p></div>
+<div class="card sage"><span class="icon">📐</span><h3>Planung</h3><p>Zeichnung, Maße und Stückliste passen zusammen.</p></div>
+<div class="card sage"><span class="icon">🔧</span><h3>Fertigung</h3><p>Du arbeitest maßgenau, sauber und sicher.</p></div>
+<div class="card sage"><span class="icon">✅</span><h3>Funktion</h3><p>Dein Möbel besteht deine Prüfkriterien – oder du hast es verbessert.</p></div>
+<div class="card sage"><span class="icon">♻️</span><h3>Material</h3><p>Du gehst sparsam mit Material um und kennst deinen Verbrauch.</p></div>
+<div class="card sage"><span class="icon">🔁</span><h3>Reflexion</h3><p>Du erklärst, was du warum verändert hast.</p></div>
+</div>
+<div class="rule"><span>✖</span><span>Nicht bewertet werden: Größe, möglichst viel Traglast, Verzierungen oder wie viele Stiele du verbraucht hast.</span></div>
+<div class="note">Hier Druck rausnehmen: Wer ein kleines, gut durchdachtes Möbel baut, kann genauso gut abschneiden wie ein großes Team. Ein ehrlicher Test, bei dem etwas nicht klappt, ist kein Fehler – wenn danach verbessert wird.</div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-title="Teamgröße">
+<p class="kicker">Teamgröße bestimmt den Umfang</p>
+<h2>Allein, zu zweit oder zu dritt</h2>
+<table class="t">
+<tr><th></th><th>Allein</th><th>Zu zweit</th><th>Zu dritt (höchstens)</th></tr>
+<tr><td>Weg M<br>Modell</td><td>kleines Modell aus einem Baukörper, z. B. Hocker, Ständer, Ablage</td><td>größeres Modell oder zwei Möbel, die zusammengehören, z. B. Tisch mit Stuhl</td><td>mehrteiliges Modell, z. B. Möbelgruppe oder Zimmerecke</td></tr>
+<tr><td>Weg O<br>Original</td><td>Kleinmöbel, z. B. Beistelltisch, Buchständer, Ablage</td><td>größeres Möbel mit mehreren Baugruppen, z. B. niedriges Regal, Caddy</td><td>größeres Möbel oder zwei kombinierbare Module, z. B. Modulregal</td></tr>
+<tr><td>Jede Person …</td><td>plant und baut alles selbst.</td><td>verantwortet mindestens eine eigene Baugruppe.</td><td>verantwortet mindestens eine eigene Baugruppe.</td></tr>
+</table>
+<div class="rule"><span>📏</span><span><b>Größer heißt:</b> mehr Bauteile, mehr Baugruppen, mehr Planung. <b>Größer heißt nicht:</b> höher oder stärker belastbar.</span></div>
+<div class="note">Begriff „Baugruppe“ klären: ein Teil des Möbels, das man getrennt bauen kann (z. B. Gestell, Fachboden, Rückwand). Im Team schreibt jede Person im Teamvertrag (Projektbogen 3.3) auf, wofür sie verantwortlich ist. Jede Person führt ihren eigenen Projektbogen.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-title="Großprojekt">
+<p class="kicker">Großprojekt · für mehr als drei Personen</p>
+<h2>Ein Taschenregal für den Technikraum A3</h2>
+<div class="grid2">
+<div>
+<p class="lead">Im Technikraum liegen Rucksäcke auf dem Boden und im Weg. Gesucht: ein Regal mit <b>20 Fächern</b> für Rucksäcke. Das schafft kein Team allein.</p>
+<div class="card rust"><h3>Lastenheft der Kundschaft</h3><ul>
+<li>20 Fächer, in jedes passt ein Schulrucksack</li>
+<li>höchstens etwa 1,20 m hoch</li>
+<li>Module werden verbunden, die Wandbefestigung macht die Lehrkraft</li>
+<li>aus Dachlatten, Platten nur nach Absprache</li>
+<li>glatte Kanten, geölt oder lasiert, Abstand zum Boden</li></ul></div>
+</div>
+<svg class="diagram" viewBox="0 0 520 330" role="img" aria-label="Skizze: fünf Module mit je zwei mal zwei Fächern nebeneinander">
+<text x="20" y="34" font-size="18" font-weight="700" fill="#2c3d4c">Beispiel: 5 Module × (2 × 2 Fächer) = 20 Fächer</text>
+<g stroke="#2c3d4c" stroke-width="3" fill="#fff">
+<rect x="20" y="70" width="92" height="200"/><rect x="118" y="70" width="92" height="200"/><rect x="216" y="70" width="92" height="200"/><rect x="314" y="70" width="92" height="200"/><rect x="412" y="70" width="92" height="200"/></g>
+<g stroke="#9e4e22" stroke-width="2.5">
+<line x1="66" y1="70" x2="66" y2="270"/><line x1="164" y1="70" x2="164" y2="270"/><line x1="262" y1="70" x2="262" y2="270"/><line x1="360" y1="70" x2="360" y2="270"/><line x1="458" y1="70" x2="458" y2="270"/>
+<line x1="20" y1="170" x2="504" y2="170"/></g>
+<g font-size="15" fill="#315b48" font-weight="700" text-anchor="middle"><text x="66" y="295">Modul 1</text><text x="164" y="295">Modul 2</text><text x="262" y="295">Modul 3</text><text x="360" y="295">Modul 4</text><text x="458" y="295">Modul 5</text></g>
+<g stroke="#536574" stroke-width="2"><line x1="20" y1="278" x2="20" y2="270"/><line x1="504" y1="278" x2="504" y2="270"/></g>
+<text x="20" y="322" font-size="14" fill="#536574">Die echten Maße findet ihr selbst heraus: Wand vermessen, Rucksäcke messen.</text>
+</svg>
+</div>
+<div class="note">Das Großprojekt ist ein Angebot, kein Muss. Die Lehrkraft spielt die Kundin/den Kunden. Die Skizze ist nur ein Beispiel – die Planungsgruppe kann andere Modulgrößen begründet vorschlagen. Höhenbegrenzung und Wandbefestigung aus Sicherheitsgründen nicht verhandelbar.</div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-title="Großprojekt: Teams">
+<p class="kicker">Großprojekt · wie in einem Betrieb</p>
+<h2>Mehrere Teams – ein Produkt</h2>
+<div class="grid3">
+<div class="card sage"><span class="icon">📐</span><h3>Planungsteam</h3><p>Wand in A3 vermessen, Rucksäcke messen und wiegen, Maßraster festlegen, Gesamtzeichnung und Materialliste.</p></div>
+<div class="card sage"><span class="icon">🔨</span><h3>Modulbau-Teams (3–5)</h3><p>Jedes Team baut ein gleiches Modul genau nach dem Maßraster.</p></div>
+<div class="card sage"><span class="icon">🔍</span><h3>Qualitätsteam</h3><p>Schablonen und Prüflehren bauen, jedes Modul nachmessen, Module verbinden, Abnahme vorbereiten.</p></div>
+</div>
+<div class="steps" style="margin-top:22px">
+<div class="step"><b>1</b>Jedes Teilteam hat höchstens drei Personen.</div>
+<div class="step"><b>2</b>Alle Module müssen ohne Nacharbeit zusammenpassen – darum gilt ein gemeinsames Maßraster.</div>
+<div class="step"><b>3</b>Plant mit dem schwersten Rucksack, nicht mit dem leichtesten.</div>
+<div class="step"><b>4</b>Die Gesamtplanung braucht eine eigene Freigabe – vorher wird nichts zugeschnitten.</div>
+</div>
+<div class="note">Begriff „Serienfertigung“ einführen: gleiche Teile mit Schablone und Anschlag zuschneiden, statt jedes Teil einzeln anzureißen. Kurzes Teamtreffen zu Beginn jeder Mittwochsstunde, Projektplan hängt im Raum.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-title="Ideen finden">
+<p class="kicker">Schritt 1 · Bedarf entdecken</p>
+<h2>Wo fehlt etwas?</h2>
+<div class="grid2">
+<div>
+<p class="lead">Schau dich um: in deinem Zimmer, im Klassenraum, im Werkraum, bei Familie oder Freunden.</p>
+<div class="steps">
+<div class="step"><b>?</b>Was liegt herum?</div>
+<div class="step"><b>?</b>Was ist unpraktisch oder nervt jeden Tag?</div>
+<div class="step"><b>?</b>Wem könntest du mit einem Möbel helfen?</div>
+</div>
+<div class="rule"><span>✏️</span><span>Skizziere <b>mindestens drei</b> Ideen. Mindestens eine ist ganz von dir.</span></div>
+</div>
+<div class="card"><h3>Ideenspeicher – nur falls du nicht weiterkommst</h3><ul>
+<li>Schreibtischständer für Buch oder Tablet</li>
+<li>Materialablage oder Caddy mit Fächern</li>
+<li>niedriges Regal</li>
+<li>Beistelltisch</li>
+<li>klappbares oder verstellbares Möbel</li>
+<li>Modulsystem aus zwei Teilen</li></ul>
+<p style="margin-top:12px">Jede Idee geht als Modell oder im Original. Stuhl oder Bank: nur als Modell.</p></div>
+</div>
+<div class="note">Projektbogen Teil 1. Schnelle Skizzen reichen, es geht um Vielfalt. Wer nichts findet: Frage „Was nervt mich jeden Tag?“ – erst danach Ideenspeicher.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-title="Entscheiden">
+<p class="kicker">Schritt 2 · Entscheiden</p>
+<h2>Welche Idee wird gebaut?</h2>
+<div class="grid2">
+<table class="t">
+<tr><th>Kriterium</th><th>Idee 1</th><th>Idee 2</th><th>Idee 3</th></tr>
+<tr><td>löst ein echtes Problem</td><td>++</td><td>+</td><td>++</td></tr>
+<tr><td>in 6 Wochen schaffbar</td><td>+</td><td>++</td><td>–</td></tr>
+<tr><td>passt zur Teamgröße</td><td>++</td><td>+</td><td>+</td></tr>
+<tr><td>sicher baubar</td><td>++</td><td>++</td><td>+</td></tr>
+<tr><td>neu oder eigen</td><td>+</td><td>–</td><td>++</td></tr>
+<tr><td>dein eigenes Kriterium</td><td>…</td><td>…</td><td>…</td></tr>
+</table>
+<div>
+<div class="card"><h3>Dein Startniveau</h3><ul>
+<li><b>1 · Anwenden:</b> wenige Bauteile, eine eigene Anpassung, ein Funktionstest</li>
+<li><b>2 · Konstruieren:</b> Maße aus dem Bedarf ableiten, eigene Zeichnung und Stückliste, eine Schwachstelle verbessern</li>
+<li><b>3 · Optimieren:</b> zwei Lösungen vergleichen, begründen, Material sparen, Verbesserung mit Test belegen</li></ul></div>
+<p class="small" style="margin-top:12px">Das Niveau ist eine Startempfehlung. Du darfst während des Projekts aufsteigen.</p>
+</div>
+</div>
+<div class="note">Projektbogen Teil 2. Die Tabelle ist ein Beispiel. Wichtig: Die Lernenden ergänzen ein eigenes Kriterium. Die Begründung der Entscheidung („Darum haben wir uns so entschieden“) ist Teil der Bewertung „Eigene Idee“.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-title="Projektweg">
+<p class="kicker">Dein Projektweg</p>
+<h2>Sechs Wochen im Überblick</h2>
+<div class="week">
+<div><b>Woche 1</b>Bedarf entdecken, 3 Ideen skizzieren, Team bilden, entscheiden</div>
+<div class="hp"><b>Woche 2</b>Zeichnung, Stückliste, Lehrgänge buchen<br><span class="badge" style="margin-top:8px">Freigabe</span></div>
+<div><b>Woche 3</b>Lehrgänge besuchen, Bauteile herstellen, erste Verbindungen</div>
+<div><b>Woche 4</b>montieren, aussteifen, schleifen</div>
+<div class="hp"><b>Woche 5</b>Prüfkriterien testen, Schwachstelle finden<br><span class="badge" style="margin-top:8px">Test</span></div>
+<div class="hp"><b>Woche 6</b>verbessern, ölen oder lasieren, vorstellen<br><span class="badge" style="margin-top:8px">Abnahme</span></div>
+</div>
+<div class="rule"><span>✂️</span><span>Vor der Freigabe wird <b>nichts endgültig zugeschnitten</b>. Wer früher fertig ist, stellt sich eine technische Zusatzaufgabe: verstellbar, kombinierbar, materialsparend – nicht nur mehr Deko.</span></div>
+<div class="note">Montag: kurzer Input und Start. Mittwoch: Arbeitsphase mit Lehrgangsfenstern. Die drei Haltepunkte (Freigabe, Test, Abnahme) sind verbindlich und werden im Projektbogen mit Kürzel bestätigt.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-title="Projektbogen">
+<p class="kicker">Dein Projektbogen</p>
+<h2>Planung, Bautagebuch und Nachweis</h2>
+<div class="grid2">
+<div class="steps">
+<div class="step"><b>1</b>Teil 1–2: Bedarf, drei Ideen, Entscheidung</div>
+<div class="step"><b>2</b>Teil 3–5: Prüfkriterien, Teamvertrag, Zeichnung, Stückliste, Arbeitsplan, Lehrgänge</div>
+<div class="step"><b>3</b>Teil 6: Freigabe durch die Lehrkraft</div>
+<div class="step"><b>4</b>Bautagebuch: nach jeder Bauphase eine Zeile</div>
+<div class="step"><b>5</b>Teil 7–9: Test, Verbesserung, Oberfläche, Rückblick</div>
+</div>
+<div class="card rust"><h3>Prüfkriterien – Beispiele</h3><ul>
+<li>„Der Ständer hält ein Buch mit 1 kg, ohne zu kippen.“</li>
+<li>„In jedes Fach passt ein DIN-A4-Ordner.“</li>
+<li>„Das Modell steht auf allen vier Beinen, ohne zu wackeln.“</li></ul>
+<p style="margin-top:12px">Ein gutes Prüfkriterium kann man mit <b>ja</b> oder <b>nein</b> überprüfen.</p></div>
+</div>
+<div class="note">Den Projektbogen austeilen bzw. zeigen. Der Bogen gehört in die Mappe. Prüfkriterien gemeinsam an einem Beispiel schärfen: „Das Regal ist stabil“ ist zu ungenau – „hält 3 kg ohne sichtbare Durchbiegung“ ist prüfbar.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-title="Lehrgänge">
+<p class="kicker">Lehrgänge</p>
+<h2>Kurz lernen, sicher bauen</h2>
+<div class="grid2">
+<div>
+<p class="lead">Ein Lehrgang ist eine kurze Einführung bei der Lehrkraft: <b>10 bis 15 Minuten</b>, <b>höchstens 4 Personen</b>, in der Arbeitsphase. Du buchst ihn selbst – wenn dein Projekt ihn braucht.</p>
+<div class="steps">
+<div class="step"><b>1</b>Im Projektbogen (5.4) planen: Welche Arbeitsgänge brauche ich?</div>
+<div class="step"><b>2</b>Im Werkstattpass ankreuzen.</div>
+<div class="step"><b>3</b>Auf der Buchungsliste eintragen – spätestens eine Stunde vorher.</div>
+<div class="step"><b>4</b>Mitmachen, Probestück zeigen, Unterschrift im Werkstattpass.</div>
+</div>
+</div>
+<div>
+<div class="card"><h3>13 Lehrgänge</h3><ul>
+<li><b>Für alle:</b> L1 Richtig schleifen · L2 Ölen oder lasieren</li>
+<li><b>Weg O:</b> L3 Stichsäge · L4 Handschleifgerät · L5 Tellerschleifer · L6 Standbohrmaschine · L7 Akkuschrauber · L8 Leimen · L9 Verschrauben · L10 Holzdübel</li>
+<li><b>Weg M:</b> L11 Dekupiersäge · L12 Platten durch Kreuzverleimung · L13 Furnier aufbringen</li></ul></div>
+<p class="small" style="margin-top:12px">Lehrgänge des anderen Wegs darfst du auch buchen. Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.</p>
+</div>
+</div>
+<div class="note">Buchungsliste zeigen (Aushang). Lehrgänge laufen mittwochs in festen Fenstern. Wer auf einen Lehrgang wartet, arbeitet an Planung oder Bauteilen ohne Maschine weiter – niemand wartet untätig.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-title="Pflicht-Maschinen">
+<p class="kicker"><span>Pflicht-Lehrgänge</span><span class="badge">Pflicht</span></p>
+<h2>Diese Maschinen erst nach dem Lehrgang</h2>
+<div class="machines">
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Makita_DJV181.jpg?width=500" alt="Stichsäge" loading="lazy"><div class="fallback"><div><span>🪚</span>Stichsäge</div></div><figcaption>L3 Stichsäge</figcaption></figure>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Exzenterschleifer_2008-3-7.JPG?width=500" alt="Handschleifgerät" loading="lazy"><div class="fallback"><div><span>🌀</span>Handschleifgerät</div></div><figcaption>L4 Handschleifgerät</figcaption></figure>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Disc_sander.JPG?width=500" alt="Tellerschleifer" loading="lazy"><div class="fallback"><div><span>💿</span>Tellerschleifer</div></div><figcaption>L5 Tellerschleifer</figcaption></figure>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Drillpress.jpg?width=500" alt="Standbohrmaschine" loading="lazy"><div class="fallback"><div><span>⬇️</span>Standbohrmaschine</div></div><figcaption>L6 Standbohrmaschine</figcaption></figure>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cordless_electric_(screw)_drill.jpg?width=500" alt="Akkuschrauber" loading="lazy"><div class="fallback"><div><span>🔩</span>Akkuschrauber</div></div><figcaption>L7 Akkuschrauber</figcaption></figure>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Power_coping_saw_03.jpg?width=500" alt="Dekupiersäge" loading="lazy"><div class="fallback"><div><span>〰️</span>Dekupiersäge</div></div><figcaption>L11 Dekupiersäge</figcaption></figure>
+</div>
+<div class="rule"><span>✍️</span><span>Ohne Unterschrift der Lehrkraft im Werkstattpass <b>keine</b> Benutzung. Das gilt auch, wenn du „nur kurz“ etwas machen willst.</span></div>
+<div class="note">Standbohrmaschine: Wer in Klasse 5 den Bohrmaschinen-Führerschein gemacht hat, bekommt das Kürzel direkt (Nachweis zeigen). Bilder: Modellfotos von Wikimedia Commons – die Maschinen im Werkraum können anders aussehen; im Lehrgang immer am eigenen Gerät zeigen.</div>
+</section>
+
+<!-- 14 L1 -->
+<section class="slide" data-title="L1 Richtig schleifen">
+<p class="kicker"><span>Lehrgang L1 · für alle</span></p>
+<h2>Richtig schleifen</h2>
+<div class="lg">
+<div>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Me_sanding_the_wood.jpg?width=900" alt="Holz wird von Hand geschliffen" loading="lazy"><div class="fallback"><div><span>🧽</span>Schleifen von Hand</div></div><figcaption>Schleifen von Hand</figcaption></figure>
+</div>
+<div>
+<p class="use">Wofür? Glatte Flächen und Kanten ohne Splitter – die Grundlage für jede Oberfläche.</p>
+<ol class="do">
+<li><b>1</b><span>Körnung von grob nach fein: z. B. <b>80 → 120 → 180</b>. Kleine Zahl = grobes Papier.</span></li>
+<li><b>2</b><span>Immer <b>mit der Faser</b> schleifen, nie quer – sonst bleiben Kratzer sichtbar.</span></li>
+<li><b>3</b><span>Für Flächen einen <b>Schleifklotz</b> nutzen, damit nichts rund wird.</span></li>
+<li><b>4</b><span><b>Kanten brechen:</b> scharfe Kanten leicht abschleifen – dann splittert nichts.</span></li>
+<li><b>5</b><span>Staub abwischen, bevor die nächste Körnung kommt.</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> ein Probestück ohne Querkratzer, Kanten gebrochen.</p>
+</div>
+</div>
+<div class="note">Tipp für den Lehrgang: Probestück zur Hälfte quer und zur Hälfte mit der Faser schleifen lassen, dann mit etwas Wasser befeuchten – die Querkratzer werden deutlich sichtbar. Körnungen in der Hand fühlen lassen.</div>
+</section>
+
+<!-- 15 L2 -->
+<section class="slide" data-title="L2 Ölen oder lasieren">
+<p class="kicker"><span>Lehrgang L2 · für alle</span></p>
+<h2>Oberflächen ölen oder lasieren</h2>
+<div class="lg">
+<div>
+<figure class="pic"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wood_painted_with_boiled_linseed_oil.jpg?width=900" alt="Holz mit Leinöl behandelt" loading="lazy"><div class="fallback"><div><span>🫙</span>Geöltes Holz</div></div><figcaption>Holz mit Leinölfirnis behandelt</figcaption></figure>
+<div class="card" style="margin-top:12px"><p><b>Öl</b> zieht ins Holz ein und betont die Maserung. <b>Lasur</b> färbt das Holz, die Maserung bleibt sichtbar.</p></div>
+</div>
+<div>
+<p class="use">Wofür? Die Oberfläche wird schöner und besser gegen Schmutz und Feuchtigkeit geschützt.</p>
+<ol class="do">
+<li><b>1</b><span>Gut schleifen und den Staub vollständig entfernen.</span></li>
+<li><b>2</b><span><b>Dünn</b> mit Pinsel oder Lappen auftragen, mit der Faser.</span></li>
+<li><b>3</b><span>Nach kurzer Zeit den Überschuss abnehmen – keine Pfützen.</span></li>
+<li><b>4</b><span>Trocknen lassen (Angabe auf der Dose). Raum lüften.</span></li>
+<li><b>5</b><span>Bei Bedarf fein zwischenschleifen und ein zweites Mal auftragen.</span></li>
+</ol>
+<p class="never"><b>Achtung Brandgefahr:</b> Ölgetränkte Lappen können sich <b>von selbst entzünden</b>. Ausgebreitet trocknen lassen oder in den geschlossenen Metallbehälter.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> ein gleichmäßig behandeltes Probestück – und du erklärst die Lappen-Regel.</p>
+</div>
+</div>
+<div class="note">Öl/Lasur der Schule zeigen (Sicherheitsdatenblatt beachten). Trocknungszeit einplanen: Oberfläche am besten mittwochs, dann ist sie bis Montag trocken. Lappen-Regel unbedingt prüfen lassen.</div>
+</section>
+
+<!-- 16 L3 -->
+<section class="slide" data-title="L3 Stichsäge">
+<p class="kicker"><span>Lehrgang L3 · Weg O</span><span class="badge">Pflicht</span></p>
+<h2>Stichsäge</h2>
+<div class="lg">
+<figure class="pic contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Makita_DJV181.jpg?width=900" alt="Akku-Stichsäge" loading="lazy"><div class="fallback"><div><span>🪚</span>Stichsäge</div></div><figcaption>Akku-Stichsäge</figcaption></figure>
+<div>
+<p class="use">Wofür? Gerade und gebogene Schnitte in Dachlatten.</p>
+<ol class="do">
+<li><b>1</b><span><b>Schutzbrille</b> auf, lange Haare zusammen.</span></li>
+<li><b>2</b><span>Latte <b>fest einspannen</b>. Unter der Schnittlinie muss das Blatt frei laufen können.</span></li>
+<li><b>3</b><span>Fußplatte flach auf das Holz setzen, <b>erst einschalten, dann sägen</b>.</span></li>
+<li><b>4</b><span>Ohne Druck an der Linie entlang führen, die Säge zieht selbst.</span></li>
+<li><b>5</b><span>Nach dem Schnitt warten, bis das Blatt <b>steht</b>, dann absetzen.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> unter das Werkstück greifen · Blatt wechseln, solange Akku oder Stecker dran ist.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> einen geraden Schnitt entlang einer Anrisslinie.</p>
+</div>
+</div>
+<div class="note">Pendelhub erklären: für schnelle gerade Schnitte in Weichholz höhere Stufe, für Kurven und saubere Kanten Stufe 0. Blattwahl (Holzblatt, Zähne zeigen nach oben → Ausrisse oben, daher Sichtseite unten). Nur geeignete Sägehilfe/Einspannung verwenden.</div>
+</section>
+
+<!-- 17 L4 -->
+<section class="slide" data-title="L4 Handschleifgerät">
+<p class="kicker"><span>Lehrgang L4 · Weg O</span><span class="badge">Pflicht</span></p>
+<h2>Handschleifgerät</h2>
+<div class="lg">
+<figure class="pic contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Exzenterschleifer_2008-3-7.JPG?width=900" alt="Exzenterschleifer" loading="lazy"><div class="fallback"><div><span>🌀</span>Handschleifgerät</div></div><figcaption>Elektrisches Handschleifgerät (hier: Exzenterschleifer)</figcaption></figure>
+<div>
+<p class="use">Wofür? Große Flächen schnell und gleichmäßig glatt schleifen.</p>
+<ol class="do">
+<li><b>1</b><span>Schleifpapier wechseln nur, wenn <b>Akku oder Stecker ab</b> ist.</span></li>
+<li><b>2</b><span>Werkstück sichern: einspannen oder auf eine rutschfeste Unterlage.</span></li>
+<li><b>3</b><span><b>Absaugung</b> oder Staubbeutel anschließen.</span></li>
+<li><b>4</b><span>Gerät flach aufsetzen und <b>ohne Druck</b> in Bahnen führen.</span></li>
+<li><b>5</b><span>Nicht über die Kante kippen – sonst wird sie rund.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> das Werkstück mit der Hand festhalten, während du schleifst · das Kabel vor das Gerät legen.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine glatt geschliffene Fläche, Kanten nicht abgerundet.</p>
+</div>
+</div>
+<div class="note">Gleiche Körnungsregel wie bei L1. Unterschied Schwingschleifer (rechteckig, für Ecken) und Exzenterschleifer (rund, für Flächen) am vorhandenen Gerät zeigen.</div>
+</section>
+
+<!-- 18 L5 -->
+<section class="slide" data-title="L5 Tellerschleifer">
+<p class="kicker"><span>Lehrgang L5 · Weg O</span><span class="badge">Pflicht</span></p>
+<h2>Tellerschleifer</h2>
+<div class="lg">
+<div>
+<figure class="pic small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Disc_sander.JPG?width=900" alt="Tellerschleifmaschine" loading="lazy"><div class="fallback"><div><span>💿</span>Tellerschleifer</div></div><figcaption>Tellerschleifmaschine</figcaption></figure>
+<svg class="diagram" viewBox="0 0 520 225" role="img" aria-label="Skizze: Schleifen nur auf der Tellerhälfte, die nach unten dreht" style="margin-top:12px">
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#315b48"/></marker></defs>
+<path d="M260 105 L260 25 A80 80 0 0 0 260 185 Z" fill="#eaf1ed"/>
+<circle cx="260" cy="105" r="80" fill="none" stroke="#2c3d4c" stroke-width="3"/>
+<path d="M 236 40 A 68 68 0 0 0 236 170" fill="none" stroke="#315b48" stroke-width="4" marker-end="url(#ar)"/>
+<path d="M 284 170 A 68 68 0 0 0 284 40" fill="none" stroke="#9e4e22" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#ar2)"/>
+<defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#9e4e22"/></marker></defs>
+<rect x="40" y="185" width="440" height="12" fill="#9e4e22"/>
+<rect x="158" y="157" width="62" height="28" fill="#d9b48a" stroke="#2c3d4c"/>
+<text x="40" y="217" font-size="13" fill="#536574">Auflagetisch</text>
+<text x="152" y="176" font-size="12" fill="#536574" text-anchor="end">Werkstück</text>
+<text x="10" y="80" font-size="16" font-weight="700" fill="#315b48">hier schleifen</text>
+<text x="10" y="99" font-size="12" fill="#315b48">Teller dreht nach unten</text>
+<text x="352" y="80" font-size="16" font-weight="700" fill="#9e4e22">nicht hier</text>
+<text x="352" y="99" font-size="12" fill="#9e4e22">Teller dreht nach oben</text>
+</svg>
+</div>
+<div>
+<p class="use">Wofür? Lattenenden genau rechtwinklig oder auf Maß schleifen.</p>
+<ol class="do">
+<li><b>1</b><span><b>Schutzbrille</b>, Absaugung an, Haare zusammen.</span></li>
+<li><b>2</b><span>Nur auf der Seite schleifen, auf der der Teller <b>nach unten</b> dreht. So wird das Holz auf den Tisch gedrückt.</span></li>
+<li><b>3</b><span>Werkstück immer <b>auf dem Auflagetisch</b> führen, mit dem Winkelanschlag.</span></li>
+<li><b>4</b><span>Leicht andrücken und hin und her bewegen. Finger weit weg vom Teller.</span></li>
+<li><b>5</b><span>Ausschalten und warten, bis der Teller steht.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> kleine Teile freihändig schleifen · auf der aufwärts drehenden Seite schleifen – das Holz wird hochgerissen.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> ein Lattenende rechtwinklig bis zum Anriss geschliffen.</p>
+</div>
+</div>
+<div class="note">Drehrichtungspfeil an der eigenen Maschine zeigen – welche Seite „nach unten“ dreht, hängt von der Maschine ab. Abstand zwischen Auflagetisch und Teller muss klein sein, damit nichts eingezogen wird (vor dem Lehrgang kontrollieren). Für Eisstiele ist der Tellerschleifer nicht vorgesehen.</div>
+</section>
+
+<!-- 19 L6 -->
+<section class="slide" data-title="L6 Standbohrmaschine">
+<p class="kicker"><span>Lehrgang L6 · Weg O</span><span class="badge">Pflicht</span><span class="badge grey">entfällt mit Bohrmaschinen-Führerschein aus Klasse 5</span></p>
+<h2>Standbohrmaschine</h2>
+<div class="lg">
+<figure class="pic contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Drillpress.jpg?width=900" alt="Standbohrmaschine" loading="lazy"><div class="fallback"><div><span>⬇️</span>Standbohrmaschine</div></div><figcaption>Standbohrmaschine (Säulenbohrmaschine)</figcaption></figure>
+<div>
+<p class="use">Wofür? Genau senkrechte Löcher, z. B. für Dübel oder Achsen.</p>
+<ol class="do">
+<li><b>1</b><span><b>Schutzbrille</b>, Haare zusammen, enge Ärmel, Schmuck ab, <b>keine Handschuhe</b>.</span></li>
+<li><b>2</b><span>Werkstück im <b>Maschinenschraubstock</b> spannen, Restholz unterlegen.</span></li>
+<li><b>3</b><span>Bohrer fest einspannen – <b>Futterschlüssel abziehen!</b></span></li>
+<li><b>4</b><span>Drehzahl einstellen (großer Bohrer = langsam) und <b>Tiefenanschlag</b> setzen.</span></li>
+<li><b>5</b><span>Gleichmäßig bohren, Späne nur bei Stillstand mit dem Pinsel entfernen.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> das Werkstück mit der Hand halten · Späne mit der Hand wegwischen.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine senkrechte Bohrung auf dem Anriss mit der eingestellten Tiefe.</p>
+</div>
+</div>
+<div class="note">Wer den Bohrmaschinen-Führerschein aus Klasse 5 hat: Nachweis zeigen lassen, Kürzel direkt im Werkstattpass eintragen. Bei Unsicherheit trotzdem kurze Auffrischung anbieten. Tiefenanschlag ist neu gegenüber Klasse 5 und wichtig für Dübel (L10).</div>
+</section>
+
+<!-- 20 L7 -->
+<section class="slide" data-title="L7 Akkuschrauber">
+<p class="kicker"><span>Lehrgang L7 · Weg O</span><span class="badge">Pflicht</span></p>
+<h2>Akkuschrauber</h2>
+<div class="lg">
+<figure class="pic contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cordless_electric_(screw)_drill.jpg?width=900" alt="Akkuschrauber" loading="lazy"><div class="fallback"><div><span>🔩</span>Akkuschrauber</div></div><figcaption>Akku-Bohrschrauber</figcaption></figure>
+<div>
+<p class="use">Wofür? Vorbohren und Schrauben eindrehen.</p>
+<ol class="do">
+<li><b>1</b><span>Werkzeug wechseln nur mit <b>abgezogenem Akku</b> oder gesperrtem Schalter.</span></li>
+<li><b>2</b><span>Zum Bohren: Bohrer einspannen, Stellring auf <b>Bohrsymbol</b>.</span></li>
+<li><b>3</b><span>Zum Schrauben: passendes <b>Bit</b> (z. B. PZ oder TX), Stellring auf eine <b>kleine Zahl</b> (Drehmoment), langsamer Gang.</span></li>
+<li><b>4</b><span>Drehrichtung prüfen: rechts = rein, links = raus.</span></li>
+<li><b>5</b><span>Werkstück einspannen, Schrauber gerade halten, gleichmäßig drücken.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> die Hand hinter oder unter die Bohrstelle halten.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> ein Loch gerade vorbohren und eine Schraube bündig eindrehen.</p>
+</div>
+</div>
+<div class="note">Drehmomentkupplung erklären: Bei einer kleinen Zahl rutscht die Kupplung früher durch – die Schraube wird nicht überdreht und das Holz reißt nicht. Gang 1 = langsam, viel Kraft (Schrauben), Gang 2 = schnell (Bohren). L7 ist Voraussetzung für L9 Verschrauben.</div>
+</section>
+
+<!-- 21 L8 -->
+<section class="slide" data-title="L8 Leimen">
+<p class="kicker"><span>Lehrgang L8 · Weg O</span><span class="badge sage">auch für Modelle hilfreich</span></p>
+<h2>Leimen</h2>
+<div class="lg">
+<div class="grid2" style="gap:12px">
+<figure class="pic small contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wood_glue.jpg?width=600" alt="Holzleim" loading="lazy"><div class="fallback"><div><span>🧴</span>Holzleim</div></div><figcaption>Holzleim (Weißleim)</figcaption></figure>
+<figure class="pic small contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bar_clamp_1.jpg?width=600" alt="Zwinge" loading="lazy"><div class="fallback"><div><span>🗜️</span>Zwinge</div></div><figcaption>Zwinge</figcaption></figure>
+</div>
+<div>
+<p class="use">Wofür? Holzteile dauerhaft verbinden. Eine gute Leimfuge ist sehr fest.</p>
+<ol class="do">
+<li><b>1</b><span>Teile zuerst <b>trocken</b> zusammenstecken und prüfen, ob alles passt.</span></li>
+<li><b>2</b><span>Leim <b>dünn und gleichmäßig</b> auftragen – nicht zu viel.</span></li>
+<li><b>3</b><span>Zwingen mit <b>Zulagen</b> (Holzreste) ansetzen, damit keine Druckstellen entstehen.</span></li>
+<li><b>4</b><span>Winkel prüfen, solange der Leim noch nass ist.</span></li>
+<li><b>5</b><span>Leimreste feucht abwischen. Pressen lassen (Zeit auf der Flasche).</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine rechtwinklige Leimverbindung.</p>
+</div>
+</div>
+<div class="note">Hinweis: Leimreste verhindern später, dass Öl oder Lasur einziehen – darum sofort entfernen. Zwingen nicht zu fest anziehen, sonst wird der Leim ganz herausgepresst. Modellbauer arbeiten mit Klammern statt Zwingen.</div>
+</section>
+
+<!-- 22 L9 -->
+<section class="slide" data-title="L9 Verschrauben">
+<p class="kicker"><span>Lehrgang L9 · Weg O</span><span class="badge grey">vorher L7</span></p>
+<h2>Verschrauben</h2>
+<div class="lg">
+<div>
+<figure class="pic small contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wood_screw_with_countersunk_head-painted.svg?width=700" alt="Holzschraube mit Senkkopf" loading="lazy"><div class="fallback"><div><span>🔩</span>Senkkopfschraube</div></div><figcaption>Holzschraube mit Senkkopf</figcaption></figure>
+<svg class="diagram" viewBox="0 0 420 200" role="img" aria-label="Skizze: Durchgangsbohrung oben, Vorbohrung unten, Senkung" style="margin-top:12px">
+<rect x="60" y="40" width="300" height="50" fill="#f3dfc1" stroke="#2c3d4c" stroke-width="2"/>
+<rect x="60" y="90" width="300" height="80" fill="#e8cfa6" stroke="#2c3d4c" stroke-width="2"/>
+<rect x="196" y="40" width="28" height="50" fill="#fff" stroke="#9e4e22" stroke-width="2"/>
+<polygon points="186,40 234,40 224,52 196,52" fill="#fff" stroke="#9e4e22" stroke-width="2"/>
+<rect x="204" y="90" width="12" height="62" fill="#fff" stroke="#315b48" stroke-width="2"/>
+<text x="240" y="30" font-size="13" fill="#9e4e22">Senkung</text>
+<text x="246" y="72" font-size="13" fill="#9e4e22">Durchgangsloch (oben)</text>
+<text x="226" y="132" font-size="13" fill="#315b48">dünne Vorbohrung (unten)</text>
+<text x="66" y="192" font-size="13" fill="#536574">Faustregel: Schraube ca. 2,5 × so lang wie das obere Holz dick</text>
+</svg>
+</div>
+<div>
+<p class="use">Wofür? Feste, wieder lösbare Verbindungen an Lattenrahmen.</p>
+<ol class="do">
+<li><b>1</b><span>Schraubstellen <b>anreißen</b>. Abstand zum Rand und zum Lattenende halten.</span></li>
+<li><b>2</b><span><b>Vorbohren</b> – sonst platzt das weiche Nadelholz auf.</span></li>
+<li><b>3</b><span>Im oberen Teil ein Durchgangsloch: so zieht die Schraube die Teile fest zusammen.</span></li>
+<li><b>4</b><span>Für Senkkopfschrauben <b>senken</b>, damit der Kopf bündig liegt.</span></li>
+<li><b>5</b><span>Schraubenlänge wählen: tief genug im unteren Teil, aber nicht hindurch.</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine verschraubte Lattenecke ohne Riss.</p>
+</div>
+</div>
+<div class="note">Beispiel rechnen: Obere Latte 24 mm dick → Schraube etwa 60 mm. Bei Ecken gilt: zwei Schrauben versetzt, damit sich die Latte nicht verdreht. Vorbohrdurchmesser am Kern der Schraube orientieren (Schraubentabelle im Werkraum).</div>
+</section>
+
+<!-- 23 L10 -->
+<section class="slide" data-title="L10 Holzdübel">
+<p class="kicker"><span>Lehrgang L10 · Weg O</span><span class="badge grey">vorher L6 oder L7, dazu L8</span></p>
+<h2>Holzdübel</h2>
+<div class="lg">
+<figure class="pic contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Holzduebel-D10mm_x_L50mm.jpg?width=900" alt="Holzdübel 10 mm" loading="lazy"><div class="fallback"><div><span>🥢</span>Holzdübel</div></div><figcaption>Holzdübel, 10 mm × 50 mm</figcaption></figure>
+<div>
+<p class="use">Wofür? Unsichtbare, stabile Verbindungen – ganz ohne Schrauben.</p>
+<ol class="do">
+<li><b>1</b><span>Dübelstellen auf dem ersten Teil anreißen und bohren.</span></li>
+<li><b>2</b><span><b>Dübelmarker</b> einsetzen und auf das zweite Teil drücken – so überträgst du die Position genau.</span></li>
+<li><b>3</b><span>Bohrtiefe begrenzen: etwa halbe Dübellänge + 1–2 mm.</span></li>
+<li><b>4</b><span>Leim in die Löcher, Dübel einsetzen.</span></li>
+<li><b>5</b><span>Teile zusammenfügen, pressen, Leimreste abwischen.</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine bündige Dübelverbindung.</p>
+</div>
+</div>
+<div class="note">Dübeldurchmesser etwa ein Drittel bis die Hälfte der Holzdicke (bei 24-mm-Latten: 8 mm). Senkrecht bohren gelingt am besten mit der Standbohrmaschine (L6); mit dem Akkuschrauber nur mit Bohrhilfe/Tiefenstopp.</div>
+</section>
+
+<!-- 24 L11 -->
+<section class="slide" data-title="L11 Dekupiersäge">
+<p class="kicker"><span>Lehrgang L11 · Weg M</span><span class="badge">Pflicht</span></p>
+<h2>Dekupiersäge</h2>
+<div class="lg">
+<div class="grid2" style="gap:12px">
+<figure class="pic small contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Power_coping_saw_03.jpg?width=600" alt="Dekupiersäge" loading="lazy"><div class="fallback"><div><span>〰️</span>Dekupiersäge</div></div><figcaption>Dekupiersäge</figcaption></figure>
+<figure class="pic small contain"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Scrollsaw_blade.JPG?width=600" alt="Sägeblatt der Dekupiersäge" loading="lazy"><div class="fallback"><div><span>🔍</span>Sägeblatt</div></div><figcaption>Feines Sägeblatt</figcaption></figure>
+</div>
+<div>
+<p class="use">Wofür? Feine gerade und gebogene Schnitte in Platten aus Eisstielen.</p>
+<ol class="do">
+<li><b>1</b><span><b>Schutzbrille</b>, Haare zusammen, enge Ärmel.</span></li>
+<li><b>2</b><span>Blatt prüfen: gespannt, <b>Zähne zeigen nach unten</b>.</span></li>
+<li><b>3</b><span><b>Niederhalter</b> auf das Werkstück einstellen.</span></li>
+<li><b>4</b><span>Werkstück flach auflegen, <b>langsam</b> vorschieben, nicht drücken.</span></li>
+<li><b>5</b><span>Finger <b>seitlich</b> vom Blatt – nie davor. In Kurven das Werkstück drehen.</span></li>
+</ol>
+<p class="never"><b>Niemals:</b> einzelne Eisstiele frei an der Maschine sägen – die kürzt du von Hand. An die Säge kommen nur verleimte Platten und sicher geführte Teile.</p>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine Kurve sauber nach Anriss aus einer Platte gesägt.</p>
+</div>
+</div>
+<div class="note">Innenausschnitte: Loch bohren, Blatt einfädeln – nur gemeinsam mit der Lehrkraft. Eisstiele einzeln mit Cutter/Feinsäge in der Schneidlade kürzen.</div>
+</section>
+
+<!-- 25 L12 -->
+<section class="slide" data-title="L12 Kreuzverleimung">
+<p class="kicker"><span>Lehrgang L12 · Weg M</span></p>
+<h2>Platten durch Kreuzverleimung</h2>
+<div class="lg">
+<div>
+<figure class="pic small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Plywood_cross_section.jpg?width=900" alt="Querschnitt durch Sperrholz" loading="lazy"><div class="fallback"><div><span>🥞</span>Sperrholz-Schichten</div></div><figcaption>Vorbild Sperrholz: Lagen kreuzweise verleimt</figcaption></figure>
+<svg class="diagram" viewBox="0 0 420 170" role="img" aria-label="Skizze: zwei Lagen Eisstiele quer zueinander" style="margin-top:12px">
+<g fill="#e8cfa6" stroke="#2c3d4c" stroke-width="1.5">
+<rect x="40" y="96" width="200" height="16" rx="8"/><rect x="40" y="114" width="200" height="16" rx="8"/><rect x="40" y="132" width="200" height="16" rx="8"/></g>
+<g fill="#f3dfc1" stroke="#9e4e22" stroke-width="1.5">
+<rect x="60" y="30" width="16" height="70" rx="8"/><rect x="80" y="30" width="16" height="70" rx="8"/><rect x="100" y="30" width="16" height="70" rx="8"/><rect x="120" y="30" width="16" height="70" rx="8"/><rect x="140" y="30" width="16" height="70" rx="8"/><rect x="160" y="30" width="16" height="70" rx="8"/><rect x="180" y="30" width="16" height="70" rx="8"/><rect x="200" y="30" width="16" height="70" rx="8"/></g>
+<text x="260" y="58" font-size="14" fill="#9e4e22" font-weight="700">2. Lage: quer</text>
+<text x="260" y="124" font-size="14" fill="#2c3d4c" font-weight="700">1. Lage: längs</text>
+<text x="260" y="146" font-size="12" fill="#536574">auf Backpapier</text>
+</svg>
+</div>
+<div>
+<p class="use">Wofür? Aus schmalen Stielen werden stabile Platten für Böden, Wände und Tischplatten.</p>
+<ol class="do">
+<li><b>1</b><span>Erste Lage Stiele dicht nebeneinander auf <b>Backpapier</b> legen.</span></li>
+<li><b>2</b><span>Leim dünn auftragen.</span></li>
+<li><b>3</b><span>Zweite Lage <b>quer</b> darüber legen.</span></li>
+<li><b>4</b><span>Zwischen zwei Brettchen pressen (Zwingen oder Gewicht).</span></li>
+<li><b>5</b><span>Über Nacht trocknen lassen, dann zuschneiden.</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> eine ebene, zweilagige Platte – und du erklärst, warum Kreuzlagen stabiler sind.</p>
+</div>
+</div>
+<div class="note">Bezug zur Reihe: Holz quillt und schwindet quer zur Faser stärker. Liegen die Lagen quer zueinander, hält eine Lage die andere fest → die Platte verzieht sich weniger und bricht nicht so leicht entlang der Faser. Genau so funktioniert Sperrholz.</div>
+</section>
+
+<!-- 26 L13 -->
+<section class="slide" data-title="L13 Furnier">
+<p class="kicker"><span>Lehrgang L13 · Weg M</span></p>
+<h2>Furnier aufbringen</h2>
+<div class="lg">
+<div class="grid2" style="gap:12px">
+<figure class="pic small"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Diospyros_malabarica_veneers.jpg?width=600" alt="Furnierblätter" loading="lazy"><div class="fallback"><div><span>📜</span>Furnierblätter</div></div><figcaption>Furnierblätter</figcaption></figure>
+<figure class="pic small"><img src="../medien/woche-3/furnierstuhl.jpg" alt="Stuhl aus Furnierholz" loading="lazy"><div class="fallback"><div><span>🪑</span>Furniertes Möbel</div></div><figcaption>Möbel aus Furnier</figcaption></figure>
+</div>
+<div>
+<p class="use">Furnier ist eine sehr dünne Holzschicht (unter 1 mm). Wofür? Eine edle Oberfläche für dein Modell.</p>
+<ol class="do">
+<li><b>1</b><span>Mit <b>Cutter am Stahllineal</b> auf der Schneidmatte schneiden. Finger hinter dem Lineal, mehrere leichte Schnitte.</span></li>
+<li><b>2</b><span>Faserrichtung bewusst wählen.</span></li>
+<li><b>3</b><span>Leim <b>dünn</b> auf die Trägerfläche, Furnier auflegen.</span></li>
+<li><b>4</b><span>Mit Backpapier und Zulage pressen.</span></li>
+<li><b>5</b><span>Nach dem Trocknen den Überstand bündig schneiden oder schleifen.</span></li>
+</ol>
+<p class="proof"><b>Das zeigst du am Ende:</b> ein furniertes Probestück ohne Blasen.</p>
+</div>
+</div>
+<div class="note">Zu viel Leim weicht das dünne Furnier auf → Wellen und Blasen. Cutter-Regel: Klinge nur so weit wie nötig herausschieben, immer vom Körper weg schneiden, Klinge nach Gebrauch einfahren.</div>
+</section>
+
+<!-- 27 Sicherheit -->
+<section class="slide" data-title="Sicherheit">
+<p class="kicker">Für alle Projekte</p>
+<h2>Sicher arbeiten in der Werkstatt</h2>
+<div class="grid3">
+<div class="card rust"><span class="icon">🥽</span><h3>Schutz</h3><p>Schutzbrille an Maschinen, Haare zusammen, enge Ärmel, Schmuck ab. Keine Handschuhe an Bohrmaschinen.</p></div>
+<div class="card rust"><span class="icon">🪵</span><h3>Holz prüfen</h3><p>Dachlatten vorher auf Äste, Risse, Splitter und Verzug prüfen. Schlechte Stücke aussortieren.</p></div>
+<div class="card rust"><span class="icon">🗜️</span><h3>Einspannen</h3><p>Werkstücke immer fest einspannen. Kurze Lattenstücke in eine Sägehilfe.</p></div>
+<div class="card rust"><span class="icon">⛔</span><h3>Grenzen</h3><p>Keine Kreissägen. Keine Sitzmöbel, Kletterteile oder hohen Regale in Originalgröße.</p></div>
+<div class="card rust"><span class="icon">⚖️</span><h3>Testen</h3><p>Prüflasten mit der Lehrkraft vereinbaren. Modelle nicht wie echte Möbel belasten.</p></div>
+<div class="card rust"><span class="icon">🔥</span><h3>Öl-Lappen</h3><p>Ausgebreitet trocknen lassen oder in den geschlossenen Metallbehälter.</p></div>
+</div>
+<div class="note">Werkstattordnung der Schule ergänzend zeigen. Klare Ansage: Wer gegen Sicherheitsregeln verstößt, verliert die Maschinenfreigabe und muss den Lehrgang wiederholen.</div>
+</section>
+
+<!-- 28 Testen -->
+<section class="slide" data-title="Testen und verbessern">
+<p class="kicker">Woche 5 und 6</p>
+<h2>Testen, verbessern, zehnmal bauen?</h2>
+<div class="grid3">
+<div class="card sage"><span class="icon">🧪</span><h3>Testen</h3><p>Prüfe deine eigenen Prüfkriterien. Schreibe ehrlich auf, was nicht geklappt hat. Eine gefundene Schwachstelle ist ein Erfolg.</p></div>
+<div class="card sage"><span class="icon">🔧</span><h3>Verbessern</h3><p>Ändere die Schwachstelle, z. B. mit einer Querstrebe, einem Dreieck oder einer besseren Verbindung. Teste erneut: vorher – nachher.</p></div>
+<div class="card sage"><span class="icon">🏭</span><h3>Zehnmal bauen?</h3><p>Wie würde man dein Möbel zehnmal herstellen? Gleiche Längen, Schablonen, feste Reihenfolge, Qualitätskontrolle.</p></div>
+</div>
+<div class="rule"><span>📊</span><span>Am Ende vergleichst du: geplantes Material – verbrauchtes Material – Rest. Wo hast du gespart, wo verschwendet?</span></div>
+<div class="note">Hilfekarten H5 (Aussteifen), H6 (Kippen und Prüfen) und H8 (Verbessern mit Test) im Lernnavigator. Die Produktionsperspektive („zehnmal bauen“) schlägt die Brücke zur industriellen Möbelfertigung aus der Reihe.</div>
+</section>
+
+<!-- 29 Check -->
+<section class="slide" data-title="Check: Darf ich das?">
+<p class="kicker">Kurzer Check</p>
+<h2>Darf ich das?</h2>
+<div class="quiz">
+<div class="card"><p>Mia hat sich für den Stichsägen-Lehrgang eingetragen, er ist aber erst nächste Woche. Sie will heute schon „nur einen Schnitt“ machen.</p><button class="reveal" data-answer="a1">Lösung zeigen</button><div class="answer" id="a1"><b>Nein.</b> Gebucht ist nicht bestanden. Erst nach dem Lehrgang und mit Unterschrift im Werkstattpass. Bis dahin: mit der Handsäge arbeiten oder planen.</div></div>
+<div class="card"><p>Jonas hat in Klasse 5 den Bohrmaschinen-Führerschein gemacht. Er will an die Standbohrmaschine.</p><button class="reveal" data-answer="a2">Lösung zeigen</button><div class="answer" id="a2"><b>Ja, mit Kürzel.</b> Er zeigt den Nachweis, die Lehrkraft trägt das Kürzel bei L6 ein. Den Tiefenanschlag lässt er sich kurz zeigen.</div></div>
+<div class="card"><p>Ein Modellbau-Team möchte einzelne Eisstiele an der Dekupiersäge kürzen.</p><button class="reveal" data-answer="a3">Lösung zeigen</button><div class="answer" id="a3"><b>Nein.</b> Einzelne Stiele kürzt man von Hand. An die Dekupiersäge kommen nur verleimte Platten und sicher geführte Teile.</div></div>
+<div class="card"><p>Vier Freunde wollen zusammen eine große Bank in Originalgröße bauen.</p><button class="reveal" data-answer="a4">Lösung zeigen</button><div class="answer" id="a4"><b>So nicht.</b> Höchstens drei pro Team, und Sitzmöbel in Originalgröße sind nicht vorgesehen. Möglich: Bank als Modell, oder alle machen beim Großprojekt Taschenregal mit.</div></div>
+</div>
+<div class="note">Erst in Partnerarbeit kurz besprechen lassen (1 Minute), dann aufdecken. Bei Fall 4 auf Kreativität hinweisen: Die Idee ist gut – es gibt aber passende Wege, sie umzusetzen.</div>
+</section>
+
+<!-- 30 Start -->
+<section class="slide" data-title="Los geht's">
+<p class="kicker">Heute geht es los</p>
+<h2>Dein nächster Schritt</h2>
+<div class="steps">
+<div class="step"><b>1</b>Projektbogen holen, Namen eintragen, Werkstattpass ansehen.</div>
+<div class="step"><b>2</b>Teil 1.1: Schreibe drei Orte auf, an denen etwas fehlt oder stört.</div>
+<div class="step"><b>3</b>Teil 1.2: Skizziere mindestens drei Ideen.</div>
+<div class="step"><b>4</b>Sprich mit möglichen Teampartnern: Wer passt zu meiner Idee? Allein, zu zweit, zu dritt – oder Großprojekt?</div>
+</div>
+<div class="rule"><span>🎯</span><span>Bis Mittwoch weißt du: <b>Was baue ich, für wen, mit wem und auf welchem Weg?</b></span></div>
+<div class="note">Arbeitsauftrag für den Rest der Stunde. Interessierte am Großprojekt sammeln (Liste an der Tafel), damit die Teilteams bis Mittwoch gebildet werden können.</div>
+</section>
+
+<!-- 31 Quellen -->
+<section class="slide" data-title="Bildnachweise">
+<p class="kicker">Bildnachweise</p>
+<h2>Abbildungen</h2>
+<p class="small">Alle Fotos stammen von Wikimedia Commons und stehen unter freien Lizenzen (CC oder gemeinfrei). Urheberin/Urheber und genaue Lizenz stehen auf der jeweils verlinkten Dateiseite. Ohne Internetverbindung erscheinen Platzhalter.</p>
+<ul class="sources">
+<li><a href="https://commons.wikimedia.org/wiki/File:Stock_of_lumber.JPG">Stock of lumber.JPG</a> – Titelbild</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Popsicle-sticks.jpg">Popsicle-sticks.jpg</a> – Eisstiele</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Konterlattung_Dachlatten.jpg">Konterlattung Dachlatten.jpg</a> – Dachlatten</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Makita_DJV181.jpg">Makita DJV181.jpg</a> – Stichsäge</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Exzenterschleifer_2008-3-7.JPG">Exzenterschleifer 2008-3-7.JPG</a> – Handschleifgerät</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Disc_sander.JPG">Disc sander.JPG</a> – Tellerschleifer</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Drillpress.jpg">Drillpress.jpg</a> – Standbohrmaschine</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Cordless_electric_(screw)_drill.jpg">Cordless electric (screw) drill.jpg</a> – Akkuschrauber</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Power_coping_saw_03.jpg">Power coping saw 03.jpg</a> – Dekupiersäge</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Scrollsaw_blade.JPG">Scrollsaw blade.JPG</a> – Sägeblatt</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Me_sanding_the_wood.jpg">Me sanding the wood.jpg</a> – Schleifen</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Wood_painted_with_boiled_linseed_oil.jpg">Wood painted with boiled linseed oil.jpg</a> – Ölen</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Wood_glue.jpg">Wood glue.jpg</a> – Holzleim</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Bar_clamp_1.jpg">Bar clamp 1.jpg</a> – Zwinge</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Wood_screw_with_countersunk_head-painted.svg">Wood screw with countersunk head-painted.svg</a> – Schraube</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Holzduebel-D10mm_x_L50mm.jpg">Holzduebel-D10mm x L50mm.jpg</a> – Holzdübel</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Plywood_cross_section.jpg">Plywood cross section.jpg</a> – Sperrholz</li>
+<li><a href="https://commons.wikimedia.org/wiki/File:Diospyros_malabarica_veneers.jpg">Diospyros malabarica veneers.jpg</a> – Furnier</li>
+<li>„Chair from wood veneer“, DeveshT, CC0, Wikimedia Commons – Furniermöbel (lokal, aus Woche 3)</li>
+<li>Skizzen (Taschenregal, Tellerschleifer, Verschrauben, Kreuzverleimung): eigene Darstellung</li>
+</ul>
+<div class="note">Vor einer öffentlichen Weitergabe Urheber und Lizenz von den Dateiseiten ergänzen.</div>
+</section>
+
+</main>
+<div class="progress" id="progress"></div>
+<nav class="controls" aria-label="Folien steuern">
+<button id="prev" aria-label="Vorherige Folie">←</button>
+<button id="next" aria-label="Nächste Folie">→</button>
+<select id="jump" aria-label="Zu Folie springen"></select>
+<button id="notes" title="Notizen (N)">Notizen</button>
+<button id="full" title="Vollbild (F)">Vollbild</button>
+<a href="werkstatt.html" style="color:var(--muted);font-size:14px">Zur Möbelwerkstatt</a>
+<span class="counter" id="counter"></span>
+</nav>
+<script>
+// Bild-Fallback: Platzhalter zeigen, wenn ein Bild offline oder nicht erreichbar ist
+document.querySelectorAll('.pic img').forEach(img=>{const pic=img.closest('.pic'),fail=()=>{if(!img.naturalWidth)pic.classList.add('failed')};img.addEventListener('error',fail);img.addEventListener('load',()=>pic.classList.remove('failed'));if(img.complete&&img.naturalWidth===0&&img.getAttribute('src'))fail();img.dataset.t='1'});
+function checkPics(root){setTimeout(()=>root.querySelectorAll('.pic img').forEach(img=>{if(!img.naturalWidth)img.closest('.pic').classList.add('failed')}),6000)}
+const slides=[...document.querySelectorAll('.slide')];let index=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1),10)||1)-1));
+const counter=document.getElementById('counter'),progress=document.getElementById('progress'),jump=document.getElementById('jump');
+slides.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+' · '+(s.dataset.title||'Folie');jump.appendChild(o)});
+function show(){slides.forEach((s,i)=>s.classList.toggle('active',i===index));counter.textContent=`${index+1} / ${slides.length}`;progress.style.width=`${(index+1)/slides.length*100}%`;jump.value=index;try{history.replaceState(null,'',`#${index+1}`)}catch(e){}
+ slides[index].querySelectorAll('img[loading="lazy"]').forEach(i=>i.loading='eager');checkPics(slides[index])}
+function move(n){index=Math.max(0,Math.min(slides.length-1,index+n));show()}
+document.getElementById('prev').onclick=()=>move(-1);document.getElementById('next').onclick=()=>move(1);
+jump.onchange=()=>{index=+jump.value;show();jump.blur()};
+document.getElementById('notes').onclick=()=>document.body.classList.toggle('notes');
+const full=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+document.getElementById('full').onclick=full;
+document.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{const a=document.getElementById(b.dataset.answer);a.classList.toggle('open');b.textContent=a.classList.contains('open')?'Lösung ausblenden':'Lösung zeigen'});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();move(1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();move(-1)}if(e.key.toLowerCase()==='n')document.body.classList.toggle('notes');if(e.key.toLowerCase()==='f')full()});
+let x=0;document.addEventListener('touchstart',e=>x=e.changedTouches[0].clientX,{passive:true});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x;if(Math.abs(d)>70)move(d<0?1:-1)},{passive:true});
+show();
+</script>
+</body>
+</html>
