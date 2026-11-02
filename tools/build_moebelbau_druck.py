@@ -240,34 +240,44 @@ LEHRGAENGE = [
     ('L4', 'Handschleifgerät', 'O', True,
      'Schleifpapier wechseln, Werkstück sichern, Absaugung nutzen, ohne Druck führen',
      'Fläche glatt geschliffen, Kanten nicht abgerundet'),
-    ('L5', 'Akkuschrauber', 'O', True,
+    ('L5', 'Tellerschleifer', 'O', True,
+     'nur auf der Tellerseite schleifen, die nach unten dreht; Werkstück auf dem Auflagetisch '
+     'führen, Winkelanschlag nutzen, keine kleinen Teile freihändig, Absaugung, Schutzbrille',
+     'Lattenende rechtwinklig bis zum Anriss geschliffen'),
+    ('L6', 'Standbohrmaschine', 'O', True,
+     'Werkstück im Maschinenschraubstock spannen – nie mit der Hand halten; Futterschlüssel '
+     'abziehen, Drehzahl und Tiefenanschlag einstellen, keine Handschuhe, Haare zusammen. '
+     'Entfällt mit Bohrmaschinen-Führerschein aus Klasse 5',
+     'senkrechte Bohrung auf Anriss mit eingestellter Tiefe'),
+    ('L7', 'Akkuschrauber', 'O', True,
      'Bohrer und Bit einsetzen, Drehrichtung und Drehmoment einstellen, Werkstück einspannen',
      'Loch gerade vorgebohrt, Schraube bündig eingedreht'),
-    ('L6', 'Leimen', 'O', False,
+    ('L8', 'Leimen', 'O', False,
      'Leim dünn auftragen, Zwingen mit Zulagen ansetzen, Winkel prüfen, Leimreste feucht abwischen',
      'rechtwinklige Leimverbindung'),
-    ('L7', 'Verschrauben', 'O', False,
+    ('L9', 'Verschrauben', 'O', False,
      'anreißen, Randabstand beachten, vorbohren, senken, passende Schraubenlänge wählen '
-     '(vorher L5)',
+     '(vorher L7)',
      'Lattenecke ohne Riss verschraubt'),
-    ('L8', 'Holzdübel', 'O', False,
+    ('L10', 'Holzdübel', 'O', False,
      'Bohrstellen mit Dübelmarker übertragen, Bohrtiefe begrenzen, Dübel mit Leim einsetzen, '
-     'pressen (vorher L5 und L6)',
+     'pressen (vorher L6 oder L7, dazu L8)',
      'bündige Dübelverbindung'),
-    ('L9', 'Dekupiersäge', 'M', True,
+    ('L11', 'Dekupiersäge', 'M', True,
      'Niederhalter einstellen, Blatt prüfen, Finger seitlich vom Blatt, langsam vorschieben, '
      'Schutzbrille, lange Haare zusammenbinden',
      'Kurve sauber nach Anriss aus einer Platte gesägt'),
-    ('L10', 'Platten durch Kreuzverleimung', 'M', False,
+    ('L12', 'Platten durch Kreuzverleimung', 'M', False,
      'Eisstiele in Lagen quer zueinander verleimen, pressen, trocknen lassen; '
      'verstehen, warum Kreuzlagen stabiler sind',
      'ebene, zweilagige Platte; du erklärst das Prinzip'),
-    ('L11', 'Furnier aufbringen', 'M', False,
+    ('L13', 'Furnier aufbringen', 'M', False,
      'Furnier mit Cutter am Stahllineal zuschneiden, Faserrichtung wählen, dünn leimen, pressen, '
      'Überstand bündig schleifen',
      'furniertes Probestück ohne Blasen'),
 ]
-PFLICHT_TXT = 'Stichsäge, Handschleifgerät, Akkuschrauber und Dekupiersäge'
+PFLICHT_TXT = ('Stichsäge, Handschleifgerät, Tellerschleifer, Standbohrmaschine, Akkuschrauber '
+               'und Dekupiersäge')
 
 
 def lehrgang_name(code, name, pflicht):
@@ -309,7 +319,8 @@ def build_uebersicht():
         'Gute Planung, saubere Arbeit und ein ehrlicher Test zählen.', size=10)
 
     b.h('Teamgröße bestimmt den Umfang')
-    b.p('Ihr arbeitet allein, zu zweit oder zu dritt. Mehr als drei Personen sind nicht möglich. '
+    b.p('Ihr arbeitet allein, zu zweit oder zu dritt. Mehr als drei Personen hat ein Team nicht. '
+        'Ausnahme: Im Großprojekt (Seite 4) arbeiten mehrere Teams zusammen. '
         'Je größer das Team, desto größer darf das Projekt sein.', size=10.5)
     t = b.table(TEAM[0], TEAM[1:], [0.9, 1.7, 1.9, 2.1], size=9.5)
     b.bold_cells(t)
@@ -377,22 +388,60 @@ def build_uebersicht():
         'wenn dein Projekt ihn braucht.', size=10.5)
     b.note('PFLICHT', f'{PFLICHT_TXT} benutzt du erst, wenn du den Lehrgang gemacht hast und '
                       'die Lehrkraft im Werkstattpass unterschrieben hat.')
-    b.h('So buchst du einen Lehrgang')
-    for i, s in enumerate([
-            'Plane im Projektbogen (Teil 5): Welche Arbeitsgänge brauche ich? Kreuze sie im Werkstattpass an.',
-            'Trage dich auf der Buchungsliste ein – spätestens eine Stunde vorher.',
-            'Mach beim Lehrgang mit und zeige am Ende dein Probestück.',
-            'Die Lehrkraft unterschreibt im Werkstattpass. Jetzt darfst du den Arbeitsgang selbst nutzen.'], 1):
-        z = b.p(f'{i}.  {s}', size=10)
-        z.paragraph_format.space_after = Pt(2)
-    b.p('Lehrgänge des anderen Wegs darfst du auch buchen, wenn dein Entwurf sie braucht. '
-        'Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.', size=10)
+    b.p('So buchst du: Im Projektbogen (5.4) planst du, welche Lehrgänge du brauchst, und kreuzt sie '
+        'im Werkstattpass an. Dann trägst du dich auf der Buchungsliste ein – spätestens eine Stunde '
+        'vorher. Am Ende zeigst du dein Probestück, die Lehrkraft unterschreibt. Lehrgänge des anderen '
+        'Wegs darfst du auch buchen. Dir fehlt ein Arbeitsgang? Schlage einen eigenen Lehrgang vor.',
+        size=9.5)
     for key, label in GRUPPEN:
         b.h3(label)
         rows = [[lehrgang_name(c, n, pf), inh, nw] for c, n, g, pf, inh, nw in LEHRGAENGE if g == key]
         t = b.table(['Lehrgang', 'Das lernst du', 'Das zeigst du am Ende'], rows,
                     [1.5, 3.6, 1.9], size=8.5, pad=1.5)
         b.bold_cells(t)
+
+    # --- Großprojekt
+    b.brk()
+    b.p('GROSSPROJEKT · FÜR MEHR ALS DREI PERSONEN', 'Subtitle')
+    b.h1('Ein Taschenregal für den Technikraum A3')
+    b.p('Im Technikraum A3 liegen Rucksäcke auf dem Boden und im Weg. Gesucht wird ein Regal mit '
+        '20 Ablagefächern für Rucksäcke. Das schafft kein Team allein – hier arbeiten mehrere '
+        'Teams wie in einem echten Betrieb zusammen.', size=10.5)
+    b.note('SO IST ES GEDACHT', 'Jedes Teilteam hat weiterhin höchstens drei Personen. Mehrere '
+           'Teilteams bilden zusammen das Großprojekt. Die Lehrkraft ist eure Kundin bzw. euer '
+           'Kunde. Das Großprojekt ist ein Vorschlag: Ihr entscheidet, ob ihr es übernehmt.')
+    b.h('Das wünscht sich die Kundschaft (Lastenheft)')
+    for s_ in ['20 Fächer; in jedes Fach passt ein Schulrucksack.',
+               'Höchstens etwa 1,20 m hoch, damit alle gut hineinsehen und das Regal sicher steht.',
+               'Standsicher: Die Module werden miteinander verbunden. Die Wandbefestigung übernimmt '
+               'die Lehrkraft oder der Hausmeister.',
+               'Gebaut aus Dachlatten. Platten nur nach Absprache.',
+               'Glatte Kanten, keine Splitter, Oberfläche geölt oder lasiert.',
+               'Etwas Abstand zum Boden, damit man darunter reinigen kann.']:
+        z = b.p('• ' + s_, size=10)
+        z.paragraph_format.space_after = Pt(2)
+    b.h('Vorschlag für die Teilteams')
+    t = b.table(['Teilteam', 'Aufgabe'], [
+        ['Planung (1 Team)', 'Wand in A3 vermessen, Rucksäcke der Klasse messen und wiegen, '
+                            'Maßraster festlegen, Gesamtzeichnung und Materialliste'],
+        ['Modulbau (3–5 Teams)', 'je ein gleiches Modul nach Maßraster bauen, '
+                                 'z. B. 5 Module mit je 2 × 2 Fächern nebeneinander'],
+        ['Qualität (1 Team)', 'Schablonen und Prüflehren bauen, jedes Modul nach Maß prüfen, '
+                              'Module verbinden, Abnahme vorbereiten'],
+    ], [1.6, 5], size=9.5)
+    b.bold_cells(t)
+    b.p('Die Aufteilung ist ein Vorschlag. Ihr könnt sie ändern, wenn ihr es begründet – '
+        'z. B. andere Modulgrößen, wenn die Wand es verlangt.', size=10)
+    b.h('Darauf kommt es besonders an')
+    for s_ in ['Ein gemeinsames Maßraster: Alle Module müssen ohne Nacharbeit zusammenpassen.',
+               'Serienfertigung: gleiche Teile mit Schablone und Anschlag zuschneiden.',
+               'Absprachen: Ein kurzes Teamtreffen zu Beginn jeder Mittwochsstunde. '
+               'Ein Projektplan hängt im Raum.',
+               'Last: Wiegt eure Rucksäcke. Plant mit dem schwersten, nicht mit dem leichtesten.']:
+        z = b.p('• ' + s_, size=10)
+        z.paragraph_format.space_after = Pt(2)
+    b.note('HALTEPUNKT', 'Das Großprojekt braucht eine eigene Freigabe der Lehrkraft für die '
+           'Gesamtplanung – vor dem ersten Zuschnitt. Jede Person führt ihren eigenen Projektbogen.')
     path = OUT / 'projektuebersicht.docx'
     D.save(path)
     return path
@@ -448,14 +497,14 @@ def build_bogen():
         size=10)
     for key, label in GRUPPEN:
         b.h3(label)
-        rows = [[lehrgang_name(c, n, pf), '[  ]', '', '', '']
+        rows = [[f'{c}  {n}' + (' · PFLICHT' if pf else ''), '[  ]', '', '', '']
                 for c, n, g, pf, inh, nw in LEHRGAENGE if g == key]
         t = b.table(['Lehrgang', 'brauche ich', 'gebucht für', 'bestanden am', 'Kürzel Lehrkraft'],
-                    rows, [2.6, 1, 1.3, 1.3, 1.3], height=9, size=9.5)
+                    rows, [3, 0.9, 1.2, 1.2, 1.2], height=8, size=9, pad=1.5)
         b.bold_cells(t)
     b.h3('Mein eigener Lehrgangswunsch')
     b.table(['Arbeitsgang', 'Warum brauche ich ihn?', 'bestanden am', 'Kürzel Lehrkraft'],
-            [['', '', '', ''] for _ in range(2)], [2, 2.9, 1.3, 1.3], height=9, size=9.5)
+            [['', '', '', ''] for _ in range(2)], [2, 2.9, 1.3, 1.3], height=8, size=9, pad=1.5)
 
     # --- Teil 1
     page('Teil 1', 'Bedarf entdecken', 'Ich finde eine echte Aufgabe für ein Möbelstück.')
@@ -489,7 +538,8 @@ def build_bogen():
     b.p('Wir bauen: ____________________________________________________________')
     b.p('für (Person/Ort): _____________________________________________________')
     b.p('Materialweg:   [  ] Weg M – Modell aus Eisstielen     [  ] Weg O – Original aus Dachlatte')
-    b.p('Teamgröße:   [  ] allein     [  ] zu zweit     [  ] zu dritt')
+    b.p('Teamgröße:   [  ] allein     [  ] zu zweit     [  ] zu dritt     '
+        '[  ] Teilteam im Großprojekt')
     b.p('Ich starte auf:   [  ] Niveau 1 Anwenden   [  ] Niveau 2 Konstruieren   '
         '[  ] Niveau 3 Optimieren')
     b.p('Darum haben wir uns so entschieden:')
@@ -508,7 +558,9 @@ def build_bogen():
     b.table(['Nr.', 'Prüfkriterium', 'So prüfen wir es'],
             [['1', '', ''], ['2', '', ''], ['3', '', '']], [0.5, 3.2, 2.8], height=12)
     b.h('3.3 | MAPPE  Teamvertrag')
-    b.p('Bei Einzelarbeit: Notiere nur deine Hauptbaugruppen und lass die Regeln weg.', size=10)
+    b.p('Bei Einzelarbeit: Notiere nur deine Hauptbaugruppen und lass die Regeln weg. '
+        'Im Großprojekt: Tragt hier euer Teilteam ein und notiert, welches Modul oder welche '
+        'Aufgabe ihr übernehmt.', size=10)
     b.table(['Name', 'Ich bin verantwortlich für (Baugruppe / Möbelteil)', 'Unterschrift'],
             [['', '', ''] for _ in range(3)], [1.6, 3.4, 1.5], height=12)
     b.p('Unsere Regeln für die Zusammenarbeit:')
@@ -540,7 +592,7 @@ def build_bogen():
     b.table(['Schritt', 'Was wird gemacht?', 'Werkzeug', 'Wer?'],
             [[str(i), '', '', ''] for i in range(1, 7)], [0.6, 3.4, 1.6, 1], height=8, size=9.5)
     b.h('5.4 | MAPPE  Meine Lehrgänge')
-    b.p('Für meine Arbeitsschritte brauche ich diese Lehrgänge (z. B. L3, L7):  '
+    b.p('Für meine Arbeitsschritte brauche ich diese Lehrgänge (z. B. L3, L9):  '
         '__________________________')
     b.p('Kreuze sie im Werkstattpass an und trage dich auf der Buchungsliste ein.', size=10)
     b.note('HILFE', 'H3 Dachlatten prüfen · H4 Verbindungen · H7 Zuschnitt und Kosten · '
@@ -641,25 +693,26 @@ def build_buchungsliste():
     D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Buchungsliste Lehrgänge', landscape=True)
     b = Builder(D, width=257)
     kurz = {'alle': 'für alle', 'O': 'Original', 'M': 'Modell'}
-    seiten = [('Lehrgänge für alle und Weg O (Original)', ('alle', 'O'), 2),
-              ('Lehrgänge Weg M (Modell)', ('M',), 3)]
-    for i, (titel, gruppen, termine) in enumerate(seiten):
+    seiten = [('für alle und Weg O, Teil 1', ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'], 2),
+              ('Weg O, Teil 2', ['L7', 'L8', 'L9', 'L10'], 3),
+              ('Weg M (Modell)', ['L11', 'L12', 'L13'], 3)]
+    for i, (titel, codes, termine) in enumerate(seiten):
         if i:
             b.brk()
-        b.h1(f'Buchungsliste · {titel}')
+        b.h1(f'Buchungsliste Lehrgänge · {titel}')
         z = b.p('Trage deinen Namen spätestens eine Stunde vorher ein. Höchstens 4 Personen pro Termin. '
                 'PFLICHT = Maschine: erst nach dem Lehrgang benutzen.', size=10)
         rows = []
         for c, n, g, pf, inh, nw in LEHRGAENGE:
-            if g not in gruppen:
+            if c not in codes:
                 continue
             for k in range(termine):
                 label = f'{c}  {n} · {kurz[g]}' + (' · PFLICHT' if pf else '') if k == 0 else ''
                 rows.append([label, '', '', '', '', '', ''])
         t = b.table(['Lehrgang', 'Termin', 'Platz 1', 'Platz 2', 'Platz 3', 'Platz 4', 'erledigt'],
-                    rows, [2.6, 1.2, 2, 2, 2, 2, 1], height=9 if termine == 2 else 10, size=8.5, pad=1.5)
+                    rows, [2.6, 1.2, 2, 2, 2, 2, 1], height=9, size=8.5, pad=1.5)
         b.bold_cells(t)
-        if 'M' in gruppen:
+        if 'L11' in codes:
             b.h('Eigener Lehrgangswunsch')
             b.table(['Arbeitsgang', 'Wer wünscht ihn?', 'Warum?', 'Termin', 'erledigt'],
                     [['', '', '', '', ''] for _ in range(3)], [2.2, 2.4, 3.6, 1.2, 1], height=9, size=9)

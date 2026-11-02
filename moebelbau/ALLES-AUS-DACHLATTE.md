@@ -85,11 +85,20 @@ Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlich
 
 Gearbeitet wird allein, zu zweit oder zu dritt (maximal drei Personen). Der Umfang wächst mit der Teamgröße: In Einzelarbeit entstehen kleine Modelle bzw. Kleinmöbel wie ein Beistelltisch; zu zweit oder zu dritt sind größere Möbel, kombinierbare Module oder mehrteilige Modelle möglich. „Größer“ bedeutet mehr Baugruppen, nicht mehr Höhe oder Last. In Teams verantwortet jede Person mindestens eine eigene Baugruppe (Teamvertrag im Projektbogen). Was gebaut wird, entscheiden die Lernenden selbst; die Freigabe prüft Sicherheit und Machbarkeit.
 
+### Großprojekt (mehr als drei Personen): Taschenregal für den Technikraum A3
+
+Vorschlag für ein Gemeinschaftsprojekt: ein Regal mit **20 Ablagefächern für Rucksäcke** im Technikraum A3. Teilteams bleiben bei höchstens drei Personen; mehrere Teilteams arbeiten wie in einem Betrieb zusammen, die Lehrkraft tritt als Kundin/Kunde auf.
+
+- **Lastenheft:** 20 Fächer für je einen Schulrucksack; Höhe höchstens ca. 1,20 m; Module untereinander verbunden, Wandbefestigung durch Lehrkraft/Hausmeister; Dachlatten, Platten nur nach Absprache; gebrochene Kanten, geölt oder lasiert; Bodenabstand zum Reinigen.
+- **Teilteams (Vorschlag):** Planung (Wand vermessen, Rucksäcke messen und wiegen, Maßraster, Gesamtzeichnung, Materialliste) · Modulbau (3–5 Teams, z. B. 5 gleiche Module mit je 2 × 2 Fächern nebeneinander) · Qualität (Schablonen, Prüflehren, Maßkontrolle, Verbinden der Module).
+- **Schwerpunkte:** gemeinsames Maßraster, Serienfertigung mit Schablone und Anschlag, kurze Teamtreffen zu Beginn jeder Mittwochsstunde, Lastannahme anhand der gewogenen Rucksäcke.
+- **Freigabe:** Die Gesamtplanung braucht eine gesonderte fachliche Freigabe vor dem ersten Zuschnitt (vgl. Grenze „keine sicherheitsrelevanten Tragkonstruktionen ohne gesonderte Freigabe“). Jede Person führt ihren eigenen Projektbogen.
+
 ## Lehrgänge („buchbare“ Kurzunterweisungen)
 
 Arbeitsgänge werden in kurzen Lehrgängen bei der Lehrkraft gelernt: ca. 10–15 Minuten, höchstens 4 Personen, während der Arbeitsphase. Die Lernenden ermitteln in Teil 5 des Projektbogens, welche Arbeitsgänge ihr Entwurf erfordert, kreuzen sie im **Werkstattpass** an und tragen sich auf der **Buchungsliste** ein. Am Ende zeigen sie ein Probestück; die Lehrkraft quittiert im Werkstattpass. Lehrgänge des anderen Wegs dürfen gebucht werden, wenn der Entwurf sie braucht; eigene Lehrgangswünsche sind ausdrücklich vorgesehen.
 
-**Pflicht vor dem ersten Einsatz:** Stichsäge, Handschleifgerät, Akkuschrauber, Dekupiersäge. Ohne Kürzel im Werkstattpass keine Benutzung.
+**Pflicht vor dem ersten Einsatz:** Stichsäge, Handschleifgerät, Tellerschleifer, Standbohrmaschine, Akkuschrauber, Dekupiersäge. Ohne Kürzel im Werkstattpass keine Benutzung. Wer den Bohrmaschinen-Führerschein aus Klasse 5 hat, erhält für L6 direkt das Kürzel.
 
 | Nr. | Lehrgang | Weg | Inhalt (Kurzfassung) | Nachweis |
 |---|---|---|---|---|
@@ -97,19 +106,21 @@ Arbeitsgänge werden in kurzen Lehrgängen bei der Lehrkraft gelernt: ca. 10–1
 | L2 | Ölen oder lasieren | alle | entstauben, dünn auftragen, Überschuss abnehmen, Trocknung; Öl-Lappen ausgebreitet trocknen bzw. in geschlossenem Metallbehälter (Selbstentzündung) | behandeltes Probestück, Lappen-Regel erklärt |
 | L3 | Stichsäge · **Pflicht** | O | einspannen, Schutzbrille, Fußplatte aufsetzen, Blattwechsel nur stromlos | gerader Schnitt nach Anriss |
 | L4 | Handschleifgerät · **Pflicht** | O | Papierwechsel stromlos, Werkstück sichern, Absaugung, ohne Druck führen | plane Fläche, Kanten nicht verrundet |
-| L5 | Akkuschrauber · **Pflicht** | O | Bohrer/Bit, Drehrichtung, Drehmoment, Werkstück einspannen | gerade vorgebohrt, Schraube bündig |
-| L6 | Leimen | O | dünn auftragen, Zwingen mit Zulagen, Winkel prüfen, Leimreste entfernen | rechtwinklige Leimverbindung |
-| L7 | Verschrauben | O | anreißen, Randabstand, vorbohren, senken, Schraubenlänge (setzt L5 voraus) | Lattenecke ohne Riss |
-| L8 | Holzdübel | O | Dübelmarker, Bohrtiefe begrenzen, Dübel mit Leim, pressen (setzt L5, L6 voraus) | bündige Dübelverbindung |
-| L9 | Dekupiersäge · **Pflicht** | M | Niederhalter, Blatt prüfen, Finger seitlich, langsam vorschieben, Haare zusammen | Kurve nach Anriss aus Platte |
-| L10 | Platten durch Kreuzverleimung | M | Eisstiele lagenweise quer verleimen, pressen; Prinzip Sperrholz | ebene zweilagige Platte |
-| L11 | Furnier aufbringen | M | Zuschnitt mit Cutter am Stahllineal, Faserrichtung, dünn leimen, pressen, bündig schleifen | Probestück ohne Blasen |
+| L5 | Tellerschleifer · **Pflicht** | O | nur auf der abwärts drehenden Tellerseite, Werkstück auf Auflagetisch, Winkelanschlag, keine Kleinteile freihändig, Absaugung | Lattenende rechtwinklig auf Anriss |
+| L6 | Standbohrmaschine · **Pflicht** | O | Maschinenschraubstock, Futterschlüssel abziehen, Drehzahl, Tiefenanschlag, keine Handschuhe; **entfällt mit Bohrmaschinen-Führerschein aus Klasse 5** | senkrechte Bohrung mit Tiefe |
+| L7 | Akkuschrauber · **Pflicht** | O | Bohrer/Bit, Drehrichtung, Drehmoment, Werkstück einspannen | gerade vorgebohrt, Schraube bündig |
+| L8 | Leimen | O | dünn auftragen, Zwingen mit Zulagen, Winkel prüfen, Leimreste entfernen | rechtwinklige Leimverbindung |
+| L9 | Verschrauben | O | anreißen, Randabstand, vorbohren, senken, Schraubenlänge (setzt L7 voraus) | Lattenecke ohne Riss |
+| L10 | Holzdübel | O | Dübelmarker, Bohrtiefe begrenzen, Dübel mit Leim, pressen (setzt L6 oder L7 sowie L8 voraus) | bündige Dübelverbindung |
+| L11 | Dekupiersäge · **Pflicht** | M | Niederhalter, Blatt prüfen, Finger seitlich, langsam vorschieben, Haare zusammen | Kurve nach Anriss aus Platte |
+| L12 | Platten durch Kreuzverleimung | M | Eisstiele lagenweise quer verleimen, pressen; Prinzip Sperrholz | ebene zweilagige Platte |
+| L13 | Furnier aufbringen | M | Zuschnitt mit Cutter am Stahllineal, Faserrichtung, dünn leimen, pressen, bündig schleifen | Probestück ohne Blasen |
 
 Organisation: Lehrgänge bevorzugt mittwochs in festen Fenstern (z. B. 2 × 15 Minuten); im Co-Teaching übernimmt eine Lehrkraft die Lehrgänge, die andere die Werkstattbetreuung. Pflicht-Lehrgänge sollten bis Woche 3 angeboten sein.
 
 ## Werkstatt- und Sicherheitsgrenzen
 
-Die vorhandene Kursplanung lässt Handsägen sowie – jeweils nur in dafür geeigneten Arbeitsvorgängen und nach Unterweisung – **Pendelhubstichsäge und Dekupiersäge** zu. Kreissägen, Handkreissägen, Tischkreissägen, Tauchsägen und Kappsägen werden **nicht** für Schülerarbeiten eingeplant. Einzelne Eisstiele werden von Hand gekürzt; an die Dekupiersäge kommen nur kreuzverleimte Platten und sicher geführte Teile. Kurze Dachlattenabschnitte sicher in einer geeigneten Sägehilfe fixieren. Stichsäge, Handschleifgerät, Akkuschrauber und Dekupiersäge nur nach absolviertem Lehrgang (Kürzel im Werkstattpass).
+Die vorhandene Kursplanung lässt Handsägen sowie – jeweils nur in dafür geeigneten Arbeitsvorgängen und nach Unterweisung – **Pendelhubstichsäge und Dekupiersäge** zu. Kreissägen, Handkreissägen, Tischkreissägen, Tauchsägen und Kappsägen werden **nicht** für Schülerarbeiten eingeplant. Einzelne Eisstiele werden von Hand gekürzt; an die Dekupiersäge kommen nur kreuzverleimte Platten und sicher geführte Teile. Kurze Dachlattenabschnitte sicher in einer geeigneten Sägehilfe fixieren. Stichsäge, Handschleifgerät, Tellerschleifer, Standbohrmaschine, Akkuschrauber und Dekupiersäge nur nach absolviertem Lehrgang (Kürzel im Werkstattpass).
 
 Dachlatten vor Verwendung auf Äste, Risse, Splitter, Verzug und Feuchte prüfen, beschädigte Stücke aussortieren und auf passende Schraubabstände achten. Die Kombination aus sägerauer Oberfläche, tragenden Verbindungen und weichem Nadelholz erfordert sorgfältige Kantenbearbeitung. **Keine Sitzmöbel, Kletterelemente, hohen freistehenden Regale oder anderen sicherheitsrelevanten Tragkonstruktionen ohne gesonderte fachliche Freigabe.** Modelle werden nicht mit der Gebrauchslast eines Originalmöbels getestet.
 
