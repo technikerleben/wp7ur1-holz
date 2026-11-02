@@ -8,7 +8,7 @@ In `lernweg.html` stehen der Einstieg „Bereit für die Klassenarbeit?“ und e
 
 `vorbereitung-daten.js` enthält vier Themenbereiche mit je drei Aufgaben sowie je einer ähnlichen zweiten Aufgabe für jeden Fehler. Jede Auswahl nennt ausdrücklich Einfach- oder Mehrfachauswahl. Rückmeldungen erklären die Antwortteile und verweisen auf die Mappe. Die Vorbereitung erteilt keine Note und setzt keine neue Prüfungshürde.
 
-Die Papierphase nutzt `vorbereitung-papier.html`: eigene Übungsaufgaben A1–A8 zum Drucken über den Browser; alternativ werden die Aufgaben vor dem Schließen des iPads auf Papier übertragen. Lösungen stehen in Schritt 5. Es werden keine Aufgaben oder Lösungen der tatsächlichen Klassenarbeit eingebunden.
+Die Übungsphase nutzt `materialien/mini-probe-vorbereitung.pdf`: eine zweiseitige A4-PDF mit eigenen Übungsaufgaben A1–A8, die in Goodnotes importiert und dort bearbeitet wird. Erst danach öffnen die Lernenden in Schritt 5 die Lösungen und verbessern ihre Antworten direkt in der PDF. Es werden keine Aufgaben oder Lösungen der tatsächlichen Klassenarbeit eingebunden.
 
 ## Rätselhinweis
 

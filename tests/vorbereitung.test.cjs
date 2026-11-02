@@ -39,7 +39,7 @@ for(let i=0;i<4;i++){
  }
  assert.match(t.$('#exam-prep').textContent,/Runde beendet/);t.click('[data-prep="topics"]');
 }
-t.click('[data-prep="next"]');assert.ok(t.$('a[href="vorbereitung-papier.html"]'));assert.match(t.$('#exam-prep').textContent,/iPad schließen/);t.click('[data-prep="next"]');assert.match(t.$('#exam-prep').textContent,/Lösungen zur Mini-Probe/);
+t.click('[data-prep="next"]');assert.ok(t.$('a[href="materialien/mini-probe-vorbereitung.pdf"]'));assert.match(t.$('#exam-prep').textContent,/Goodnotes/);assert.match(t.$('#exam-prep').textContent,/Danach vergleichen/);t.click('[data-prep="next"]');assert.match(t.$('#exam-prep').textContent,/Lösungen zur Mini-Probe/);assert.match(t.$('#exam-prep').textContent,/direkt in der PDF/);
 for(let n=0;n<3;n++)t.click(`[data-ready="${n}"]`);t.click('[data-prep="finish"]');assert.match(t.$('#prep-finish-status').textContent,/abgeschlossen/);
 assert.equal(JSON.parse(t.w.localStorage.getItem('hbg_holz_navigator_v2')).done.length,0);
 t.click('[data-prep="exit"]');assert.equal(t.$('#exam-prep').hidden,true);assert.ok(!t.w.document.body.classList.contains('prep-active'));
