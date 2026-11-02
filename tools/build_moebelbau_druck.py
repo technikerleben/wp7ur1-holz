@@ -468,13 +468,13 @@ EINHEITEN = [
 
 # Bewertung: (Code, Kriterium, max. Punkte, Beschreibung für Lernende)
 BEWERTUNG_A = [
-    ('A1', 'Bedarf, Ideen und Entscheidung', 6,
+    ('A1', 'Bedarf, Ideen und Entscheidung', 8,
      'echter Bedarf, mindestens drei Ideen, Entscheidung begründet'),
-    ('A2', 'Konstruktionszeichnung', 6, 'vollständig, alle wichtigen Maße, Baugruppen erkennbar'),
+    ('A2', 'Konstruktionszeichnung', 8, 'vollständig, alle wichtigen Maße, Baugruppen erkennbar'),
     ('A3', 'Stückliste, Materialbedarf, Arbeitsplan', 4, 'passt zur Zeichnung, realistisch'),
-    ('A4', 'Stundenprotokolle P1–P12', 12,
-     'konkrete Ziele, Durchführung festgehalten, ehrliche Reflexion mit nächstem Schritt'),
-    ('A5', 'Funktionstest und Verbesserung', 6, 'Ergebnisse, Schwachstelle, Vorher-nachher'),
+    ('A4', 'Stundenprotokoll', 6,
+     'jede Stunde Datum, konkreter Plan und ehrliche Einschätzung'),
+    ('A5', 'Funktionstest und Verbesserung', 8, 'Ergebnisse, Schwachstelle, Vorher-nachher'),
     ('A6', 'Materialbilanz und Rückblick', 4, 'Verbrauch ausgewertet, eigene Entscheidungen erklärt'),
     ('A7', 'Eigenständigkeit', 2, 'eigene Idee, gewähltes Niveau, Hilfen gezielt genutzt'),
 ]
@@ -519,20 +519,18 @@ def build_werkstattheft():
     b.p('Mein Team: ______________________________________________________')
     b.h('So arbeitest du in jeder Stunde')
     t = b.table(['1  PLANEN', '2  DURCHFÜHREN', '3  REFLEKTIEREN'], [[
-        'Zu Beginn: Ich schreibe auf, was ich mir für heute vornehme und woran ich merke, '
-        'dass ich es geschafft habe.',
-        'Während der Arbeit: Ich arbeite meine Schritte ab, halte fest, was ich geschafft habe '
-        'und wie ich Probleme gelöst habe.',
-        'Am Ende: Ich prüfe, ob ich mein Ziel erreicht habe, und lege meinen nächsten Schritt fest.']],
-        [1, 1, 1], size=10)
-    b.p('Dafür gibt es für jede Stunde ein Stundenprotokoll (P1 bis P12). '
-        'Dazwischen liegen die Arbeitsseiten für dein Projekt (1A bis 6B).', size=10)
+        'Zu Beginn: Datum und dein Plan für die Stunde in Stichworten – im Stundenprotokoll.',
+        'Während der Arbeit: Du arbeitest an deinem Projekt und füllst die Arbeitsseiten aus.',
+        'Am Ende: Hast du deinen Plan geschafft? Kurze Einschätzung und nächster Schritt – '
+        'im Stundenprotokoll.']], [1, 1, 1], size=10)
+    b.p('Das Stundenprotokoll ist eine Tabelle für alle 12 Stunden. Dazu kommen die Arbeitsseiten '
+        '1A bis 6B für dein Projekt.', size=10)
     b.h('Dein Heft ist deine Lernerfolgskontrolle')
     b.note('WICHTIG', 'Dieses Werkstattheft ist zusammen mit deinem Werkstück die zweite '
            'Klassenarbeit. Das Heft zählt 40 %, das Werkstück 60 %. Die Kriterien findest du '
            'auf der letzten Seite – lies sie schon jetzt.')
     for s_ in ['Jede Person führt ein eigenes Heft – auch im Team. Teamentscheidungen schreibt ihr alle auf, '
-               'Protokolle und Reflexion schreibst du allein.',
+               'Stundenprotokoll und Rückblick schreibst du allein.',
                'Schreibe ehrlich. Ein Ziel, das du nicht erreicht hast, ist kein Fehler – '
                'wenn du erklärst, was du daraus machst.',
                'Das Heft bleibt im Technikraum. Fotos vom Arbeitsstand darfst du einkleben.']:
@@ -564,6 +562,15 @@ def build_werkstattheft():
         ['Funktionstest', '5A', '', ''], ['Abnahme', '6B', '', '']],
         [2.6, 0.8, 1.3, 1.6], height=8, size=10, pad=1.5)
 
+    # ---------------------------------------------------------- Stundenprotokoll (eine Tabelle)
+    page('Protokoll', 'Mein Stundenprotokoll', 'Ich plane jede Stunde und schätze am Ende ehrlich ein.')
+    b.p('Zu Beginn jeder Stunde: Datum und dein Plan in Stichworten. Am Ende: Kreuze an, ob du '
+        'deinen Plan geschafft hast, und notiere kurz, warum – oder was du als Nächstes tust.', size=10)
+    rows = [[f'{w}  {t[:2]}', '', '', '[  ] ja\n[  ] teils\n[  ] nein', '']
+            for nr, w, t, m, inh, sei in EINHEITEN] + [['+', '', '', '[  ] ja\n[  ] teils\n[  ] nein', '']] * 2
+    b.table(['Wo.', 'Datum', 'Mein Plan für die Stunde (Stichworte)', 'geschafft?',
+             'Einschätzung / nächster Schritt'], rows, [0.62, 0.85, 2.78, 0.95, 2.3],
+            height=14.5, size=9, pad=1.0)
     # ---------------------------------------------------------- Werkstattpass
     page('Werkstattpass', 'Meine Lehrgänge', 'Ich lerne Arbeitsgänge, bevor ich sie brauche.')
     b.note('PFLICHT', f'{PFLICHT_TXT}: Du benutzt sie erst, wenn hier die Unterschrift '
@@ -582,48 +589,9 @@ def build_werkstattheft():
     b.table(['Arbeitsgang', 'Warum brauche ich ihn?', 'bestanden am', 'Kürzel Lehrkraft'],
             [['', '', '', ''] for _ in range(2)], [2, 2.9, 1.3, 1.3], height=8, size=9, pad=1.5)
 
-    # ---------------------------------------------------------- Stundenprotokoll
-    def protokoll(nr, woche, tag, minuten, inhalt, seiten):
-        b.line_h = 21
-        b.brk()
-        b.h1(f'P{nr}  |  Stundenprotokoll')
-        b.p(f'Woche {woche} · {tag} · {minuten} Minuten        Datum: ______________', size=10.5)
-        z = b.p(f'Heute: {inhalt}  ·  Arbeitsseiten: {seiten}', size=10)
-        z.runs[0].bold = True
-        phase('1', 'PLANEN', 'zu Beginn der Stunde')
-        if nr > 1:
-            b.p('Das habe ich mir letzte Stunde als nächsten Schritt vorgenommen:', size=10)
-            b.lines(1)
-        b.p('Mein Ziel für heute – am Ende der Stunde habe ich …', size=10)
-        b.lines(2)
-        b.table(['Meine Schritte heute', 'erledigt?'],
-                [['1.', '[  ] ja  [  ] teils  [  ] nein'], ['2.', '[  ] ja  [  ] teils  [  ] nein'],
-                 ['3.', '[  ] ja  [  ] teils  [  ] nein']], [4.3, 2.2], height=7.5, size=9.5, pad=1.5)
-        b.p('Das brauche ich (Material, Werkzeug, Lehrgang L__): _____________________________', size=10)
-        b.p('Daran erkenne ich, dass ich mein Ziel erreicht habe:', size=10)
-        b.lines(1)
-        phase('2', 'DURCHFÜHREN', 'während der Arbeit')
-        b.p('Das habe ich geschafft:', size=10)
-        b.lines(2)
-        b.p('Problem und meine Lösung – oder: Das mache ich nächstes Mal anders:', size=10)
-        b.lines(2)
-        b.p('Hilfe genutzt:   [  ] Hilfekarte H___   [  ] Team   [  ] Lehrkraft   [  ] keine nötig',
-            size=10)
-        phase('3', 'REFLEKTIEREN', 'am Ende der Stunde')
-        b.table(['', 'noch nicht', 'teilweise', 'gut', 'sehr gut'], [
-            ['Ich habe mein Ziel erreicht.', '[  ]', '[  ]', '[  ]', '[  ]'],
-            ['Ich habe konzentriert gearbeitet.', '[  ]', '[  ]', '[  ]', '[  ]'],
-            ['Ich habe sicher und ordentlich gearbeitet.', '[  ]', '[  ]', '[  ]', '[  ]'],
-            ['Im Team lief es gut. (nur bei Teamarbeit)', '[  ]', '[  ]', '[  ]', '[  ]'],
-        ], [3.6, 0.9, 0.9, 0.7, 0.8], size=9.5, pad=1.5)
-        b.p('Mein nächster Schritt (schreibe ihn nächstes Mal oben ab):', size=10)
-        b.lines(1)
-        b.line_h = 23
-
     E = {e[0]: e for e in EINHEITEN}
 
     # ---------------------------------------------------------- Woche 1
-    protokoll(*E[1])
     page('1A', 'Bedarf entdecken und Ideen finden', 'Ich finde eine echte Aufgabe für ein Möbelstück.')
     b.p('Schau dich um: in deinem Zimmer, im Klassenraum, im Werkraum, bei Familie oder Freunden. '
         'Was liegt herum? Was ist unpraktisch? Wem könntest du helfen?', size=10.5)
@@ -653,10 +621,8 @@ def build_werkstattheft():
     b.note('HALTEPUNKT', 'Zeige deine Entscheidung der Lehrkraft. Passt der Umfang zur Teamgröße? '
                          '(Tabelle in der Projektübersicht)')
     b.p('Entscheidung besprochen am: ____________   Kürzel Lehrkraft: ____________', size=10)
-    protokoll(*E[2])
 
     # ---------------------------------------------------------- Woche 2
-    protokoll(*E[3])
     page('2A', 'Anforderungen, Prüfkriterien, Team', 'Ich lege fest, was mein Möbel können muss.')
     b.h('Was muss unser Möbel können?')
     b.table(['Muss es können', 'Wäre schön'], [['', ''] for _ in range(3)], [1, 1], height=9)
@@ -716,12 +682,8 @@ def build_werkstattheft():
     b.p('Bitte noch ändern:', size=10.5)
     b.lines(4)
     b.p('[  ] Freigegeben      Datum: ______________      Kürzel: ______________', size=10.5)
-    protokoll(*E[4])
 
     # ---------------------------------------------------------- Woche 3 und 4
-    protokoll(*E[5])
-    protokoll(*E[6])
-    protokoll(*E[7])
     page('4A', 'Zwischencheck', 'Ich überprüfe meinen Plan und passe ihn an.')
     b.p('Halbzeit beim Bauen. Vergleiche mit deinem Zeitplan auf der Seite „Mein Projekt auf einen Blick“.',
         size=10.5)
@@ -736,10 +698,8 @@ def build_werkstattheft():
     b.table(['Stunde', 'Das erledige ich'], [['Woche 4 · Mittwoch', ''], ['Woche 5 · Montag', '']],
             [1.6, 4.8], height=14, size=10)
     b.p('Zwischencheck besprochen mit: ______________   Kürzel Lehrkraft: ______________', size=10)
-    protokoll(*E[8])
 
     # ---------------------------------------------------------- Woche 5
-    protokoll(*E[9])
     page('5A', 'Funktionstest', 'Ich prüfe mein Möbel ehrlich und finde Schwachstellen.')
     b.note('HALTEPUNKT', 'Plant den Test mit der Lehrkraft. Testet nur mit der vereinbarten Last.')
     b.p('Vereinbarte Prüflast / Prüfanordnung: ______________________________________', size=10.5)
@@ -750,10 +710,8 @@ def build_werkstattheft():
     field('Ich vermute als Ursache:', 2, 10.5)
     b.box('Meine Verbesserungsidee (Skizze)', 150)
     b.note('HILFE', 'H5 Aussteifen · H6 Kippen und Prüfen · H8 Verbessern mit Test')
-    protokoll(*E[10])
 
     # ---------------------------------------------------------- Woche 6
-    protokoll(*E[11])
     page('6A', 'Verbessern, Oberfläche, Bilanz', 'Ich zeige mit einem Test, dass es besser geworden ist.')
     b.h('Vorher – nachher')
     b.table(['', 'Vorher', 'Nachher'], [['Was habe ich verändert?', '', ''], ['Testergebnis', '', '']],
@@ -786,7 +744,6 @@ def build_werkstattheft():
                  ('Das würde ich beim nächsten Projekt anders machen:', 2)]:
         field(q, n, 10.5)
     b.table(['Feedback von meinem Team', 'Feedback der Lehrkraft'], [['', '']], [1, 1], height=34)
-    protokoll(*E[12])
 
     # ---------------------------------------------------------- Bewertung
     page('Bewertung', 'Meine Lernerfolgskontrolle')
@@ -826,9 +783,9 @@ STUFEN = {
            'Zeichnung verständlich, einzelne Maße fehlen', 'Skizze ohne verwertbare Maße'),
     'A3': ('Stückliste vollständig und passend zur Zeichnung; Materialbedarf mit Verschnitt; sinnvolle Reihenfolge '
            'mit Lehrgängen', 'weitgehend vollständig, kleinere Widersprüche', 'lückenhaft oder passt nicht zur Zeichnung'),
-    'A4': ('nahezu alle Protokolle; Ziele konkret und überprüfbar; Durchführung nachvollziehbar; Reflexion ehrlich, '
-           'nächster Schritt wird in der Folgestunde aufgegriffen', 'Protokolle überwiegend vorhanden; Ziele teils '
-           'allgemein („weiterbauen“)', 'viele Protokolle fehlen oder bleiben formelhaft'),
+    'A4': ('nahezu alle Stunden eingetragen; Pläne konkret und erreichbar; Einschätzung ehrlich, '
+           'nächster Schritt wird in der Folgestunde aufgegriffen', 'überwiegend eingetragen; Pläne teils '
+           'allgemein („weiterbauen“)', 'viele Einträge fehlen oder bleiben formelhaft'),
     'A5': ('Testergebnisse zu allen Prüfkriterien; Schwachstelle mit Ursache; Verbesserung mit Vorher-nachher belegt',
            'Test dokumentiert, Verbesserung beschrieben, aber nicht erneut geprüft', 'Test oder Verbesserung fehlt'),
     'A6': ('Materialbilanz ausgewertet und bewertet; Rückblick benennt eigene Entscheidungen und Konsequenzen',
@@ -867,8 +824,8 @@ def build_erwartungshorizont():
                'Bewertung von A1, A7 und B1.',
                'Das gewählte Niveau fließt in A7 ein. Eine gut umgesetzte Niveau-1-Aufgabe kann trotzdem '
                'sehr gut bewertet werden.',
-               'Stichproben während der Arbeit: Heft am Ende einer Stunde einsammeln oder einsehen, '
-               'kurze Rückmeldung zum Ziel geben (A4).']:
+               'Stichproben während der Arbeit: Stundenprotokoll am Ende einer Stunde einsehen, '
+               'kurze Rückmeldung zum Plan geben (A4).']:
         z = b.p('• ' + s_, size=10)
         z.paragraph_format.space_after = Pt(2)
 

@@ -84,12 +84,12 @@ Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlich
 
 ## Werkstattheft und Lernerfolgskontrolle
 
-Das **Werkstattheft** (A4, 26 Seiten, ersetzt den früheren Projektbogen) ist Planungsinstrument, Projektdokumentation und – zusammen mit dem Werkstück – die **zweite Klassenarbeit** (Heft 40 %, Werkstück 60 %).
+Das **Werkstattheft** (A4, 15 Seiten, ersetzt den früheren Projektbogen) ist Planungsinstrument, Projektdokumentation und – zusammen mit dem Werkstück – die **zweite Klassenarbeit** (Heft 40 %, Werkstück 60 %).
 
-- **SRL-Struktur jeder Arbeitseinheit:** 12 Stundenprotokolle P1–P12 (Mo 45 / Mi 90 Min.) mit den Phasen *Planen* (Ziel der Stunde, Schritte, Material/Lehrgang, Erfolgskriterium), *Durchführen* (Geschafftes, Problem und Lösung, genutzte Hilfe) und *Reflektieren* (Zielerreichung, Arbeitsweise, nächster Schritt – dieser wird in der Folgestunde oben übernommen).
+- **SRL-Struktur jeder Stunde:** ein **Stundenprotokoll** als eine Tabelle für alle 12 Stunden (+2 Reservezeilen): Datum, Plan für die Stunde in Stichworten (*Planen*), am Ende „geschafft? ja/teils/nein“ mit kurzer Einschätzung und nächstem Schritt (*Reflektieren*). Die *Durchführung* wird auf den Arbeitsseiten dokumentiert.
 - **Arbeitsseiten:** 1A Bedarf & Ideen · 1B Entscheidung · 2A Anforderungen, Prüfkriterien, Teamvertrag · 2B Konstruktionszeichnung · 2C Stückliste, Arbeitsplan, Lehrgänge · 2D Freigabe · 4A Zwischencheck · 5A Funktionstest · 6A Verbessern, Oberfläche, Materialbilanz · 6B Abnahme und Rückblick.
 - **Übergreifend:** „Mein Projekt auf einen Blick“ mit Wochen-Zeitplan (geplant / geschafft / im Plan?), Meilensteine, Werkstattpass.
-- **Bewertung:** Teil A Werkstattheft (A1–A7, 40 P.), Teil B Werkstück (B1–B6, 60 P.) mit Selbsteinschätzung; Stufenbeschreibungen und Notenschlüssel-Vorschlag im [Erwartungshorizont](druck/werkstattheft-erwartungshorizont.pdf). Hefte werden individuell bewertet, im Team zählt beim Werkstück die eigene Baugruppe plus Gesamtergebnis.
+- **Bewertung:** Teil A Werkstattheft (A1–A7, 40 P.; Stundenprotokoll 6 P.), Teil B Werkstück (B1–B6, 60 P.) mit Selbsteinschätzung; Stufenbeschreibungen und Notenschlüssel-Vorschlag im [Erwartungshorizont](druck/werkstattheft-erwartungshorizont.pdf). Hefte werden individuell bewertet, im Team zählt beim Werkstück die eigene Baugruppe plus Gesamtergebnis.
 
 ## Teamgröße und Projektumfang
 
