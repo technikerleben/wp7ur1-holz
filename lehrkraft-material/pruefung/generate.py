@@ -9,6 +9,7 @@ Benötigt nur python-docx. Danach rendern, z. B.:
 und alle Seiten visuell prüfen. Anschließend pruefungspaket.zip aktualisieren.
 """
 from pathlib import Path
+import re
 from docx import Document
 from docx.shared import Mm, Pt, RGBColor
 from docx.oxml import OxmlElement
@@ -249,7 +250,10 @@ def identzeile():
         run(c.paragraphs[0], label, 7.5, color=MUTED)
         cell_borders(c); cell_margins(c, 0, 0, 0, 200)
         c2 = t.rows[1].cells[i]; c2.text = ''
-        run(c2.paragraphs[0], ' ', 13)
+        if MUSTER and i == 0:
+            run(c2.paragraphs[0], 'MUSTERLÖSUNG', 13, True, color=ROT)
+        else:
+            run(c2.paragraphs[0], ' ', 13)
         cell_borders(c2, bottom=(6, '333333')); cell_margins(c2, 0, 20, 0, 200)
         for cc in (c, c2):
             cc.paragraphs[0].paragraph_format.space_after = Pt(0)
@@ -288,7 +292,10 @@ def aufgabe(nr, titel, tag, punkte, bonus=False, before=12):
     run(x, f'   {titel}', 12, True)
     run(x, f'   {tag}', 8.5, color=MUTED)
     einheit = 'Bonuspunkte' if bonus else 'Punkte'
-    run(x, f'\t____ / {punkte} {einheit}', 9.5, color=MUTED)
+    if MUSTER:
+        run(x, '\t'); run(x, str(punkte), 9.5, True, color=ROT); run(x, f' / {punkte} {einheit}', 9.5, color=MUTED)
+    else:
+        run(x, f'\t____ / {punkte} {einheit}', 9.5, color=MUTED)
     return x
 
 
@@ -311,15 +318,43 @@ def text(t, keep=True, size=None, italic=False, after=3):
     return x
 
 
-def luecke(zeilen, keep_last=False):
-    """Lückensätze mit Schreibhöhe (exakt 26 pt)."""
+MUSTER = False      # True: Musterlösung, Lösungen rot eingetragen
+ROT = 'C00000'
+
+
+def loesung_run(par, antwort, n_strich, size=11):
+    """Rote, unterstrichene Lösung etwa in der Breite der Lücke (hält den Zeilenfall stabil)."""
+    pad = max(0, 2 * (n_strich - len(antwort)))
+    l = '\u00a0' * (pad // 2); r_ = '\u00a0' * (pad - pad // 2)
+    r = par.add_run(l + antwort + r_)
+    r.font.size = Pt(size); r.bold = True; r.underline = True; r.font.color.rgb = rgb(ROT)
+    return r
+
+
+def fuelle(par, zeile, antworten, size=11, color=TEXT):
+    """Schreibt eine Zeile; im Mustermodus werden Strichlücken durch Antworten ersetzt."""
+    if not (MUSTER and antworten):
+        run(par, zeile, size, color=color); return
+    teile = re.split(r'(_{4,})', zeile)
+    it = iter(antworten)
+    for t in teile:
+        if t.startswith('____'):
+            loesung_run(par, str(next(it)), len(t), size)
+        elif t:
+            run(par, t, size, color=color)
+
+
+def luecke(zeilen, keep_last=False, loes=None):
+    """Lückensätze mit Schreibhöhe. loes: Antworten in Reihenfolge der Lücken (für Musterlösung)."""
     out = []
+    loes = list(loes or [])
     for i, z in enumerate(zeilen):
         x = D.add_paragraph(); f = x.paragraph_format
         f.left_indent = Mm(IND + 8); f.space_after = Pt(2)
         f.line_spacing_rule = WD_LINE_SPACING.EXACTLY; f.line_spacing = Pt(25)
         f.keep_with_next = keep_last or i < len(zeilen) - 1
-        run(x, z, 11)
+        n = len(re.findall(r'_{4,}', z))
+        fuelle(x, z, loes[:n]); loes = loes[n:]
         out.append(x)
     return out
 
@@ -328,18 +363,21 @@ GAP = '______________________'
 GAP_S = '____________'
 
 
-def ankreuzen(optionen, keep_last=False):
+def ankreuzen(optionen, keep_last=False, richtig=()):
     for i, o in enumerate(optionen):
         x = D.add_paragraph(); f = x.paragraph_format
         f.left_indent = Mm(IND + 16); f.first_line_indent = Mm(-8)
         f.tab_stops.add_tab_stop(Mm(IND + 16))
         f.space_before = Pt(1); f.space_after = Pt(2.5)
         f.keep_with_next = keep_last or i < len(optionen) - 1
-        run(x, '□', 16)
+        if MUSTER and i in richtig:
+            run(x, '☒', 16, True, color=ROT)
+        else:
+            run(x, '□', 16)
         run(x, '\t' + o, 11)
 
 
-def kaestchen(paare, label_mm, box_mm=11, pro_zeile=3, keep_last=False):
+def kaestchen(paare, label_mm, box_mm=11, pro_zeile=3, keep_last=False, werte=()):
     """Eintragekästchen für Zahlen: paare = [(Beschriftung vor oder nach Kästchen)]."""
     zeilen = [paare[i:i + pro_zeile] for i in range(0, len(paare), pro_zeile)]
     t = D.add_table(rows=len(zeilen) * 2 - 1, cols=pro_zeile * 2)
@@ -353,6 +391,9 @@ def kaestchen(paare, label_mm, box_mm=11, pro_zeile=3, keep_last=False):
             cell_borders(labc)
             cell_margins(labc, 0, 0, 120 if not vor else 0, 120)
             labc.text = ''; run(labc.paragraphs[0], lab, 11)
+            if MUSTER and werte:
+                run(box.paragraphs[0], str(werte[zi * pro_zeile + k]), 15, True, color=ROT)
+                box.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
             if vor:
                 labc.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.RIGHT
             for c in (box, labc):
@@ -382,168 +423,179 @@ EINE = 'Nur eine Antwort ist richtig.'
 MEHR = 'Mehrere Antworten sind richtig.'
 
 # =================================================================== Schülerblatt
-TEACHER = False
-D = document('Lernerfolgskontrolle Holz')
-kopf('Lernerfolgskontrolle Holz', 'WP TECHNIK 7')
-identzeile()
-infobox([
-    ('Arbeitszeit: 30 Minuten. Du darfst das gedruckte Material deiner Mappe benutzen. '
-     'Das iPad und andere digitale Geräte darfst du nicht benutzen.', True),
-    ('Arbeite allein. Trage Zahlen oder kurze Wörter ein. Bei Ankreuzaufgaben steht dabei, ob eine oder '
-     'mehrere Antworten richtig sind. Kreuze nur die richtigen Aussagen an.', False),
-    ('Bei Mehrfachauswahl kostet jedes falsche Kreuz einen Punkt in dieser Teilaufgabe; '
-     'weniger als 0 Punkte gibt es nicht.', False),
-    ([('Pflicht: ', True), ('Aufgaben 1 bis 6 zu A1 bis A8, 28 Punkte.  ', False),
-      ('Bonus: ', True), ('Aufgabe 7 zu A9/A10 ist freiwillig (4 Punkte).', False)], False),
-])
+def schuelerblatt(muster=False):
+    """Baut die Arbeit. muster=True: identisches Layout mit roten Lösungen."""
+    global D, TEACHER, MUSTER
+    MUSTER = muster
+    TEACHER = False
+    D = document('Lernerfolgskontrolle Holz' + ('  ·  Musterlösung' if muster else ''))
+    kopf('Lernerfolgskontrolle Holz', 'WP TECHNIK 7')
+    identzeile()
+    infobox([
+        ('Arbeitszeit: 30 Minuten. Du darfst das gedruckte Material deiner Mappe benutzen. '
+         'Das iPad und andere digitale Geräte darfst du nicht benutzen.', True),
+        ('Arbeite allein. Trage Zahlen oder kurze Wörter ein. Bei Ankreuzaufgaben steht dabei, ob eine oder '
+         'mehrere Antworten richtig sind. Kreuze nur die richtigen Aussagen an.', False),
+        ('Bei Mehrfachauswahl kostet jedes falsche Kreuz einen Punkt in dieser Teilaufgabe; '
+         'weniger als 0 Punkte gibt es nicht.', False),
+        ([('Pflicht: ', True), ('Aufgaben 1 bis 6 zu A1 bis A8, 28 Punkte.  ', False),
+          ('Bonus: ', True), ('Aufgabe 7 zu A9/A10 ist freiwillig (4 Punkte).', False)], False),
+    ])
 
-# ---- Seite 1
-aufgabe(1, 'Aufbau des Stamms', 'A1', 4, before=4)
-teil('1a', 'Ergänze. Nutze deine Mappe.', 2)
-luecke([f'Das {GAP} ermöglicht das Dickenwachstum.',
-        f'Das {GAP} leitet Wasser von den Wurzeln nach oben.'], keep_last=False)
-teil('1b', 'Der Bast ist rings um den Stamm unterbrochen. Welche Folge ist möglich?', 2, EINE)
-ankreuzen(['Die Wurzeln bekommen zu wenig Zucker aus den Blättern.',
-           'Das Mark bildet sofort eine neue Borke.',
-           'Der Stamm kann keine Jahresringe mehr zeigen.'])
+    # ---- Seite 1
+    aufgabe(1, 'Aufbau des Stamms', 'A1', 4, before=4)
+    teil('1a', 'Ergänze. Nutze deine Mappe.', 2)
+    luecke([f'Das {GAP} ermöglicht das Dickenwachstum.',
+            f'Das {GAP} leitet Wasser von den Wurzeln nach oben.'], keep_last=False, loes=['Kambium', 'Splintholz'])
+    teil('1b', 'Der Bast ist rings um den Stamm unterbrochen. Welche Folge ist möglich?', 2, EINE)
+    ankreuzen(['Die Wurzeln bekommen zu wenig Zucker aus den Blättern.',
+               'Das Mark bildet sofort eine neue Borke.',
+               'Der Stamm kann keine Jahresringe mehr zeigen.'], richtig={0})
 
-aufgabe(2, 'Jahresringe auswerten', 'A2', 4)
-# Bild links, Hinweis und 2a rechts (spart Höhe, Bild bleibt neben der Frage)
-t = D.add_table(rows=1, cols=2)
-lc, rc = t.rows[0].cells
-for c in (lc, rc):
-    cell_borders(c); cell_margins(c, 0, 0, 0, 120)
-    c.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-lc.paragraphs[0].add_run().add_picture(str(OUT / 'ringe.png'), width=Mm(70))
-z = rc.paragraphs[0]; z.paragraph_format.space_after = Pt(8)
-run(z, 'Die Mitte ist ein Punkt. Jede Kreislinie begrenzt einen Jahresring. Die Rinde ist nicht '
-    'dargestellt. Die Zeichnung ist ein Modell.', 10, italic=True)
-z = rc.add_paragraph(); z.paragraph_format.space_after = Pt(4)
-run(z, '2a  ', 11, True, color=SCHIEFER); run(z, 'Trage nur die Zahl ein.', 11, True); run(z, '  (1 P)', 9.5, color=MUTED)
-z = rc.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-z.paragraph_format.line_spacing = Pt(26); z.paragraph_format.space_after = Pt(0)
-run(z, 'Alter: etwa ________ Jahre', 11)
-geometry(t, [82, 70], IND + 8)
-keep_rows(t, keep_last=True)
-spacer(4, keep=True)
+    aufgabe(2, 'Jahresringe auswerten', 'A2', 4)
+    # Bild links, Hinweis und 2a rechts (spart Höhe, Bild bleibt neben der Frage)
+    t = D.add_table(rows=1, cols=2)
+    lc, rc = t.rows[0].cells
+    for c in (lc, rc):
+        cell_borders(c); cell_margins(c, 0, 0, 0, 120)
+        c.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+    lc.paragraphs[0].add_run().add_picture(str(OUT / 'ringe.png'), width=Mm(70))
+    z = rc.paragraphs[0]; z.paragraph_format.space_after = Pt(8)
+    run(z, 'Die Mitte ist ein Punkt. Jede Kreislinie begrenzt einen Jahresring. Die Rinde ist nicht '
+        'dargestellt. Die Zeichnung ist ein Modell.', 10, italic=True)
+    z = rc.add_paragraph(); z.paragraph_format.space_after = Pt(4)
+    run(z, '2a  ', 11, True, color=SCHIEFER); run(z, 'Trage nur die Zahl ein.', 11, True); run(z, '  (1 P)', 9.5, color=MUTED)
+    z = rc.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+    z.paragraph_format.line_spacing = Pt(26); z.paragraph_format.space_after = Pt(0)
+    fuelle(z, 'Alter: etwa ________ Jahre', ['12'])
+    geometry(t, [82, 70], IND + 8)
+    keep_rows(t, keep_last=True)
+    spacer(4, keep=True)
 
-teil('2b', 'Ring 8 ist schmaler als die Nachbarringe. Was zeigt das?', 1, EINE)
-ankreuzen(['Der Stamm ist in diesem Jahr weniger in die Dicke gewachsen.',
-           'Der Baum ist in diesem Jahr kleiner geworden.'])
-teil('2c', 'Sam sagt: „In Jahr 8 hat es bestimmt zu wenig geregnet.“ Prüfe die Aussage.', 2, MEHR)
-ankreuzen(['Wassermangel ist eine mögliche Ursache.',
-           'Die Ringbreite beweist Wassermangel.',
-           'Auch Licht, Temperatur oder Konkurrenz können das Wachstum beeinflussen.',
-           'Ein schmaler Ring zeigt, wie hoch der Baum war.'])
+    teil('2b', 'Ring 8 ist schmaler als die Nachbarringe. Was zeigt das?', 1, EINE)
+    ankreuzen(['Der Stamm ist in diesem Jahr weniger in die Dicke gewachsen.',
+               'Der Baum ist in diesem Jahr kleiner geworden.'], richtig={0})
+    teil('2c', 'Sam sagt: „In Jahr 8 hat es bestimmt zu wenig geregnet.“ Prüfe die Aussage.', 2, MEHR)
+    ankreuzen(['Wassermangel ist eine mögliche Ursache.',
+               'Die Ringbreite beweist Wassermangel.',
+               'Auch Licht, Temperatur oder Konkurrenz können das Wachstum beeinflussen.',
+               'Ein schmaler Ring zeigt, wie hoch der Baum war.'], richtig={0, 2})
 
-# ---- Seite 2
-page_break()
-aufgabe(3, 'Produktionsweg und Schnittplan', 'A3  A4', 6, before=0)
-teil('3a', 'Ordne die Schritte. Trage nur die Zahlen 1 bis 6 in die Kästchen ein. '
-     '1 ist der Anfang. Nutze jede Zahl einmal.', 3)
-kaestchen([('Transport', False), ('Schnittholz', False), ('Baum', False),
-           ('Einschnitt', False), ('Fällen', False), ('Sägewerk', False)], label_mm=36)
-teil('3b', 'Ergänze ein passendes Wort.', 1)
-luecke([f'Beim Sägen entstehen {GAP}, weil das Sägeblatt eine Schnittbreite hat.'])
-teil('3c', 'Du brauchst mindestens 12 cm breite Bretter. Du darfst schmale Bretter nicht '
-     'zusammenleimen. Nutze die Übungsdaten.', bold=True)
-table(['Plan', 'Ausbeute', 'Breite jedes Bretts'], [['A', '72 %', '9 cm'], ['B', '64 %', '14 cm']],
-      [25, 40, 60], indent=IND + 8)
-x = text('Wähle den passenden Plan.', after=2)
-run(x, '  (1 P)  ', 9.5, color=MUTED); run(x, EINE, 10, italic=True)
-ankreuzen(['Plan A', 'Plan B'])
-x = text('Ergänze:  ', after=2); run(x, '(1 P)', 9.5, color=MUTED)
-luecke(['Dieser Plan passt, weil seine Bretter ________ cm breit sind.'])
+    # ---- Seite 2
+    page_break()
+    aufgabe(3, 'Produktionsweg und Schnittplan', 'A3  A4', 6, before=0)
+    teil('3a', 'Ordne die Schritte. Trage nur die Zahlen 1 bis 6 in die Kästchen ein. '
+         '1 ist der Anfang. Nutze jede Zahl einmal.', 3)
+    kaestchen([('Transport', False), ('Schnittholz', False), ('Baum', False),
+               ('Einschnitt', False), ('Fällen', False), ('Sägewerk', False)], label_mm=36, werte=[3, 6, 1, 5, 2, 4])
+    teil('3b', 'Ergänze ein passendes Wort.', 1)
+    luecke([f'Beim Sägen entstehen {GAP}, weil das Sägeblatt eine Schnittbreite hat.'], loes=['Späne'])
+    teil('3c', 'Du brauchst mindestens 12 cm breite Bretter. Du darfst schmale Bretter nicht '
+         'zusammenleimen. Nutze die Übungsdaten.', bold=True)
+    table(['Plan', 'Ausbeute', 'Breite jedes Bretts'], [['A', '72 %', '9 cm'], ['B', '64 %', '14 cm']],
+          [25, 40, 60], indent=IND + 8)
+    x = text('Wähle den passenden Plan.', after=2)
+    run(x, '  (1 P)  ', 9.5, color=MUTED); run(x, EINE, 10, italic=True)
+    ankreuzen(['Plan A', 'Plan B'], richtig={1})
+    x = text('Ergänze:  ', after=2); run(x, '(1 P)', 9.5, color=MUTED)
+    luecke(['Dieser Plan passt, weil seine Bretter ________ cm breit sind.'], loes=['14'])
 
-# ---- Seite 3
-page_break()
-aufgabe(4, 'Holzproben vergleichen', 'A5  A6', 6, before=0)
-text('Zwei gleich große, ähnlich trockene Proben werden mit derselben Münze bei möglichst gleichem '
-     'Druck geprüft. Die Angaben sind Übungsdaten.')
-table(['Probe', 'Masse', 'Druckspur'], [['P', '45 g', 'deutliche Spur'], ['Q', '68 g', 'kaum eine Spur']],
-      [25, 35, 65], indent=IND + 8)
-teil('4a', 'Welche Probe ist in diesem Test härter?', 1, EINE)
-ankreuzen(['Probe P', 'Probe Q'])
-teil('4b', 'Ergänze ein passendes Wort.', 1)
-luecke([f'Die härtere Probe erkenne ich daran, dass die Münze {GAP_S} eine Spur hinterlässt.'])
-teil('4c', 'Eine dritte Probe ist doppelt so groß und wiegt 80 g. Welche Aussagen stimmen?', 2, MEHR)
-ankreuzen(['Ihre größere Masse kann an ihrer Größe liegen.',
-           'Die Masse von 80 g beweist, dass das Holz am härtesten ist.',
-           'Für einen fairen Massevergleich sollten die Proben gleich groß und ähnlich trocken sein.',
-           'Beim Massevergleich spielt die Feuchtigkeit keine Rolle.'])
-teil('4d', 'Verbinde Beobachtung, Eigenschaft und Verwendung. Welche Aussagen passen?', 2, MEHR)
-ankreuzen(['Eine glatte Oberfläche ohne Splitter eignet sich für ein häufig angefasstes Brett.',
-           'Geringe Wasseraufnahme ist bei wechselnder Feuchtigkeit eine günstige Eigenschaft.',
-           'Eine deutliche Druckspur beweist, dass das Holz für stark belastete Oberflächen besonders hart ist.'])
+    # ---- Seite 3
+    page_break()
+    aufgabe(4, 'Holzproben vergleichen', 'A5  A6', 6, before=0)
+    text('Zwei gleich große, ähnlich trockene Proben werden mit derselben Münze bei möglichst gleichem '
+         'Druck geprüft. Die Angaben sind Übungsdaten.')
+    table(['Probe', 'Masse', 'Druckspur'], [['P', '45 g', 'deutliche Spur'], ['Q', '68 g', 'kaum eine Spur']],
+          [25, 35, 65], indent=IND + 8)
+    teil('4a', 'Welche Probe ist in diesem Test härter?', 1, EINE)
+    ankreuzen(['Probe P', 'Probe Q'], richtig={1})
+    teil('4b', 'Ergänze ein passendes Wort.', 1)
+    luecke([f'Die härtere Probe erkenne ich daran, dass die Münze {GAP_S} eine Spur hinterlässt.'], loes=['kaum'])
+    teil('4c', 'Eine dritte Probe ist doppelt so groß und wiegt 80 g. Welche Aussagen stimmen?', 2, MEHR)
+    ankreuzen(['Ihre größere Masse kann an ihrer Größe liegen.',
+               'Die Masse von 80 g beweist, dass das Holz am härtesten ist.',
+               'Für einen fairen Massevergleich sollten die Proben gleich groß und ähnlich trocken sein.',
+               'Beim Massevergleich spielt die Feuchtigkeit keine Rolle.'], richtig={0, 2})
+    teil('4d', 'Verbinde Beobachtung, Eigenschaft und Verwendung. Welche Aussagen passen?', 2, MEHR)
+    ankreuzen(['Eine glatte Oberfläche ohne Splitter eignet sich für ein häufig angefasstes Brett.',
+               'Geringe Wasseraufnahme ist bei wechselnder Feuchtigkeit eine günstige Eigenschaft.',
+               'Eine deutliche Druckspur beweist, dass das Holz für stark belastete Oberflächen besonders hart ist.'], richtig={0, 1})
 
-# ---- Seite 4
-page_break()
-aufgabe(5, 'Holz arbeitet', 'A7', 4, before=0)
-text('Dieselbe Probe wird vor und nach dem Trocknen gemessen. Die Angaben sind Übungsdaten.')
-table(['Messwert', 'Vorher feucht', 'Nach dem Trocknen'], [['Masse', '80 g', '68 g'], ['Breite', '50 mm', '49 mm']],
-      [40, 42, 45], indent=IND + 8)
-teil('5a', 'Ergänze zwei passende Wörter.', 2)
-luecke([f'Die Masse sinkt, weil das Holz {GAP} abgibt.',
-        f'Die Breite nimmt ab. Diese Verkleinerung heißt {GAP}.'])
-teil('5b', 'Eine Holzschublade klemmt in einem feuchten Raum. Ergänze zwei passende Wörter.', 2)
-luecke([f'Das Holz kann Wasser aufnehmen und {GAP}.',
-        f'Beim Bau lässt du deshalb etwas {GAP} für die Bewegung.'])
+    # ---- Seite 4
+    page_break()
+    aufgabe(5, 'Holz arbeitet', 'A7', 4, before=0)
+    text('Dieselbe Probe wird vor und nach dem Trocknen gemessen. Die Angaben sind Übungsdaten.')
+    table(['Messwert', 'Vorher feucht', 'Nach dem Trocknen'], [['Masse', '80 g', '68 g'], ['Breite', '50 mm', '49 mm']],
+          [40, 42, 45], indent=IND + 8)
+    teil('5a', 'Ergänze zwei passende Wörter.', 2)
+    luecke([f'Die Masse sinkt, weil das Holz {GAP} abgibt.',
+            f'Die Breite nimmt ab. Diese Verkleinerung heißt {GAP}.'], loes=['Wasser', 'Schwinden'])
+    teil('5b', 'Eine Holzschublade klemmt in einem feuchten Raum. Ergänze zwei passende Wörter.', 2)
+    luecke([f'Das Holz kann Wasser aufnehmen und {GAP}.',
+            f'Beim Bau lässt du deshalb etwas {GAP} für die Bewegung.'], loes=['quellen', 'Spiel'])
 
-aufgabe(6, 'Holzfehler finden', 'A8', 4)
-bild(OUT / 'fehler.png', 148)
-text('Bild C zeigt ein Brett von der Seite über einer geraden Unterlage.', size=10, italic=True)
-teil('6a', 'Ordne zu. Trage nur die Zahlen ein: 1 = Ast, 2 = Verwerfen, 3 = Riss.', 3)
-kaestchen([('Bild A', True), ('Bild B', True), ('Bild C', True)], label_mm=26)
-teil('6b', 'Ein Brett hat einen kleinen, fest verwachsenen Ast. Welche Aussage stimmt?', 1, EINE)
-ankreuzen(['Das Brett muss immer weggeworfen werden.',
-           'Ob der Ast stört, hängt von seiner Lage und der Nutzung des Bretts ab.',
-           'Ein Ast macht jedes Brett automatisch tragfähiger.'])
+    aufgabe(6, 'Holzfehler finden', 'A8', 4)
+    bild(OUT / 'fehler.png', 148)
+    text('Bild C zeigt ein Brett von der Seite über einer geraden Unterlage.', size=10, italic=True)
+    teil('6a', 'Ordne zu. Trage nur die Zahlen ein: 1 = Ast, 2 = Verwerfen, 3 = Riss.', 3)
+    kaestchen([('Bild A', True), ('Bild B', True), ('Bild C', True)], label_mm=26, werte=[3, 1, 2])
+    teil('6b', 'Ein Brett hat einen kleinen, fest verwachsenen Ast. Welche Aussage stimmt?', 1, EINE)
+    ankreuzen(['Das Brett muss immer weggeworfen werden.',
+               'Ob der Ast stört, hängt von seiner Lage und der Nutzung des Bretts ab.',
+               'Ein Ast macht jedes Brett automatisch tragfähiger.'], richtig={1})
 
-# ---- Seite 5
-page_break()
-infobox([('Freiwillige Bonusaufgabe zu A9 und A10', True),
-         ('Aufgabe 7 gehört nicht zum Pflichtteil. Wenn du sie auslässt, verlierst du keine Pflichtpunkte. '
-          'Es gibt keine zusätzliche Arbeitszeit. Prüfe zuerst deine Pflichtaufgaben.', False)], color=GOLD)
-aufgabe(7, 'Eine Produktkarte ausfüllen', 'A9  A10', 4, bonus=True, before=0)
-text('Eine Kundin braucht ein Regal für einen trockenen Innenraum. Die Oberfläche soll hart und glatt sein. '
-     'Von den passenden Holzarten möchte sie die preiswertere. Wähle für ihre Produktkarte eine Holzart, '
-     'passende Eigenschaften und einen Nachteil. Vergleiche nur die Angaben in der Tabelle.').runs[0].bold = True
-text('Die Tabelle enthält vereinfachte Übungsangaben. Alle angebotenen Bretter haben passende Maße.',
-     size=10, italic=True)
-table(['Holzart', 'Oberfläche und Bearbeitung', 'Preis', 'Grenze'], [
-    ['Fichte', 'weich; lässt sich glatt bearbeiten', 'niedrig', 'Druckstellen entstehen leicht'],
-    ['Buche', 'hart; lässt sich glatt bearbeiten', 'mittel', 'arbeitet stark bei wechselnder Feuchte'],
-    ['Eiche', 'hart; lässt sich glatt bearbeiten', 'hoch', 'teurer als Buche']],
-    [22, 50, 20, 60], indent=IND + 8)
-teil('7a', 'Welche Holzart erfüllt den Auftrag am besten?', 1, EINE)
-ankreuzen(['Fichte', 'Buche', 'Eiche'])
-teil('7b', 'Ergänze deine Begründung mit zwei passenden Wörtern.', 2)
-luecke(['Die gewählte Holzart eignet sich, weil ihre Oberfläche',
-        f'{GAP} ist und sich {GAP} bearbeiten lässt.'])
-teil('7c', 'Ergänze einen passenden Nachteil.', 1)
-luecke([f'Bei wechselnder Feuchtigkeit arbeitet dieses Holz {GAP}.'])
+    # ---- Seite 5
+    page_break()
+    infobox([('Freiwillige Bonusaufgabe zu A9 und A10', True),
+             ('Aufgabe 7 gehört nicht zum Pflichtteil. Wenn du sie auslässt, verlierst du keine Pflichtpunkte. '
+              'Es gibt keine zusätzliche Arbeitszeit. Prüfe zuerst deine Pflichtaufgaben.', False)], color=GOLD)
+    aufgabe(7, 'Eine Produktkarte ausfüllen', 'A9  A10', 4, bonus=True, before=0)
+    text('Eine Kundin braucht ein Regal für einen trockenen Innenraum. Die Oberfläche soll hart und glatt sein. '
+         'Von den passenden Holzarten möchte sie die preiswertere. Wähle für ihre Produktkarte eine Holzart, '
+         'passende Eigenschaften und einen Nachteil. Vergleiche nur die Angaben in der Tabelle.').runs[0].bold = True
+    text('Die Tabelle enthält vereinfachte Übungsangaben. Alle angebotenen Bretter haben passende Maße.',
+         size=10, italic=True)
+    table(['Holzart', 'Oberfläche und Bearbeitung', 'Preis', 'Grenze'], [
+        ['Fichte', 'weich; lässt sich glatt bearbeiten', 'niedrig', 'Druckstellen entstehen leicht'],
+        ['Buche', 'hart; lässt sich glatt bearbeiten', 'mittel', 'arbeitet stark bei wechselnder Feuchte'],
+        ['Eiche', 'hart; lässt sich glatt bearbeiten', 'hoch', 'teurer als Buche']],
+        [22, 50, 20, 60], indent=IND + 8)
+    teil('7a', 'Welche Holzart erfüllt den Auftrag am besten?', 1, EINE)
+    ankreuzen(['Fichte', 'Buche', 'Eiche'], richtig={1})
+    teil('7b', 'Ergänze deine Begründung mit zwei passenden Wörtern.', 2)
+    luecke(['Die gewählte Holzart eignet sich, weil ihre Oberfläche',
+            f'{GAP} ist und sich {GAP} bearbeiten lässt.'], loes=['hart', 'glatt'])
+    teil('7c', 'Ergänze einen passenden Nachteil.', 1)
+    luecke([f'Bei wechselnder Feuchtigkeit arbeitet dieses Holz {GAP}.'], loes=['stark'])
 
-spacer(14)
-infobox([('Prüfe deine Arbeit', True),
-         ('Lies deine Antworten noch einmal. Sind alle Zahlen und Lücken ausgefüllt? '
-          'Hast du bei jeder Ankreuzaufgabe auf den Hinweis geachtet?', False)], color=SCHIEFER)
+    spacer(14)
+    infobox([('Prüfe deine Arbeit', True),
+             ('Lies deine Antworten noch einmal. Sind alle Zahlen und Lücken ausgefüllt? '
+              'Hast du bei jeder Ankreuzaufgabe auf den Hinweis geachtet?', False)], color=SCHIEFER)
 
-# Auswertungsfeld für die Lehrkraft
-t = D.add_table(rows=2, cols=2)
-for c, lab in zip(t.rows[0].cells, ('Pflichtpunkte:   ______ / 28', 'Bonus:   ______ / 4')):
-    c.text = ''; run(c.paragraphs[0], lab, 11, True)
-m = t.rows[1].cells[0].merge(t.rows[1].cells[1])
-m.text = ''; run(m.paragraphs[0], 'Feedback:', 11, True)
-for _ in range(2):
-    z = m.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-    z.paragraph_format.line_spacing = Pt(24)
-for row in t.rows:
-    for c in row.cells:
-        cell_borders(c, top=(8, SCHIEFER), bottom=(8, SCHIEFER), left=(8, SCHIEFER), right=(8, SCHIEFER))
-        cell_margins(c, 80, 80, 140, 140)
-geometry(t, [82.5, 82.5])
-keep_rows(t)
-D.save(OUT / 'lernerfolgskontrolle.docx')
+    # Auswertungsfeld für die Lehrkraft
+    t = D.add_table(rows=2, cols=2)
+    for c, lab, loes in zip(t.rows[0].cells, ('Pflichtpunkte:   ______ / 28', 'Bonus:   ______ / 4'), ('28', '4')):
+        c.text = ''; fuelle(c.paragraphs[0], lab, [loes]); c.paragraphs[0].runs[0].bold = True
+    m = t.rows[1].cells[0].merge(t.rows[1].cells[1])
+    m.text = ''; run(m.paragraphs[0], 'Feedback:', 11, True)
+    if MUSTER:
+        run(m.paragraphs[0], '  Weitere sinngemäße Lösungen und Punkteregeln: siehe Erwartungshorizont.', 10, color=ROT)
+    for _ in range(2):
+        z = m.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+        z.paragraph_format.line_spacing = Pt(24)
+    for row in t.rows:
+        for c in row.cells:
+            cell_borders(c, top=(8, SCHIEFER), bottom=(8, SCHIEFER), left=(8, SCHIEFER), right=(8, SCHIEFER))
+            cell_margins(c, 80, 80, 140, 140)
+    geometry(t, [82.5, 82.5])
+    keep_rows(t)
+    D.save(OUT / ('musterloesung.docx' if muster else 'lernerfolgskontrolle.docx'))
+    MUSTER = False
+
+
+schuelerblatt()
+schuelerblatt(muster=True)
 
 # =================================================================== Erwartungshorizont
 TEACHER = True
@@ -601,4 +653,4 @@ luecke(['Übe zuerst: ______________________________________________________',
         'Wenn nötig, übe danach: ___________________________________________'])
 p('Erkläre einen dieser Zusammenhänge in zwei eigenen Sätzen auf U.1. Besprich deine Erklärung mit einem Partner oder deiner Lehrkraft.', before=6)
 D.save(OUT / 'erwartungshorizont.docx')
-print('Lernerfolgskontrolle: 5 geplante Seiten. Erwartungshorizont: 3 geplante Seiten. Pflicht 28 P, Bonus 4 P.')
+print('Lernerfolgskontrolle + Musterlösung: je 5 geplante Seiten. Erwartungshorizont: 3 geplante Seiten. Pflicht 28 P, Bonus 4 P.')

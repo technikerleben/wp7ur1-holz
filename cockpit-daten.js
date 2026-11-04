@@ -489,6 +489,15 @@ window.HOLZ_COCKPIT = {
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
+      "id": "ML",
+      "title": "Musterlösung Lernerfolgskontrolle · PDF",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Die Arbeit im identischen Layout mit rot eingetragenen Lösungen. Vor Reihenbeginn geschützt ablegen.",
+      "path": "lehrkraft-material/pruefung/musterloesung.pdf"
+    },
+    {
       "id": "LN-L",
       "title": "Lernerfolgskontrolle Fassung 2 (Lernen) · PDF",
       "week": 6,

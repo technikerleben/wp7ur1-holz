@@ -6,6 +6,10 @@ Reihenfolgeaufgaben werden nur nummeriert. Kurze Erklärungen und Begründungen 
 
 Die frühere a/b/c-Struktur wurde durch eine kürzere Aufgabenfolge ersetzt. Belege für Mindest-, Regel- und Expertenstandard stehen im Erwartungshorizont; die geschlossenen Antwortformate belegen kein selbstständiges ausführliches Argumentieren.
 
+## Musterlösung (Regelfassung)
+
+`musterloesung.pdf/.docx` (5 Seiten): identisch mit der Arbeit, alle Lösungen rot eingetragen (Lücken, Kreuze, Kästchen, volle Punktzahl). Entsteht im selben Lauf wie die Arbeit (`generate.py`, `schuelerblatt(muster=True)`), bleibt also bei Änderungen automatisch deckungsgleich. Sinngemäße Alternativen und Punkteregeln stehen im Erwartungshorizont.
+
 ## Fassung 2: zieldifferent, Bildungsgang Lernen
 
 `lernerfolgskontrolle-lernen.pdf/.docx` (4 Seiten, 18 Punkte) und `loesung-lernen.pdf/.docx` (1 Seite). Gleiche Optik und gleicher Termin wie die Regelfassung; das Schülerblatt nennt den Förderschwerpunkt nicht, nur „Fassung 2“ in der Fußzeile. Ein Gedanke pro Satz, Wortspeicher mit Artikel, Mappenverweis bei jeder Aufgabe, nur Einfachauswahl mit zwei Antworten, keine Minuspunkte, kein Bonus. Inhalt: Mindeststandard A1 bis A8. Quelle: `generate_lernen.py` (nutzt die Layout-Bausteine aus `generate.py`). Bewertung nach Förderplan, nicht nach dem Maßstab der Regelfassung.
@@ -14,7 +18,7 @@ Die frühere a/b/c-Struktur wurde durch eine kürzere Aufgabenfolge ersetzt. Bel
 
 1. Das gesamte Paket in das vorgesehene geschützte Dateisystem kopieren und dort die Berechtigungen prüfen.
 2. Für die tatsächlich eingesetzte vertrauliche Kontrolle dort eine neue Aufgabenvariante erstellen. Diese Ausgangsfassung wurde auf ausdrücklichen Wunsch zunächst öffentlich bereitgestellt; Git-Historie, frühere Deployments und heruntergeladene Kopien können fortbestehen.
-3. Den Ordner lehrkraft-material/pruefung einschließlich ZIP, Generator und Bildern aus der öffentlichen aktuellen Bereitstellung entfernen. Die Einträge LN, EH, LN-DOCX, EH-DOCX, LN-L, LN-L-DOCX, LOES-L und PRUEFUNG-PAKET in cockpit-daten.js entfernen oder auf einen geschützten Einstieg umstellen. Hinweise in cockpit.js und der Wochenplanung aktualisieren.
+3. Den Ordner lehrkraft-material/pruefung einschließlich ZIP, Generator und Bildern aus der öffentlichen aktuellen Bereitstellung entfernen. Die Einträge LN, EH, LN-DOCX, EH-DOCX, ML, LN-L, LN-L-DOCX, LOES-L und PRUEFUNG-PAKET in cockpit-daten.js entfernen oder auf einen geschützten Einstieg umstellen. Hinweise in cockpit.js und der Wochenplanung aktualisieren.
 4. Neu veröffentlichen und prüfen, dass die bisherigen direkten Dateiadressen nicht mehr aus der aktuellen Bereitstellung ausliefern. Bloßes Entfernen der Links genügt nicht.
 
 Der aktuelle Lehrkraftbereich ist nicht zugriffsgeschützt. Die Dateien sind ausschließlich dort verlinkt und nicht Bestandteil der Schülermappe oder des Lernnavigators.
