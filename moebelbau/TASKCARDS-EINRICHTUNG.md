@@ -7,14 +7,14 @@ Die Dokumentation in TaskCards ersetzt das gedruckte Werkstattheft.
 
 ## 1. Farbcode
 
-Jede Karte bekommt eine Farbe **und** ein Zeichen am Anfang des Titels, damit sie auch ohne Farbe (Graustufen, Farbsehschwäche) erkennbar bleibt.
+Jede Karte bekommt eine Farbe **und** ein Zeichen am Anfang des Titels, damit sie auch ohne Farbe (Graustufen, Farbsehschwäche) erkennbar bleibt. Ausnahme: Lehrgangskarten haben als Titel das aktuelle Datum.
 
 | Farbe | Titel beginnt mit | Was? | Wer legt an? |
 |---|---|---|---|
 | **Lila** `#8C3CDD` | 💡 IDEE | „Mein Projekt“ und Ideen/Skizzen (Ideenblatt), neue Version = neue Karte | Kind (Startkarte legt die Lehrkraft an) |
 | **Blau** `#3C3CDD` | 📘 PROTOKOLL | ein Protokollblatt pro Werkstatteinheit: Planen, Durchführen, Reflektieren | Kind, jede Stunde |
 | **Grün** `#3CDD3C` | ✅ ERGEBNIS | Fotos des fertigen Werkstücks und Ergebnisbogen (Selbstbewertung), Rückblick | Kind, am Ende |
-| **Gelb** `#DDDD3C` | 🎓 LEHRGANG | Anmeldung zum Lehrgang (wofür, wann Zeit?), danach Foto vom Probestück | Kind |
+| **Gelb** `#DDDD3C` | Titel = aktuelles Datum | Anmeldung: gewünschter Lehrgang im Text; nach dem Lehrgang trägt die Lehrkraft das Ergebnis ein | Kind meldet an, Lehrkraft trägt Ergebnis ein |
 | **Orange** | 🏁 MEILENSTEIN | eine geschaffte Station mit Foto (Fortschritt) | Kind |
 | **Rot** (optional) | ❓ HILFE | „Ich komme nicht weiter bei …“ | Kind |
 
@@ -123,14 +123,16 @@ Materialliste:
 Was ist neu gegenüber der letzten Version? …
 ```
 
-### 🎓 LEHRGANG – [L3 Stichsäge] (gelb) – zugleich die Anmeldung
+### Lehrgang (gelb) – zugleich die Anmeldung
+Titel der Karte: **das aktuelle Datum**, z. B. `12.11.2026`
 ```
-Dafür brauche ich den Lehrgang: …
-Ich habe Zeit: …
-– Termin (schreibt die Lehrkraft als Kommentar): …
-Nach dem Lehrgang: Das habe ich gelernt (1 Satz) + Foto vom Probestück
+Gewünschter Lehrgang: L3 Stichsäge
+Dafür brauche ich ihn: …
+
+– Termin (trägt die Lehrkraft ein): …
+– Ergebnis (trägt die Lehrkraft nach dem Lehrgang ein): bestanden / noch einmal üben · Kürzel
 ```
-Nur der Eintrag der Lehrkraft im Werkstattpass gilt als Freigabe.
+Kinder können Karten in ihrer eigenen Spalte bearbeiten. Trage das Ergebnis deshalb zusätzlich in die Spalte „🔒 Werkstattpass & Freigaben“ ein. Sie bleibt der Nachweis, den niemand außer dir ändern kann.
 
 ### 🏁 MEILENSTEIN – [Station] (orange)
 ```

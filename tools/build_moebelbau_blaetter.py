@@ -253,13 +253,12 @@ def lehrgangsuebersicht():
     b._border(z, ['left'], 'C0392B', '36')
     abschnitt(b, 'So meldest du dich an')
     t = b.table(None, [[
-        '1  Gelbe Karte in deiner TaskCards-Spalte anlegen: „🎓 LEHRGANG – L3 Stichsäge“',
-        '2  Dazuschreiben: Wofür brauchst du ihn? Wann hast du Zeit?'], [
+        '1  Gelbe Karte in deiner Spalte anlegen. Titel: das heutige Datum, z. B. „12.11.2026“',
+        '2  In den Text: Welchen Lehrgang wünschst du dir (z. B. L3 Stichsäge)? Wofür brauchst du ihn?'], [
         '3  Die Lehrkraft antwortet mit einem Termin.',
-        '4  Nach dem Lehrgang: Foto vom Probestück an die Karte. Die Lehrkraft trägt deine Freigabe ein.']],
+        '4  Nach dem Lehrgang trägt die Lehrkraft das Ergebnis in deine Karte ein.']],
         [1, 1], size=9.5, pad=2)
-    b.p('Lehrgänge des anderen Wegs darfst du auch buchen. Dir fehlt ein Arbeitsgang? '
-        'Frag nach einem eigenen Lehrgang.', size=9.5)
+    b.p('Auch Lehrgänge des anderen Wegs sind buchbar. Dir fehlt einer? Frag nach.', size=9.5)
     for key, label in GRUPPEN:
         abschnitt(b, label)
         rows = [[f'{c}  {n}' + ('\nPFLICHT' if pf else ''), inh[0].upper() + inh[1:], nw[0].upper() + nw[1:]]
