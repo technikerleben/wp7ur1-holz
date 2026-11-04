@@ -419,6 +419,22 @@ def bild(path, width_mm, keep=True):
     x.paragraph_format.space_after = Pt(2)
 
 
+# Bewertungsschlüssel (Prozent der Pflichtpunkte, Punkte in 0,5er-Schritten aufgerundet)
+import math
+PFLICHT = 28
+SCHLUESSEL = [('sehr gut', 87), ('gut', 73), ('befriedigend', 59), ('ausreichend', 45), ('mangelhaft', 18), ('ungenügend', 0)]
+
+
+def ab_punkte(prozent, maxp=PFLICHT):
+    return math.ceil(prozent / 100 * maxp * 2 - 1e-9) / 2
+
+
+def pz(x):
+    return (f'{x:.1f}'.replace('.0', '').replace('.', ','))
+
+
+BESTANDEN = ab_punkte(45)   # 13 Punkte
+
 EINE = 'Nur eine Antwort ist richtig.'
 MEHR = 'Mehrere Antworten sind richtig.'
 
@@ -568,22 +584,35 @@ def schuelerblatt(muster=False):
     teil('7c', 'Ergänze einen passenden Nachteil.', 1)
     luecke([f'Bei wechselnder Feuchtigkeit arbeitet dieses Holz {GAP}.'], loes=['stark'])
 
-    spacer(14)
+    spacer(4)
     infobox([('Prüfe deine Arbeit', True),
              ('Lies deine Antworten noch einmal. Sind alle Zahlen und Lücken ausgefüllt? '
               'Hast du bei jeder Ankreuzaufgabe auf den Hinweis geachtet?', False)], color=SCHIEFER)
 
     # Auswertungsfeld für die Lehrkraft
-    t = D.add_table(rows=2, cols=2)
+    t = D.add_table(rows=3, cols=2)
     for c, lab, loes in zip(t.rows[0].cells, ('Pflichtpunkte:   ______ / 28', 'Bonus:   ______ / 4'), ('28', '4')):
         c.text = ''; fuelle(c.paragraphs[0], lab, [loes]); c.paragraphs[0].runs[0].bold = True
-    m = t.rows[1].cells[0].merge(t.rows[1].cells[1])
+    c = t.rows[1].cells[0]; c.text = ''
+    run(c.paragraphs[0], f'Bestanden (ab {pz(BESTANDEN)} P):  ', 10.5, True)
+    for i, w in enumerate(('ja', 'nein')):
+        if MUSTER and i == 0:
+            run(c.paragraphs[0], '☒', 12, True, color=ROT)
+        else:
+            run(c.paragraphs[0], '□', 12)
+        run(c.paragraphs[0], f' {w}   ', 10.5)
+    z = c.add_paragraph(); z.paragraph_format.space_after = Pt(0)
+    run(z, 'Nicht bestanden: Du übst gezielt und schreibst die Lernerfolgskontrolle noch einmal.', 8.5, color=MUTED)
+    c = t.rows[1].cells[1]; c.text = ''
+    fuelle(c.paragraphs[0], 'Note:   ________________', ['sehr gut']); c.paragraphs[0].runs[0].bold = True
+    m = t.rows[2].cells[0].merge(t.rows[2].cells[1])
     m.text = ''; run(m.paragraphs[0], 'Feedback:', 11, True)
+    for c in t.rows[1].cells:
+        c.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
     if MUSTER:
         run(m.paragraphs[0], '  Weitere sinngemäße Lösungen und Punkteregeln: siehe Erwartungshorizont.', 10, color=ROT)
-    for _ in range(2):
-        z = m.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
-        z.paragraph_format.line_spacing = Pt(24)
+    z = m.add_paragraph(); z.paragraph_format.line_spacing_rule = WD_LINE_SPACING.EXACTLY
+    z.paragraph_format.line_spacing = Pt(22)
     for row in t.rows:
         for c in row.cells:
             cell_borders(c, top=(8, SCHIEFER), bottom=(8, SCHIEFER), left=(8, SCHIEFER), right=(8, SCHIEFER))
@@ -612,8 +641,8 @@ p('Zur fünfseitigen Lernerfolgskontrolle mit 30 Minuten Arbeitszeit, 28 Pflicht
 h('Durchführung und Zeitplanung')
 p('Die fünf Seiten gemeinsam ausgeben (einseitig drucken und heften oder beidseitig; Seite 5 enthält nur die Bonusaufgabe und das Auswertungsfeld). Orientierung: Aufgaben 1 und 2 etwa 7 Minuten, 3 und 4a bis 4c etwa 8 Minuten, 4d bis 6 etwa 7 Minuten, abschließende Pflichtkontrolle etwa 3 Minuten; verbleibende 5 Minuten optional für Bonusaufgabe 7. Das Nachschlagen ist in diesen Planwerten enthalten; nach dem ersten Einsatz prüfen. Vereinbarte Nachteilsausgleiche beachten.')
 h('Bewertung')
-p('Pflichtteil und Bonus getrennt dokumentieren: Pflicht maximal 28 Punkte, Bonus maximal 4 Punkte. Auslassen der Bonusaufgabe mindert das Pflichtergebnis nicht. 32 Punkte sind kein Pflichtnenner. Die Bonusanrechnung bei einer Note wird vorab durch die Lehrkraft festgelegt; hier wird kein Notenschlüssel vorgegeben.')
-p('Sinngemäße Lückenfüllungen anerkennen. Rechtschreibfehler nicht abziehen, sofern der Fachbegriff eindeutig ist. Jeder Teil wird getrennt bewertet. Ein falsches Kreuz in 4a verhindert nicht den Punkt für eine fachlich passende Begründung in 4b. Kein automatisch abgeleiteter Notenschlüssel.')
+p('Pflichtteil und Bonus getrennt dokumentieren: Pflicht maximal 28 Punkte, Bonus maximal 4 Punkte. Auslassen der Bonusaufgabe mindert das Pflichtergebnis nicht. Die Bewertung folgt drei Schritten: erst Kompetenzstand je Bereich, dann Bestehen, dann Note (Schlüssel auf Seite 3).')
+p('Sinngemäße Lückenfüllungen anerkennen. Rechtschreibfehler nicht abziehen, sofern der Fachbegriff eindeutig ist. Jeder Teil wird getrennt bewertet. Ein falsches Kreuz in 4a verhindert nicht den Punkt für eine fachlich passende Begründung in 4b.')
 p('Einfachauswahl: Nur das richtige und kein weiteres Feld angekreuzt ergibt die genannten Punkte. Mehrfachauswahl 2c, 4c und 4d: je richtig gesetztem Kreuz 1 Punkt, je falsch gesetztem Kreuz 1 Punkt Abzug innerhalb der Teilaufgabe; mindestens 0, höchstens 2 Punkte. Nicht gesetzte Kreuze geben keine Punkte. Ein vollständig leeres Feld ergibt 0 Punkte. So wird nicht wahlloses Ankreuzen belohnt.')
 h('Lösungen zu Aufgaben 1 bis 4')
 for title, body in [
@@ -630,22 +659,55 @@ for title, body in [
     ('7 Freiwilliger Bonus A9 A10   4 Bonuspunkte', '7a Buche: 1 P. Nach Tabelle erfüllen Buche und Eiche Härte und glatte Bearbeitbarkeit; Buche ist von beiden preiswerter. 7b hart; glatt: je 1 P. 7c stark / deutlich: 1 P. Die Lückensätze werden unabhängig von 7a bewertet; kein mehrfacher Abzug eines Auswahlfehlers.')]:
     p(title, bold=True, keep=True, before=4, after=1); p(body)
 h('Was die kurze Arbeit nachweisen kann')
-p('Die geschlossene oder stark gestützte Antwortform prüft Verstehen und Anwenden mit wenig Schreibaufwand. Sie belegt keine frei formulierte ausführliche Erklärung. Die früheren 21 Teilaufgaben a bis c und deren Raster gelten für diese Fassung nicht mehr. Eine Gesamtpunktzahl wird deshalb nicht automatisch in einen Kompetenzstandard übersetzt.')
+p('Die geschlossene oder stark gestützte Antwortform prüft Verstehen und Anwenden mit wenig Schreibaufwand. Sie belegt keine frei formulierte ausführliche Erklärung. Die Gesamtpunktzahl wird deshalb nicht in einen Kompetenzstandard übersetzt; maßgeblich ist das Profil je Bereich (unten).')
 table(['Anforderung', 'Belege in dieser Arbeit'], [
     ['Mindeststandard', 'Funktionen ergänzen (1a), Ringe zählen (2a), Schritte ordnen (3a), Begriffe und Bilder zuordnen (6a)'],
     ['Regelstandard', 'Ringbreite deuten (2b), Schnittbreite erklären (3b), Härte aus Druckspur ableiten (4a/b), Trocknungsdaten erklären (5a), Beobachtung mit Verwendung verbinden (4d); optional: Eigenschaften mit Auftrag verbinden (7b/c)'],
     ['Expertenstandard', 'Folge einer Bastschädigung ableiten (1b), Grenze einer Aussage prüfen (2c), Mindestbreite gegen Ausbeute abwägen (3c), Vergleichsbedingungen prüfen (4c), Vorsorge übertragen (5b), Verwendbarkeit beurteilen (6b), optional: mehrere Anforderungen abwägen (7a)']],
     [38, 127], indent=0, keep_last=False)
 p('Die Expertenbelege sind hier kurze, gestützte Entscheidungen. Für Aussagen über selbstständiges Argumentieren zusätzlich die Mappe oder ein Gespräch heranziehen.')
+
+page_break()
+h('Bewertung in drei Schritten: Kompetenz vor Note')
+p('1  Kompetenzstand je Bereich.', bold=True, keep=True, after=1)
+p('Für jeden Bereich den Stand festhalten. Er bestimmt die Rückmeldung und die nächsten Übungsaufträge, unabhängig von der Note. Gleiche Schwelle wie beim Bestehen: unter 45 % der Bereichspunkte gilt „noch nicht“.', after=4)
+
+
+def stand(maxp):
+    s75, s45 = ab_punkte(75, maxp), ab_punkte(45, maxp)
+    return [f'{pz(s75)} bis {pz(maxp)}', f'{pz(s45)} bis {pz(s75 - 0.5)}', f'0 bis {pz(s45 - 0.5)}']
+
+
+table(['Bereich (Punkte)', 'sicher (ab 75 %)', 'teilweise (ab 45 %)', 'noch nicht'], [
+    ['Stamm, Jahresringe, Holzfeuchte, Holzfehler (je 4)'] + stand(4),
+    ['Produktionsweg und Schnittplan, Holzproben (je 6)'] + stand(6)],
+    [65, 33, 35, 32], indent=0, keep_last=False)
+p('2  Bestehen.', bold=True, keep=True, before=4, after=1)
+p(f'Bestanden ist die Lernerfolgskontrolle ab 45 % der Pflichtpunkte, also ab {pz(BESTANDEN)} von 28. Maßgeblich sind nur die Pflichtpunkte, weil sie A1 bis A8 nachweisen. Unter {pz(BESTANDEN)} Punkten wird die Lernerfolgskontrolle wiederholt: Zuerst übt die Schülerin oder der Schüler gezielt mit den Aufträgen der Bereiche „noch nicht“ (Rückmeldebogen), danach folgt die Wiederholung.', after=4)
+p('3  Note.', bold=True, keep=True, before=4, after=1)
+p('Grundlage sind die Pflichtpunkte. Bonuspunkte werden addiert, die Summe zählt höchstens bis 28 Punkte. Der Bonus kann also eine Note verbessern, aber das Bestehen nicht ersetzen.', keep=True, after=4)
+rows = []
+for i, (note, pr) in enumerate(SCHLUESSEL):
+    lo = ab_punkte(pr)
+    hi = PFLICHT if i == 0 else ab_punkte(SCHLUESSEL[i - 1][1]) - 0.5
+    rows.append([note, f'ab {pr} %' if pr else 'unter 18 %', f'{pz(lo)} bis {pz(hi)}', 'bestanden' if pr >= 45 else 'Wiederholung'])
+table(['Note', 'Anteil', 'Punkte (von 28)', 'Folge'], rows, [38, 32, 45, 50], indent=0, keep_last=False)
+p('Halbe Punkte entstehen nur in 3a. Grenzwerte sind auf halbe Punkte aufgerundet (z. B. 45 % von 28 = 12,6 → 13 Punkte).', size=9.5, italic=True)
 page_break()
 h('Individuelle Rückmeldung')
 p('Name: ____________________________  Datum: ______________')
-p('Pflichtpunkte: ______ / 28    Freiwilliger Bonus: ______ / 4', after=6)
-table(['Bereich', 'Punkte', 'Dein nächster Übungsauftrag'], [
-    ['Stamm', '____ / 4', 'A1'], ['Jahresringe', '____ / 4', 'A2'], ['Produktionsweg und Schnittplan', '____ / 6', 'A3 und A4'],
-    ['Holzproben', '____ / 6', 'A5 und A6'], ['Holzfeuchte', '____ / 4', 'A7'], ['Holzfehler', '____ / 4', 'A8'],
-    ['Freiwilliger Bonus', '____ / 4', 'A9 und A10 (optional)']], [72, 28, 65], indent=0, keep_last=False)
-h('Das gelingt dir schon')
+h('1  Das kannst du schon: dein Kompetenzstand')
+ST = '□ sicher   □ teilweise   □ noch nicht'
+table(['Bereich', 'Punkte', 'Stand', 'Übungsauftrag'], [
+    ['Stamm', '____ / 4', ST, 'A1'], ['Jahresringe', '____ / 4', ST, 'A2'], ['Produktionsweg und Schnittplan', '____ / 6', ST, 'A3 und A4'],
+    ['Holzproben', '____ / 6', ST, 'A5 und A6'], ['Holzfeuchte', '____ / 4', ST, 'A7'], ['Holzfehler', '____ / 4', ST, 'A8'],
+    ['Freiwilliger Bonus', '____ / 4', ST, 'A9 und A10']], [50, 22, 63, 30], indent=0, keep_last=False, size=9.5)
+h('2  Bestanden?')
+p(f'Pflichtpunkte: ______ / 28     Bestanden ab {pz(BESTANDEN)} Punkten:   □ ja   □ nein', after=3)
+p('Wenn nein: Übe die Bereiche mit „noch nicht“. Wiederholung am: ____________________', after=3)
+h('3  Note')
+p('Pflicht + Bonus (höchstens 28): ______ Punkte     Note: ____________________', after=3)
+h('Das gelingt dir besonders gut')
 for _ in range(2): luecke(['________________________________________________________________'])
 h('Deine nächsten Schritte')
 luecke(['Übe zuerst: ______________________________________________________',

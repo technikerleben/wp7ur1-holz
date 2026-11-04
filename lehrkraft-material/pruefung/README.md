@@ -6,6 +6,13 @@ Reihenfolgeaufgaben werden nur nummeriert. Kurze Erklärungen und Begründungen 
 
 Die frühere a/b/c-Struktur wurde durch eine kürzere Aufgabenfolge ersetzt. Belege für Mindest-, Regel- und Expertenstandard stehen im Erwartungshorizont; die geschlossenen Antwortformate belegen kein selbstständiges ausführliches Argumentieren.
 
+## Bewertung (Regelfassung)
+
+Drei Schritte, Kompetenz vor Note (Erwartungshorizont S. 3, Rückmeldebogen S. 4):
+1. Kompetenzstand je Bereich: sicher ab 75 %, teilweise ab 45 %, darunter „noch nicht“.
+2. Bestehen nur über die Pflichtpunkte: ab 45 % = 13 von 28. Darunter gezielt üben (Bereiche „noch nicht“), dann Wiederholung der Lernerfolgskontrolle.
+3. Note aus Pflicht + Bonus (höchstens 28): sehr gut ab 87 % (24,5), gut ab 73 % (20,5), befriedigend ab 59 % (17), ausreichend ab 45 % (13), mangelhaft ab 18 % (5,5), darunter ungenügend. Grenzen auf halbe Punkte aufgerundet; Schlüssel zentral in `generate.py` (`SCHLUESSEL`).
+
 ## Musterlösung (Regelfassung)
 
 `musterloesung.pdf/.docx` (5 Seiten): identisch mit der Arbeit, alle Lösungen rot eingetragen (Lücken, Kreuze, Kästchen, volle Punktzahl). Entsteht im selben Lauf wie die Arbeit (`generate.py`, `schuelerblatt(muster=True)`), bleibt also bei Änderungen automatisch deckungsgleich. Sinngemäße Alternativen und Punkteregeln stehen im Erwartungshorizont.
