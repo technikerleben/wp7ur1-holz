@@ -111,7 +111,11 @@ def document(title_footer, teacher=False):
         fp = footer.paragraphs[0]
         fp.paragraph_format.tab_stops.add_tab_stop(Mm(CONTENT_MM), WD_TAB_ALIGNMENT.RIGHT)
         run(fp, title_footer + '  |  30 Minuten Open Book  |  HBG Dortmund', 8, color=MUTED)
-        run(fp, '\tSeite ', 8, color=MUTED)
+        # absoluter rechter Tab (ptab): robust in Word und LibreOffice, unabhängig von Tabstopps
+        pt = fp.add_run(); el = OxmlElement('w:ptab')
+        el.set(qn('w:relativeTo'), 'margin'); el.set(qn('w:alignment'), 'right'); el.set(qn('w:leader'), 'none')
+        pt._r.append(el)
+        run(fp, 'Seite ', 8, color=MUTED)
         add_field(fp, 'PAGE')
         run(fp, ' von ', 8, color=MUTED)
         add_field(fp, 'NUMPAGES')

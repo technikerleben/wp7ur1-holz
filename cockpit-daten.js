@@ -489,6 +489,33 @@ window.HOLZ_COCKPIT = {
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
+      "id": "LN-L",
+      "title": "Lernerfolgskontrolle Fassung 2 (Lernen) · PDF",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Zieldifferente, sprachlich entlastete Fassung für den Bildungsgang Lernen. 4 Seiten, 18 Punkte, A1 bis A8, Wortspeicher, nur Einfachauswahl. Vor Reihenbeginn geschützt ablegen.",
+      "path": "lehrkraft-material/pruefung/lernerfolgskontrolle-lernen.pdf"
+    },
+    {
+      "id": "LN-L-DOCX",
+      "title": "Lernerfolgskontrolle Fassung 2 (Lernen) · bearbeitbare DOCX",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Separates Lehrkraftmaterial. Vor Reihenbeginn in das geschützte Dateisystem übertragen.",
+      "path": "lehrkraft-material/pruefung/lernerfolgskontrolle-lernen.docx"
+    },
+    {
+      "id": "LOES-L",
+      "title": "Lösungsblatt Fassung 2 (Lernen) · PDF",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "1 Seite: Einsatzhinweise, Änderungen gegenüber der Regelfassung, Lösungen und Bewertung nach Förderplan.",
+      "path": "lehrkraft-material/pruefung/loesung-lernen.pdf"
+    },
+    {
       "id": "PROBEARBEIT-MD",
       "title": "Probearbeit für HolzBot · Markdown",
       "week": 6,
