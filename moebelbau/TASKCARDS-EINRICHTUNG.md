@@ -14,13 +14,13 @@ Jede Karte bekommt eine Farbe **und** ein Zeichen am Anfang des Titels, damit si
 | **Lila** `#8C3CDD` | 💡 IDEE | „Mein Projekt“ und Ideen/Skizzen (Ideenblatt), neue Version = neue Karte | Kind (Startkarte legt die Lehrkraft an) |
 | **Blau** `#3C3CDD` | 📘 PROTOKOLL | ein Protokollblatt pro Werkstatteinheit: Planen, Durchführen, Reflektieren | Kind, jede Stunde |
 | **Grün** `#3CDD3C` | ✅ ERGEBNIS | Fotos des fertigen Werkstücks und Ergebnisbogen (Selbstbewertung), Rückblick | Kind, am Ende |
-| **Orange** | 🔶 LEHRGANG | gebuchter oder gemachter Lehrgang, Foto vom Probestück | Kind |
-| **Gelb** | 🏁 MEILENSTEIN | eine geschaffte Station mit Foto (Fortschritt) | Kind |
+| **Gelb** `#DDDD3C` | 🎓 LEHRGANG | Anmeldung zum Lehrgang (wofür, wann Zeit?), danach Foto vom Probestück | Kind |
+| **Orange** | 🏁 MEILENSTEIN | eine geschaffte Station mit Foto (Fortschritt) | Kind |
 | **Rot** (optional) | ❓ HILFE | „Ich komme nicht weiter bei …“ | Kind |
 
-Die Farben von Lila, Blau und Grün entsprechen den Kopfbalken der drei Arbeitsblätter. Wählt in TaskCards jeweils die ähnlichste Kartenfarbe.
+Lila, Blau, Grün und Gelb entsprechen den Kopfbalken der Arbeitsblätter bzw. der Lehrgangsübersicht. Wählt in TaskCards jeweils die ähnlichste Kartenfarbe.
 
-In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde einen blauen Eintrag? Wie viele gelbe Meilensteine sind schon da? Welche Lehrgänge (orange) wurden gemacht? Steckt irgendwo eine rote Karte?
+In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde einen blauen Eintrag? Wie viele orange Meilensteine sind schon da? Für welche Lehrgänge (gelb) hat es sich gemeldet? Steckt irgendwo eine rote Karte?
 
 > Bitte vor dem Start prüfen, welche Kartenfarben die eigene TaskCards-Version anbietet, und die Legende ggf. anpassen.
 
@@ -30,6 +30,7 @@ In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde
 - [Ideenblatt](druck/ideenblatt.pdf) → lila Karte 💡 IDEE
 - [Protokollblatt](druck/protokollblatt.pdf): eine Seite pro Werkstatteinheit (Planen, Durchführen, Reflektieren) → blaue Karte 📘 PROTOKOLL
 - [Ergebnisbogen](druck/ergebnisbogen.pdf): Selbstbewertung zu den Fotos des fertigen Werkstücks → grüne Karte ✅ ERGEBNIS
+- [Lehrgangsübersicht](druck/lehrgangsuebersicht.pdf) (Infoblatt, gelb): alle Lehrgänge, Pflicht-Maschinen, Anmeldung per gelber Karte – in die Infospalte legen
 
 Quelle: `tools/build_moebelbau_blaetter.py`
 
@@ -53,7 +54,7 @@ Spaltennamen: Vorname und Anfangsbuchstabe oder ein Kürzel – keine vollen Nam
 1. **Farbcode** – die Tabelle aus Abschnitt 1
 2. **So dokumentierst du** – Kurzanleitung (siehe Vorlage unten)
 3. **Präsentation Möbelwerkstatt** – Link auf `moebelbau/input-moebelwerkstatt.html`
-4. **Lehrgänge** – Link oder PDF: Projektübersicht, Seite 3
+4. **Lehrgänge** – [Lehrgangsübersicht](druck/lehrgangsuebersicht.pdf) (Anmeldung per gelber Karte, keine Buchungsliste nötig)
 5. **Sicherheit** – die Regeln aus der Projektübersicht, Seite 2
 6. **Ideenspeicher** und **Großprojekt Taschenregal**
 7. **So wird bewertet** – Abschnitt 5 dieser Datei
@@ -122,16 +123,16 @@ Materialliste:
 Was ist neu gegenüber der letzten Version? …
 ```
 
-### 🔶 LEHRGANG – [L3 Stichsäge] (orange)
+### 🎓 LEHRGANG – [L3 Stichsäge] (gelb) – zugleich die Anmeldung
 ```
-Gebucht für: …
-Gemacht am: …
-Das habe ich gelernt (1 Satz): …
-Foto vom Probestück anhängen.
+Dafür brauche ich den Lehrgang: …
+Ich habe Zeit: …
+– Termin (schreibt die Lehrkraft als Kommentar): …
+Nach dem Lehrgang: Das habe ich gelernt (1 Satz) + Foto vom Probestück
 ```
 Nur der Eintrag der Lehrkraft im Werkstattpass gilt als Freigabe.
 
-### 🏁 MEILENSTEIN – [Station] (gelb)
+### 🏁 MEILENSTEIN – [Station] (orange)
 ```
 Station:  Idee · Skizze · Freigabe · Zuschnitt · Montage · Schliff · Oberfläche · Test · Fertig
 Foto anhängen.
@@ -160,8 +161,8 @@ Jede Stunde:
 1. Zu Beginn: blaue Karte – Datum und dein Plan
 2. Arbeiten! Fotos machen, wenn etwas fertig ist
 3. Am Ende: blaue Karte ergänzen – geschafft? nächster Schritt?
-Station geschafft → gelbe Karte mit Foto
-Neue Idee/Skizze → lila Karte · Lehrgang → orange Karte
+Station geschafft → orange Karte mit Foto
+Neue Idee/Skizze → lila Karte · Lehrgang buchen → gelbe Karte
 Fertig → grüne Karte mit Fotos und Ergebnisbogen
 Nicht weiter? → rote Karte (und Lehrkraft fragen)
 ```
@@ -177,7 +178,7 @@ Lernerfolgskontrolle wie bisher: **Dokumentation 40 % · Werkstück 60 %**. Die 
 | D1 | 💡 Mein Projekt und Ideen/Skizze mit Maßen | 10 |
 | D2 | 📘 Protokoll: zu (fast) jeder Stunde Plan und ehrliche Einschätzung | 12 |
 | D3 | 🏁 Meilensteine mit Fotos: Fortschritt nachvollziehbar | 8 |
-| D4 | 🔶 Lehrgänge dokumentiert | 4 |
+| D4 | 🎓 Lehrgänge dokumentiert | 4 |
 | D5 | ✅ Ergebnis: Fotos, Test, Selbstbewertung, Rückblick | 6 |
 | | **Summe** | **40** |
 

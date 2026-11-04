@@ -1,7 +1,8 @@
 """Einzelblätter Möbelwerkstatt: Ideenblatt, Protokollblatt, Ergebnisbogen (je 1 Seite, DOCX + PDF).
 
 Digital gedacht: Bearbeitung in GoodNotes, Upload in TaskCards. Darum farbige Flächen erlaubt.
-Farben = TaskCards-Farbcode: Ideen lila #8C3CDD · Protokoll blau #3C3CDD · Ergebnis grün #3CDD3C
+Farben = TaskCards-Farbcode: Ideen lila #8C3CDD · Protokoll blau #3C3CDD · Ergebnis grün #3CDD3C ·
+Lehrgänge gelb #DDDD3C
 Aufruf: python3 tools/build_moebelbau_blaetter.py
 """
 import sys
@@ -10,9 +11,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from docx.shared import Pt, Mm, RGBColor  # noqa: E402
 from docx.oxml import OxmlElement  # noqa: E402
 from docx.oxml.ns import qn  # noqa: E402
-from build_moebelbau_druck import new_doc, Builder, to_pdf, OUT  # noqa: E402
+from build_moebelbau_druck import new_doc, Builder, to_pdf, OUT, LEHRGAENGE, GRUPPEN  # noqa: E402
 
-LILA, BLAU, GRUEN = '8C3CDD', '3C3CDD', '3CDD3C'
+LILA, BLAU, GRUEN, GELB = '8C3CDD', '3C3CDD', '3CDD3C', 'DDDD3C'
+HELL = (GRUEN, GELB)  # helle Farben: dunkle Schrift für Kontrast
 
 
 def mix(hexcol, f):
@@ -59,7 +61,7 @@ class FarbBuilder(Builder):
         self.farbe = farbe
         self.hell = mix(farbe, 0.16)
         self.linie = mix(farbe, 0.45)
-        self.text = dark(farbe) if farbe == GRUEN else farbe
+        self.text = dark(farbe, 0.45 if farbe == GELB else 0.62) if farbe in HELL else farbe
 
     def table(self, headers, rows, *a, first_col=False, **k):
         t = super().table(headers, rows, *a, **k)
@@ -95,7 +97,7 @@ def kopf(b, marke, titel, hinweis):
     c = t.rows[0].cells[0]
     shade_cell(c, b.farbe)
     q = c.paragraphs[0]
-    weiss = 'FFFFFF' if b.farbe != GRUEN else '143D14'  # helles Grün: dunkle Schrift für Kontrast
+    weiss = {GRUEN: '143D14', GELB: '3D3D0A'}.get(b.farbe, 'FFFFFF')
     r = q.add_run(marke + '\n'); r.bold = True; r.font.size = Pt(10)
     r.font.color.rgb = RGBColor.from_string(weiss)
     r = q.add_run(titel); r.bold = True; r.font.size = Pt(22)
@@ -236,7 +238,59 @@ def ergebnisbogen():
     return path
 
 
+# ---------------------------------------------------------- Lehrgangsübersicht
+def lehrgangsuebersicht():
+    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Lehrgänge')
+    b = FarbBuilder(D, GELB)
+    kopf_info(b, 'LEHRGÄNGE', 'Diese Lehrgänge kannst du buchen',
+              'Ein Lehrgang ist eine kurze Einführung bei der Lehrkraft: 10–15 Minuten, höchstens '
+              '4 Personen, in der Arbeitsphase. Du buchst ihn, wenn dein Projekt ihn braucht.')
+    z = b.p(' Maschinen erst nach dem Lehrgang: Stichsäge, Handschleifgerät, Tellerschleifer, '
+            'Standbohrmaschine, Akkuschrauber und Dekupiersäge benutzt du erst, wenn die Lehrkraft '
+            'den Lehrgang bestätigt hat.', bold_lead='PFLICHT', size=10)
+    z.runs[0].font.color.rgb = RGBColor.from_string('B03A2E')
+    shade_par(z, 'FDECEA')
+    b._border(z, ['left'], 'C0392B', '36')
+    abschnitt(b, 'So meldest du dich an')
+    t = b.table(None, [[
+        '1  Gelbe Karte in deiner TaskCards-Spalte anlegen: „🎓 LEHRGANG – L3 Stichsäge“',
+        '2  Dazuschreiben: Wofür brauchst du ihn? Wann hast du Zeit?'], [
+        '3  Die Lehrkraft antwortet mit einem Termin.',
+        '4  Nach dem Lehrgang: Foto vom Probestück an die Karte. Die Lehrkraft trägt deine Freigabe ein.']],
+        [1, 1], size=9.5, pad=2)
+    b.p('Lehrgänge des anderen Wegs darfst du auch buchen. Dir fehlt ein Arbeitsgang? '
+        'Frag nach einem eigenen Lehrgang.', size=9.5)
+    for key, label in GRUPPEN:
+        abschnitt(b, label)
+        rows = [[f'{c}  {n}' + ('\nPFLICHT' if pf else ''), inh[0].upper() + inh[1:], nw[0].upper() + nw[1:]]
+                for c, n, g, pf, inh, nw in LEHRGAENGE if g == key]
+        t = b.table(['Lehrgang', 'Das lernst du', 'Das zeigst du am Ende'], rows,
+                    [1.6, 3.55, 1.85], size=8, pad=1.0, first_col=True)
+        b.bold_cells(t)
+    path = OUT / 'lehrgangsuebersicht.docx'
+    D.save(path)
+    return path
+
+
+def kopf_info(b, marke, titel, text):
+    """Kopfbalken ohne Name/Datum (Infoblatt)."""
+    t = b.D.add_table(rows=1, cols=1)
+    c = t.rows[0].cells[0]
+    shade_cell(c, b.farbe)
+    q = c.paragraphs[0]
+    farbe = {GRUEN: '143D14', GELB: '3D3D0A'}.get(b.farbe, 'FFFFFF')
+    r = q.add_run(marke + '\n'); r.bold = True; r.font.size = Pt(10)
+    r.font.color.rgb = RGBColor.from_string(farbe)
+    r = q.add_run(titel); r.bold = True; r.font.size = Pt(22)
+    r.font.color.rgb = RGBColor.from_string(farbe)
+    q.paragraph_format.space_before = Pt(6); q.paragraph_format.space_after = Pt(6)
+    q.paragraph_format.left_indent = Mm(2)
+    table_borders(t, b.farbe)
+    sp = b.p(); sp.paragraph_format.line_spacing = Pt(4); sp.paragraph_format.space_after = Pt(4)
+    b.p(text, size=10.5)
+
+
 if __name__ == '__main__':
-    for path in [ideenblatt(), protokollblatt(), ergebnisbogen()]:
+    for path in [ideenblatt(), protokollblatt(), ergebnisbogen(), lehrgangsuebersicht()]:
         to_pdf(path)
         print('erstellt:', path.name, '+ PDF')
