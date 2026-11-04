@@ -24,6 +24,15 @@ In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde
 
 ---
 
+### Arbeitsblätter dazu (je 1 Seite, auf Papier oder am iPad ausfüllen, dann fotografieren)
+- [Ideenblatt](druck/ideenblatt.pdf) → grüne Karte ✏️ SKIZZE
+- [Protokollblatt](druck/protokollblatt.pdf): eine Seite pro Werkstatteinheit (Planen, Durchführen, Reflektieren) → blaue Karte 📘 PROTOKOLL
+- [Ergebnisbogen](druck/ergebnisbogen.pdf): Selbstbewertung zu den Fotos des fertigen Werkstücks → gelbe Karte ⭐ PROJEKT
+
+Quelle: `tools/build_moebelbau_blaetter.py`
+
+---
+
 ## 2. Aufbau der Pinnwand
 
 Darstellung: **Pinnwand** (Spalten). In den Sicherheitseinstellungen **„Private Pinnwand“** aktivieren.
