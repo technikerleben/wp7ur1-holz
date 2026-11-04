@@ -11,23 +11,25 @@ Jede Karte bekommt eine Farbe **und** ein Zeichen am Anfang des Titels, damit si
 
 | Farbe | Titel beginnt mit | Was? | Wer legt an? |
 |---|---|---|---|
-| **Blau** | 📘 PROTOKOLL | Ein Eintrag pro Stunde: Datum, Plan, Einschätzung am Ende | Kind, jede Stunde |
-| **Grün** | ✏️ SKIZZE | Foto der Skizze mit Maßen, Materialliste; neue Version = neue Karte | Kind |
+| **Lila** `#8C3CDD` | 💡 IDEE | „Mein Projekt“ und Ideen/Skizzen (Ideenblatt), neue Version = neue Karte | Kind (Startkarte legt die Lehrkraft an) |
+| **Blau** `#3C3CDD` | 📘 PROTOKOLL | ein Protokollblatt pro Werkstatteinheit: Planen, Durchführen, Reflektieren | Kind, jede Stunde |
+| **Grün** `#3CDD3C` | ✅ ERGEBNIS | Fotos des fertigen Werkstücks und Ergebnisbogen (Selbstbewertung), Rückblick | Kind, am Ende |
 | **Orange** | 🔶 LEHRGANG | gebuchter oder gemachter Lehrgang, Foto vom Probestück | Kind |
-| **Lila** | 🏁 MEILENSTEIN | eine geschaffte Station mit Foto (Fortschritt) | Kind |
-| **Gelb** | ⭐ PROJEKT | „Mein Projekt“ am Anfang, „Rückblick“ am Ende | Lehrkraft legt an, Kind füllt aus |
+| **Gelb** | 🏁 MEILENSTEIN | eine geschaffte Station mit Foto (Fortschritt) | Kind |
 | **Rot** (optional) | ❓ HILFE | „Ich komme nicht weiter bei …“ | Kind |
 
-In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde einen blauen Eintrag? Wie viele lila Meilensteine sind schon da? Welche Lehrgänge (orange) wurden gemacht? Steckt irgendwo eine rote Karte?
+Die Farben von Lila, Blau und Grün entsprechen den Kopfbalken der drei Arbeitsblätter. Wählt in TaskCards jeweils die ähnlichste Kartenfarbe.
+
+In der Spalte eines Kindes sieht man so auf einen Blick: Gibt es zu jeder Stunde einen blauen Eintrag? Wie viele gelbe Meilensteine sind schon da? Welche Lehrgänge (orange) wurden gemacht? Steckt irgendwo eine rote Karte?
 
 > Bitte vor dem Start prüfen, welche Kartenfarben die eigene TaskCards-Version anbietet, und die Legende ggf. anpassen.
 
 ---
 
-### Arbeitsblätter dazu (je 1 Seite, auf Papier oder am iPad ausfüllen, dann fotografieren)
-- [Ideenblatt](druck/ideenblatt.pdf) → grüne Karte ✏️ SKIZZE
+### Arbeitsblätter dazu (je 1 Seite, digital in GoodNotes ausfüllen, dann als PDF oder Bild in TaskCards hochladen)
+- [Ideenblatt](druck/ideenblatt.pdf) → lila Karte 💡 IDEE
 - [Protokollblatt](druck/protokollblatt.pdf): eine Seite pro Werkstatteinheit (Planen, Durchführen, Reflektieren) → blaue Karte 📘 PROTOKOLL
-- [Ergebnisbogen](druck/ergebnisbogen.pdf): Selbstbewertung zu den Fotos des fertigen Werkstücks → gelbe Karte ⭐ PROJEKT
+- [Ergebnisbogen](druck/ergebnisbogen.pdf): Selbstbewertung zu den Fotos des fertigen Werkstücks → grüne Karte ✅ ERGEBNIS
 
 Quelle: `tools/build_moebelbau_blaetter.py`
 
@@ -71,7 +73,7 @@ Dazu eine Karte **„Freigaben“** mit den Namen und Daten der Planungsfreigabe
 1. **Pinnwand anlegen**: neue Pinnwand, Darstellung „Pinnwand“, Titel z. B. „Möbelwerkstatt 7x“. Unter „Sicherheit“ → „Private Pinnwand“.
 2. **Spalten anlegen**: „ℹ️ Start & Infos“, „🔒 Werkstattpass & Freigaben“, dann eine Spalte pro Kind.
 3. **Infos füllen**: Legende, Anleitung, Links und Musterkarten in die Infospalte.
-4. **Startkarte pro Kind**: In jede Kinderspalte eine gelbe Karte **„⭐ PROJEKT – Mein Projekt“** (Vorlage unten).
+4. **Startkarte pro Kind**: In jede Kinderspalte eine lila Karte **„💡 IDEE – Mein Projekt“** (Vorlage unten).
 5. **Berechtigung pro Kind** (Teilen bzw. Berechtigungen → Plus):
    - *Allgemein*: Name des Kindes, **Passwort** vergeben (z. B. ein einfacher Code; Liste nur bei dir)
    - *Inhalte erlauben*: **„Anhänge erlauben“** einschalten (für Fotos)
@@ -89,7 +91,7 @@ Wichtig:
 
 ## 4. Kartenvorlagen (zum Kopieren)
 
-### ⭐ PROJEKT – Mein Projekt (gelb, Lehrkraft legt an)
+### 💡 IDEE – Mein Projekt (lila, Lehrkraft legt an)
 ```
 Ich baue: …
 Für (Person/Ort): …
@@ -100,6 +102,7 @@ Mein Prüfkriterium: Mein Möbel ist gut, wenn …
 ```
 
 ### 📘 PROTOKOLL – [Datum] (blau, jede Stunde)
+Protokollblatt aus GoodNotes anhängen, oder kurz direkt in die Karte:
 ```
 Mein Plan für heute:
 – …
@@ -110,9 +113,9 @@ Warum / nächster Schritt: …
 ```
 Zu Beginn der Stunde anlegen (Plan), am Ende ergänzen (Einschätzung). Foto vom Arbeitsstand ist erwünscht, aber freiwillig.
 
-### ✏️ SKIZZE – [Was?] Version [1] (grün)
+### 💡 IDEE – [Was?] Version [1] (lila)
 ```
-Foto der Skizze anhängen – Maße in mm müssen lesbar sein.
+Ideenblatt aus GoodNotes anhängen – Maße in mm müssen lesbar sein.
 Materialliste:
 – … Stück … (Länge … mm)
 – …
@@ -128,15 +131,18 @@ Foto vom Probestück anhängen.
 ```
 Nur der Eintrag der Lehrkraft im Werkstattpass gilt als Freigabe.
 
-### 🏁 MEILENSTEIN – [Station] (lila)
+### 🏁 MEILENSTEIN – [Station] (gelb)
 ```
 Station:  Idee · Skizze · Freigabe · Zuschnitt · Montage · Schliff · Oberfläche · Test · Fertig
 Foto anhängen.
 Das war schwierig / darauf bin ich stolz: …
 ```
 
-### ⭐ PROJEKT – Rückblick (gelb, am Ende)
+### ✅ ERGEBNIS – Mein fertiges Projekt (grün, am Ende)
 ```
+Fotos anhängen: von vorn · von der Seite · Detail einer Verbindung · im Einsatz
+Ergebnisbogen aus GoodNotes anhängen.
+
 1. Mein Test: Hat mein Möbel mein Prüfkriterium erfüllt?  ja / teilweise / nein
 2. Das habe ich verbessert: …
 3. Darauf bin ich stolz / das mache ich nächstes Mal anders: …
@@ -154,8 +160,9 @@ Jede Stunde:
 1. Zu Beginn: blaue Karte – Datum und dein Plan
 2. Arbeiten! Fotos machen, wenn etwas fertig ist
 3. Am Ende: blaue Karte ergänzen – geschafft? nächster Schritt?
-Station geschafft → lila Karte mit Foto
-Neue Skizze → grüne Karte · Lehrgang → orange Karte
+Station geschafft → gelbe Karte mit Foto
+Neue Idee/Skizze → lila Karte · Lehrgang → orange Karte
+Fertig → grüne Karte mit Fotos und Ergebnisbogen
 Nicht weiter? → rote Karte (und Lehrkraft fragen)
 ```
 
@@ -167,11 +174,11 @@ Lernerfolgskontrolle wie bisher: **Dokumentation 40 % · Werkstück 60 %**. Die 
 
 | | Dokumentation in TaskCards | Punkte |
 |---|---|---|
-| D1 | ⭐ Mein Projekt und ✏️ Skizze mit Maßen und Materialliste | 10 |
+| D1 | 💡 Mein Projekt und Ideen/Skizze mit Maßen | 10 |
 | D2 | 📘 Protokoll: zu (fast) jeder Stunde Plan und ehrliche Einschätzung | 12 |
 | D3 | 🏁 Meilensteine mit Fotos: Fortschritt nachvollziehbar | 8 |
 | D4 | 🔶 Lehrgänge dokumentiert | 4 |
-| D5 | ⭐ Rückblick: Test, Verbesserung, eigene Einschätzung | 6 |
+| D5 | ✅ Ergebnis: Fotos, Test, Selbstbewertung, Rückblick | 6 |
 | | **Summe** | **40** |
 
 Werkstück (60 Punkte): Kriterien B1–B6 wie im Erwartungshorizont (`druck/werkstattheft-erwartungshorizont.pdf`).
