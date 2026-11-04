@@ -84,6 +84,8 @@ Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlich
 
 ## Werkstattheft und Lernerfolgskontrolle
 
+> **Neu:** Die Dokumentation läuft über **eine TaskCards-Pinnwand** mit einer privaten Spalte pro Kind und Farbcode für Protokoll, Skizze, Lehrgang und Meilenstein – siehe [TASKCARDS-EINRICHTUNG.md](TASKCARDS-EINRICHTUNG.md). Das gedruckte Werkstattheft bleibt als Papier-Alternative erhalten.
+
 Das **Werkstattheft** (A4, 15 Seiten, ersetzt den früheren Projektbogen) ist Planungsinstrument, Projektdokumentation und – zusammen mit dem Werkstück – die **zweite Klassenarbeit** (Heft 40 %, Werkstück 60 %).
 
 - **SRL-Struktur jeder Stunde:** ein **Stundenprotokoll** als eine Tabelle für alle 12 Stunden (+2 Reservezeilen): Datum, Plan für die Stunde in Stichworten (*Planen*), am Ende „geschafft? ja/teils/nein“ mit kurzer Einschätzung und nächstem Schritt (*Reflektieren*). Die *Durchführung* wird auf den Arbeitsseiten dokumentiert.
