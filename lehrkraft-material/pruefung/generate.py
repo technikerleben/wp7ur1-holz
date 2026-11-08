@@ -685,7 +685,7 @@ table(['Bereich (Punkte)', 'sicher (ab 75 %)', 'teilweise (ab 45 %)', 'noch nich
 p('2  Bestehen.', bold=True, keep=True, before=4, after=1)
 p(f'Bestanden ist die Lernerfolgskontrolle ab 45 % der Pflichtpunkte, also ab {pz(BESTANDEN)} von 28. Maßgeblich sind nur die Pflichtpunkte, weil sie A1 bis A8 nachweisen. Unter {pz(BESTANDEN)} Punkten wird die Lernerfolgskontrolle wiederholt: Zuerst übt die Schülerin oder der Schüler gezielt mit den Aufträgen der Bereiche „noch nicht“ (Rückmeldebogen), danach folgt die Wiederholung.', after=4)
 p('3  Note.', bold=True, keep=True, before=4, after=1)
-p('Grundlage sind die Pflichtpunkte. Bonuspunkte werden addiert, die Summe zählt höchstens bis 28 Punkte. Der Bonus kann also eine Note verbessern, aber das Bestehen nicht ersetzen.', keep=True, after=4)
+p('Grundlage sind die Pflichtpunkte. Bonuspunkte werden addiert, die Summe zählt höchstens bis 28 Punkte. Der Bonus kann also eine Note verbessern, aber das Bestehen nicht ersetzen: Unter 13 Pflichtpunkten ist die Note höchstens mangelhaft. Zum Auswerten und für die PDF-Rückmeldung: auswertung.html.', keep=True, after=4)
 rows = []
 for i, (note, pr) in enumerate(SCHLUESSEL):
     lo = ab_punkte(pr)

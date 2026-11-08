@@ -489,6 +489,15 @@ window.HOLZ_COCKPIT = {
       "path": "lehrkraft-material/pruefung/lernerfolgskontrolle.pdf"
     },
     {
+      "id": "AUSWERTUNG",
+      "title": "Auswertungs-App Lernerfolgskontrolle",
+      "week": 6,
+      "kind": "Lehrkraft",
+      "status": "Vorhanden",
+      "desc": "Punkte je Teilaufgabe eintragen, Kompetenzstand, Bestehen und Note berechnen, zweiseitige Rückmeldung als PDF. Daten nur im Browser.",
+      "path": "lehrkraft-material/pruefung/auswertung.html"
+    },
+    {
       "id": "ML",
       "title": "Musterlösung Lernerfolgskontrolle · PDF",
       "week": 6,

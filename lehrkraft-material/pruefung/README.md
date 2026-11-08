@@ -13,6 +13,10 @@ Drei Schritte, Kompetenz vor Note (Erwartungshorizont S. 3, Rückmeldebogen S. 4
 2. Bestehen nur über die Pflichtpunkte: ab 45 % = 13 von 28. Darunter gezielt üben (Bereiche „noch nicht“), dann Wiederholung der Lernerfolgskontrolle.
 3. Note aus Pflicht + Bonus (höchstens 28): sehr gut ab 87 % (24,5), gut ab 73 % (20,5), befriedigend ab 59 % (17), ausreichend ab 45 % (13), mangelhaft ab 18 % (5,5), darunter ungenügend. Grenzen auf halbe Punkte aufgerundet; Schlüssel zentral in `generate.py` (`SCHLUESSEL`).
 
+## Auswertungs-App
+
+`auswertung.html` (eine Datei, offline): Punkte je Teilaufgabe antippen, persönliche Rückmeldung und interne Notiz eintragen. Die App zeigt Kompetenzstand je Bereich, Bestehen und Note und gibt eine zweiseitige Rückmeldung über den Druckdialog als PDF aus (einzeln oder für alle vollständig bewerteten Personen). Daten liegen nur im Browserspeicher (localStorage) des Geräts; Sicherung als JSON und CSV-Export sind eingebaut. Aufbau nach `apps/auswertung-lek1` aus d5ur1-wunschbriefe. Unter 13 Pflichtpunkten ist die Note höchstens mangelhaft.
+
 ## Musterlösung (Regelfassung)
 
 `musterloesung.pdf/.docx` (5 Seiten): identisch mit der Arbeit, alle Lösungen rot eingetragen (Lücken, Kreuze, Kästchen, volle Punktzahl). Entsteht im selben Lauf wie die Arbeit (`generate.py`, `schuelerblatt(muster=True)`), bleibt also bei Änderungen automatisch deckungsgleich. Sinngemäße Alternativen und Punkteregeln stehen im Erwartungshorizont.
@@ -25,7 +29,7 @@ Drei Schritte, Kompetenz vor Note (Erwartungshorizont S. 3, Rückmeldebogen S. 4
 
 1. Das gesamte Paket in das vorgesehene geschützte Dateisystem kopieren und dort die Berechtigungen prüfen.
 2. Für die tatsächlich eingesetzte vertrauliche Kontrolle dort eine neue Aufgabenvariante erstellen. Diese Ausgangsfassung wurde auf ausdrücklichen Wunsch zunächst öffentlich bereitgestellt; Git-Historie, frühere Deployments und heruntergeladene Kopien können fortbestehen.
-3. Den Ordner lehrkraft-material/pruefung einschließlich ZIP, Generator und Bildern aus der öffentlichen aktuellen Bereitstellung entfernen. Die Einträge LN, EH, LN-DOCX, EH-DOCX, ML, LN-L, LN-L-DOCX, LOES-L und PRUEFUNG-PAKET in cockpit-daten.js entfernen oder auf einen geschützten Einstieg umstellen. Hinweise in cockpit.js und der Wochenplanung aktualisieren.
+3. Den Ordner lehrkraft-material/pruefung einschließlich ZIP, Generator und Bildern aus der öffentlichen aktuellen Bereitstellung entfernen. Die Einträge LN, EH, LN-DOCX, EH-DOCX, ML, AUSWERTUNG, LN-L, LN-L-DOCX, LOES-L und PRUEFUNG-PAKET in cockpit-daten.js entfernen oder auf einen geschützten Einstieg umstellen. Hinweise in cockpit.js und der Wochenplanung aktualisieren.
 4. Neu veröffentlichen und prüfen, dass die bisherigen direkten Dateiadressen nicht mehr aus der aktuellen Bereitstellung ausliefern. Bloßes Entfernen der Links genügt nicht.
 
 Der aktuelle Lehrkraftbereich ist nicht zugriffsgeschützt. Die Dateien sind ausschließlich dort verlinkt und nicht Bestandteil der Schülermappe oder des Lernnavigators.
