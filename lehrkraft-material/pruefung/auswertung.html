@@ -255,7 +255,7 @@ dialog::backdrop{background:rgba(20,35,45,.4)}
           <button class="btn secondary" id="copyFeedback">Rückmeldung kopieren</button>
           <button class="btn danger" id="deleteStudent">Eintrag löschen</button>
         </div>
-        <div class="notice">PDF: Im Druckdialog „Als PDF speichern“ wählen, Format A4, Ränder „Standard“, Hintergrundgrafiken an. Die Rückmeldung hat zwei Seiten (Vorderseite: Kompetenzen und Note; Rückseite: alle Teilaufgaben und Notenschlüssel). Nicht bewertete Teilaufgaben zählen als 0 Punkte und werden in der Liste als „offen“ markiert.</div>
+        <div class="notice">Lücken (1a, 3b, 4b, 5a, 5b, 7b, 7c): 1 Punkt je richtigem Begriff, 0,5 Punkte je Begriff, der im Ansatz richtig ist (z. B. „Feuchtigkeit“ statt „Wasser“, „Sägemehl“ statt „Späne“). Rechtschreibung wird nicht bewertet. PDF: Im Druckdialog „Als PDF speichern“ wählen, Format A4, Ränder „Standard“, Hintergrundgrafiken an. Die Rückmeldung hat zwei Seiten (Vorderseite: Kompetenzen und Note; Rückseite: alle Teilaufgaben und Notenschlüssel). Nicht bewertete Teilaufgaben zählen als 0 Punkte und werden in der Liste als „offen“ markiert.</div>
       </div>
     </div>
   </section>
@@ -286,7 +286,7 @@ const STAND=[{id:"sicher",pct:75,label:"sicher",cls:"st-sicher"},{id:"teil",pct:
 /* Bereiche mit Teilaufgaben. step = kleinste Punkteinheit, opts = erlaubte Werte. */
 const AREAS=[
  {id:"stamm",nr:1,title:"Aufbau des Stamms",auftrag:"A1",tasks:[
-   {id:"1a",text:"Kambium und Splintholz ergänzen",max:2,step:1},
+   {id:"1a",text:"Kambium und Splintholz ergänzen",max:2,gap:true},
    {id:"1b",text:"Folge einer Bastschädigung (Einfachauswahl)",max:2,opts:[0,2]}],
   can:{sicher:"Du kennst die Teile des Stamms und ihre Aufgaben. Du kannst sogar ableiten, was passiert, wenn ein Teil beschädigt ist.",
        teil:"Du kennst schon einige Teile des Stamms und ihre Aufgaben.",
@@ -302,7 +302,7 @@ const AREAS=[
   next:"Übe mit A2: Zähle Jahresringe von innen nach außen. Überlege, welche Ursachen ein schmaler Ring haben kann (Wasser, Licht, Temperatur, Konkurrenz)."},
  {id:"weg",nr:3,title:"Produktionsweg und Schnittplan",auftrag:"A3 und A4",tasks:[
    {id:"3a",text:"Sechs Schritte ordnen (je Zahl 0,5 P)",max:3,step:.5},
-   {id:"3b",text:"Späne durch Schnittbreite",max:1,step:1},
+   {id:"3b",text:"Späne durch Schnittbreite (z. B. „Sägemehl“: 0,5)",max:1,gap:true},
    {id:"3c",text:"Plan B wählen (1 P) und 14 cm (1 P)",max:2,step:1}],
   can:{sicher:"Du kennst den Weg vom Baum zum Brett. Du wählst einen Schnittplan passend zu den Anforderungen und nicht nur nach der Ausbeute.",
        teil:"Du kennst Teile des Produktionswegs. Bei Schnittbreite und Schnittplan bist du noch unsicher.",
@@ -310,7 +310,7 @@ const AREAS=[
   next:"Übe mit A3 und A4: Lege die Stationen vom Baum zum Schnittholz in die richtige Reihenfolge. Vergleiche im Schnittplan-Simulator Brettbreite und Ausbeute."},
  {id:"proben",nr:4,title:"Holzproben vergleichen",auftrag:"A5 und A6",tasks:[
    {id:"4a",text:"Härtere Probe (Q)",max:1,step:1},
-   {id:"4b",text:"„kaum“ eine Spur",max:1,step:1},
+   {id:"4b",text:"„kaum“ eine Spur",max:1,gap:true},
    {id:"4c",text:"Vergleichsbedingungen (Mehrfachauswahl)",max:2,step:1},
    {id:"4d",text:"Eigenschaft und Verwendung (Mehrfachauswahl)",max:2,step:1}],
   can:{sicher:"Du kannst Holzproben fair vergleichen und Eigenschaften mit einer passenden Verwendung verbinden.",
@@ -318,8 +318,8 @@ const AREAS=[
        noch:"Das Vergleichen von Holzproben gelingt noch nicht sicher."},
   next:"Übe mit A5 und A6: Mache den Münztest noch einmal. Schreibe auf, was gleich bleiben muss, damit der Vergleich fair ist (Größe, Feuchtigkeit, Druck)."},
  {id:"feuchte",nr:5,title:"Holz arbeitet",auftrag:"A7",tasks:[
-   {id:"5a",text:"Wasser / Schwinden",max:2,step:1},
-   {id:"5b",text:"quellen / Spiel lassen",max:2,step:1}],
+   {id:"5a",text:"Wasser / Schwinden (z. B. „Feuchtigkeit“: 0,5)",max:2,gap:true},
+   {id:"5b",text:"quellen / Spiel lassen",max:2,gap:true}],
   can:{sicher:"Du erklärst Quellen und Schwinden und planst beim Bauen Platz für die Bewegung des Holzes ein.",
        teil:"Du weißt, dass Holz Wasser abgibt oder aufnimmt. Die Folgen für das Bauen sind noch unsicher.",
        noch:"Quellen und Schwinden sind noch nicht sicher."},
@@ -333,8 +333,8 @@ const AREAS=[
   next:"Übe mit A8: Suche an echten Brettern Äste, Risse und Verwerfungen. Entscheide jeweils, wofür das Brett noch geeignet ist."},
  {id:"bonus",nr:7,title:"Produktkarte (freiwilliger Bonus)",auftrag:"A9 und A10",bonus:true,tasks:[
    {id:"7a",text:"Buche wählen",max:1,step:1},
-   {id:"7b",text:"hart / glatt",max:2,step:1},
-   {id:"7c",text:"stark (Nachteil)",max:1,step:1}],
+   {id:"7b",text:"hart / glatt",max:2,gap:true},
+   {id:"7c",text:"stark (Nachteil)",max:1,gap:true}],
   can:{sicher:"Zusätzlich wählst du eine passende Holzart für einen Kundenauftrag und begründest deine Wahl.",
        teil:"Zusätzlich hast du die Bonusaufgabe zur Produktkarte teilweise gelöst.",
        noch:""},
@@ -343,7 +343,8 @@ const AREAS=[
 const PFLICHT_AREAS=AREAS.filter(a=>!a.bonus);
 const ALL_TASKS=AREAS.flatMap(a=>a.tasks.map(t=>({...t,area:a.id,bonus:!!a.bonus})));
 const areaMax=a=>a.tasks.reduce((s,t)=>s+t.max,0);
-const optsOf=t=>t.opts||Array.from({length:Math.round(t.max/t.step)+1},(_,i)=>+(i*t.step).toFixed(1));
+const stepOf=t=>t.gap?.5:(t.step||1);
+const optsOf=t=>t.opts||Array.from({length:Math.round(t.max/stepOf(t))+1},(_,i)=>+(i*stepOf(t)).toFixed(1));
 const half=x=>Math.ceil(x*2-1e-9)/2;
 const abPunkte=(pct,max=PFLICHT)=>half(pct/100*max);
 const PASS_POINTS=abPunkte(PASS_PCT);
@@ -442,7 +443,7 @@ function renderTasks(){
       '<div class="task-tools">'+badge+'<button class="btn secondary small" data-fill="'+a.id+'" data-v="max" type="button">alles richtig</button><button class="btn secondary small" data-fill="'+a.id+'" data-v="0" type="button">alles 0</button></div></div>'+
       a.tasks.map(t=>{
         const v=s.scores[t.id];
-        return '<div class="row"><div class="row-label"><b>'+t.id+'</b>'+esc(t.text)+'<small>max. '+fmt(t.max)+' P</small></div><div class="pts" role="group" aria-label="Punkte '+t.id+'">'+
+        return '<div class="row"><div class="row-label"><b>'+t.id+'</b>'+esc(t.text)+'<small>max. '+fmt(t.max)+' P'+(t.gap?' · Lücke: 0,5 je Begriff, der im Ansatz richtig ist':'')+'</small></div><div class="pts" role="group" aria-label="Punkte '+t.id+'">'+
           optsOf(t).map(o=>'<button type="button" class="pt'+(v===o?' sel'+(o===t.max?' full':o===0?' zero':''):'')+'" aria-pressed="'+(v===o)+'" data-t="'+t.id+'" data-v="'+o+'">'+fmt(o)+'</button>').join("")+
         '</div></div>';
       }).join("")+'</div>';

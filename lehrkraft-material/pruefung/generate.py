@@ -642,19 +642,19 @@ h('Durchführung und Zeitplanung')
 p('Die fünf Seiten gemeinsam ausgeben (einseitig drucken und heften oder beidseitig; Seite 5 enthält nur die Bonusaufgabe und das Auswertungsfeld). Orientierung: Aufgaben 1 und 2 etwa 7 Minuten, 3 und 4a bis 4c etwa 8 Minuten, 4d bis 6 etwa 7 Minuten, abschließende Pflichtkontrolle etwa 3 Minuten; verbleibende 5 Minuten optional für Bonusaufgabe 7. Das Nachschlagen ist in diesen Planwerten enthalten; nach dem ersten Einsatz prüfen. Vereinbarte Nachteilsausgleiche beachten.')
 h('Bewertung')
 p('Pflichtteil und Bonus getrennt dokumentieren: Pflicht maximal 28 Punkte, Bonus maximal 4 Punkte. Auslassen der Bonusaufgabe mindert das Pflichtergebnis nicht. Die Bewertung folgt drei Schritten: erst Kompetenzstand je Bereich, dann Bestehen, dann Note (Schlüssel auf Seite 3).')
-p('Sinngemäße Lückenfüllungen anerkennen. Rechtschreibfehler nicht abziehen, sofern der Fachbegriff eindeutig ist. Jeder Teil wird getrennt bewertet. Ein falsches Kreuz in 4a verhindert nicht den Punkt für eine fachlich passende Begründung in 4b.')
+p('Lücken: 1 Punkt je richtigem Fachbegriff, 0,5 Punkte je Begriff, der im Ansatz richtig, aber nicht ganz treffend ist (z. B. „Feuchtigkeit“ statt „Wasser“, „Sägemehl“ statt „Späne“). Gleichwertige Begriffe (z. B. „Sägespäne“) erhalten die volle Punktzahl. Rechtschreibfehler nicht abziehen, sofern der Fachbegriff eindeutig ist. Jeder Teil wird getrennt bewertet. Ein falsches Kreuz in 4a verhindert nicht den Punkt für eine fachlich passende Begründung in 4b.')
 p('Einfachauswahl: Nur das richtige und kein weiteres Feld angekreuzt ergibt die genannten Punkte. Mehrfachauswahl 2c, 4c und 4d: je richtig gesetztem Kreuz 1 Punkt, je falsch gesetztem Kreuz 1 Punkt Abzug innerhalb der Teilaufgabe; mindestens 0, höchstens 2 Punkte. Nicht gesetzte Kreuze geben keine Punkte. Ein vollständig leeres Feld ergibt 0 Punkte. So wird nicht wahlloses Ankreuzen belohnt.')
 h('Lösungen zu Aufgaben 1 bis 4')
 for title, body in [
     ('1 Aufbau des Stamms A1   4 Punkte', '1a Kambium; Splintholz: je 1 P. 1b Erste Aussage: Die Wurzeln bekommen zu wenig Zucker aus den Blättern; 2 P bei eindeutiger Auswahl. Die Störung des Zuckertransports wird aus der Funktion des Basts abgeleitet.'),
     ('2 Jahresringe   4 Punkte', '2a 12 Jahre: 1 P. 2b Erste Aussage (geringerer Dickenzuwachs): 1 P. 2c Erste und dritte Aussage: Wassermangel ist möglich, andere Ursachen kommen ebenfalls infrage; bis 2 P nach Mehrfachregel.'),
-    ('3 Produktionsweg und Schnittplan A3 A4   6 Punkte', '3a In der gedruckten Reihenfolge: 3, 6, 1, 5, 2, 4. Je korrekt eingetragener Zahl 0,5 P, insgesamt 3 P. 3b Späne / Sägespäne: 1 P. 3c Plan B: 1 P; 14 cm: 1 P. Die höhere Ausbeute von A genügt bei einer Mindestbreite von 12 cm nicht.'),
+    ('3 Produktionsweg und Schnittplan A3 A4   6 Punkte', '3a In der gedruckten Reihenfolge: 3, 6, 1, 5, 2, 4. Je korrekt eingetragener Zahl 0,5 P, insgesamt 3 P. 3b Späne / Sägespäne: 1 P; Sägemehl: 0,5 P. 3c Plan B: 1 P; 14 cm: 1 P. Die höhere Ausbeute von A genügt bei einer Mindestbreite von 12 cm nicht.'),
     ('4 Holzproben   6 Punkte', '4a Probe Q: 1 P. 4b kaum: 1 P. 4c Erste und dritte Aussage: Größere Masse kann durch größeres Volumen entstehen; gleiche Größe und ähnliche Trockenheit erlauben einen fairen Vergleich; bis 2 P nach Mehrfachregel. 4d Erste und zweite Aussage: Glätte ohne Splitter ist für häufiges Anfassen günstig; geringe Wasseraufnahme ist bei wechselnder Feuchte günstig. Eine tiefe Druckspur spricht für geringere Härte. Bis 2 P nach Mehrfachregel.')]:
     p(title, bold=True, keep=True, before=4, after=1); p(body)
 page_break()
 h('Lösungen und Kompetenzbelege')
 for title, body in [
-    ('5 Holz arbeitet A7   4 Punkte', '5a Wasser; Schwinden: je 1 P. Auch „Feuchtigkeit“ bzw. „schwinden“ sinngemäß akzeptieren. 5b quellen / größer werden; Spiel / Platz / Abstand: je 1 P. Das Quellen kann zum Klemmen führen; die Bewegungsreserve ist eine passende Vorsorge.'),
+    ('5 Holz arbeitet A7   4 Punkte', '5a Wasser; Schwinden: je 1 P. „Feuchtigkeit“ statt Wasser: 0,5 P. 5b quellen / größer werden; Spiel / Platz / Abstand: je 1 P. Das Quellen kann zum Klemmen führen; die Bewegungsreserve ist eine passende Vorsorge.'),
     ('6 Holzfehler   4 Punkte', '6a A = 3, B = 1, C = 2: je 1 P. 6b Zweite Aussage: Lage und Nutzung entscheiden; 1 P bei eindeutiger Auswahl. Ein fest verwachsener Ast ist kein pauschaler Ausschussgrund.'),
     ('7 Freiwilliger Bonus A9 A10   4 Bonuspunkte', '7a Buche: 1 P. Nach Tabelle erfüllen Buche und Eiche Härte und glatte Bearbeitbarkeit; Buche ist von beiden preiswerter. 7b hart; glatt: je 1 P. 7c stark / deutlich: 1 P. Die Lückensätze werden unabhängig von 7a bewertet; kein mehrfacher Abzug eines Auswahlfehlers.')]:
     p(title, bold=True, keep=True, before=4, after=1); p(body)
@@ -692,7 +692,7 @@ for i, (note, pr) in enumerate(SCHLUESSEL):
     hi = PFLICHT if i == 0 else ab_punkte(SCHLUESSEL[i - 1][1]) - 0.5
     rows.append([note, f'ab {pr} %' if pr else 'unter 18 %', f'{pz(lo)} bis {pz(hi)}', 'bestanden' if pr >= 45 else 'Wiederholung'])
 table(['Note', 'Anteil', 'Punkte (von 28)', 'Folge'], rows, [38, 32, 45, 50], indent=0, keep_last=False)
-p('Halbe Punkte entstehen nur in 3a. Grenzwerte sind auf halbe Punkte aufgerundet (z. B. 45 % von 28 = 12,6 → 13 Punkte).', size=9.5, italic=True)
+p('Halbe Punkte entstehen in 3a und bei Lücken mit Begriffen, die im Ansatz richtig sind. Grenzwerte sind auf halbe Punkte aufgerundet (z. B. 45 % von 28 = 12,6 → 13 Punkte).', size=9.5, italic=True)
 page_break()
 h('Individuelle Rückmeldung')
 p('Name: ____________________________  Datum: ______________')
