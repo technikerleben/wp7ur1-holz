@@ -82,7 +82,7 @@ Ein schnelleres Team erhält eine technische Zusatzanforderung (z. B. verstellba
 
 Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlichen Arbeitsprodukte gehören ins Werkstattheft; die Website dient dem Orientieren und Erkunden.
 
-**Einstiegsstunde:** [EINSTIEGSSTUNDE.md](EINSTIEGSSTUNDE.md) – Ideen finden und Teams bilden, parallel Einzelgespräche zur Lernerfolgskontrolle ([Gesprächsleitfaden](druck/gespraechsleitfaden-lek.pdf)).
+**Einstiegsstunde:** [EINSTIEGSSTUNDE.md](EINSTIEGSSTUNDE.md) – 45 Min., Ideen finden in Stillarbeit, parallel Einzelgespräche (1 Min.) zur Lernerfolgskontrolle ([Gesprächsleitfaden](druck/gespraechsleitfaden-lek.pdf)).
 
 ## Werkstattheft und Lernerfolgskontrolle
 
