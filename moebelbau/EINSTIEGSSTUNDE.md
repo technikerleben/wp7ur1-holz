@@ -6,6 +6,8 @@
 
 **Grundidee:** Die Klasse arbeitet **allein und leise** an einer einfachen, klaren Aufgabe. Teams werden nicht im Raum ausgehandelt, sondern als Wunsch in TaskCards notiert. Die Lehrkraft bestätigt die Teams in der nächsten Stunde. So bleibt es ruhig für die Gespräche.
 
+> **Ohne eigene TaskCards-Zugänge:** Die Kinder nutzen nur den Lesezugriff auf die Pinnwand, laden dort das Ideenblatt herunter und arbeiten in GoodNotes (Ordner „Möbelwerkstatt“). Teamwunsch und benötigte Lehrgänge notieren sie auf der Lieblingsidee. Hochgeladen wird in der nächsten Stunde. Folie dafür: [folie-start-ideen.html](folie-start-ideen.html). Auf der Folie den Link zur Pinnwand einfügen, dann erscheint ein QR-Code.
+
 **Material:** Folie „Heute: Ideen finden“ ([Präsentation](input-moebelwerkstatt.html), auch als Tafelbild) · [Ideenblatt](druck/ideenblatt.pdf) in GoodNotes · QR-Codes für TaskCards · [Gesprächsleitfaden mit Notizliste](druck/gespraechsleitfaden-lek.pdf) · Platz für die Gespräche am Pult
 
 ## Verlauf
