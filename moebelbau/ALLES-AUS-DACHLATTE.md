@@ -82,6 +82,8 @@ Ein schnelleres Team erhält eine technische Zusatzanforderung (z. B. verstellba
 
 Hilfen sind freiwillig bzw. werden bei Bedarf gestuft angeboten. Die schriftlichen Arbeitsprodukte gehören ins Werkstattheft; die Website dient dem Orientieren und Erkunden.
 
+**Einstiegsstunde:** [EINSTIEGSSTUNDE.md](EINSTIEGSSTUNDE.md) – Ideen finden und Teams bilden, parallel Einzelgespräche zur Lernerfolgskontrolle ([Gesprächsleitfaden](druck/gespraechsleitfaden-lek.pdf)).
+
 ## Werkstattheft und Lernerfolgskontrolle
 
 > **Neu:** Die Dokumentation läuft über **eine TaskCards-Pinnwand** mit einer privaten Spalte pro Kind und Farbcode für Protokoll, Skizze, Lehrgang und Meilenstein – siehe [TASKCARDS-EINRICHTUNG.md](TASKCARDS-EINRICHTUNG.md). Das gedruckte Werkstattheft bleibt als Papier-Alternative erhalten.

@@ -289,7 +289,60 @@ def kopf_info(b, marke, titel, text):
     b.p(text, size=10.5)
 
 
+# ---------------------------------------------------- Gesprächsleitfaden (Lehrkraft)
+def gespraechsleitfaden():
+    D = new_doc('HBG  |  WP Technik 7  |  Möbelwerkstatt – Einzelgespräche Lernerfolgskontrolle (Lehrkraft)')
+    b = FarbBuilder(D, '4A5A6A')
+    kopf_info(b, 'LEHRKRAFT · EINSTIEGSSTUNDE', 'Einzelgespräch Lernerfolgskontrolle',
+              'Ca. 3 Minuten pro Kind, während die Klasse an Ideen und Teams arbeitet. Ergebnisbogen bereithalten.')
+    schritte = [
+        ('1  Einstieg', '30 s', '„Woran denkst du gerade? Allein oder mit anderen?“'),
+        ('2  LEK erklären', '60 s',
+         'Note = Dokumentation in TaskCards (40 %) + Werkstück (60 %).\n'
+         'Dokumentation: jede Stunde blaue Protokollkarte · lila Ideen und „Mein Projekt“ · '
+         'gelbe Lehrgangskarten · am Ende grüne Ergebniskarte mit Fotos und Ergebnisbogen.\n'
+         'Werkstück: Funktion · Maße · Verbindungen · Oberfläche und Kanten · Stabilität · Arbeitsweise.\n'
+         'Team: Werkstück = eigene Baugruppe + Gesamtergebnis; Dokumentation einzeln.\n'
+         'Zählt nicht: Größe, Deko, möglichst viel Traglast.'),
+        ('3  Verständnis prüfen', '45 s',
+         '„Erklär mir in einem Satz, womit du Punkte sammelst.“\n'
+         '„Was machst du am Anfang und am Ende jeder Stunde?“'),
+        ('4  Ziel und Sorgen', '30 s',
+         '„Was willst du in diesem Projekt schaffen?“ · „Gibt es etwas, das dir Sorgen macht?“'),
+        ('5  Notiz', '15 s', 'Notizliste auf Seite 2: verstanden? Idee, Team, Besonderheiten.'),
+    ]
+    abschnitt(b, 'Ablauf')
+    t = b.table(['Schritt', 'Zeit', 'Inhalt / Leitfragen'], [list(x) for x in schritte],
+                [1.5, 0.6, 4.9], size=10, pad=3, first_col=True)
+    b.bold_cells(t)
+    abschnitt(b, 'Kernbotschaften')
+    for s_ in ['Du entscheidest, was du baust. Es gibt keine fertige Bauanleitung.',
+               'Ehrliche Einträge zählen mehr als schöne: Ein Plan, der nicht geklappt hat, ist kein Fehler.',
+               'Ein kleines, gut gebautes Möbel kann genauso gut bewertet werden wie ein großes.',
+               'Maschinen gibt es erst nach dem Lehrgang. Anmeldung mit gelber Karte.']:
+        z = b.p('•  ' + s_, size=10.5)
+        z.paragraph_format.space_after = Pt(2)
+    abschnitt(b, 'Organisation')
+    for s_ in ['Reihenfolge vorher festlegen: zuerst Kinder, die viel Orientierung brauchen.',
+               'Nächstes Kind vorher ansagen („… du bist gleich dran“), damit kein Leerlauf entsteht.',
+               'Ca. 20 Gespräche in 65 Minuten. Rest am Montag zu Beginn der Arbeitsphase.',
+               'Co-Teaching: zweite Lehrkraft übernimmt Aufsicht und Ideenfragen, ggf. einen Teil der Gespräche.']:
+        z = b.p('•  ' + s_, size=10.5)
+        z.paragraph_format.space_after = Pt(2)
+
+    b.brk()
+    b.h1('Notizliste Einzelgespräche')
+    b.p('Datum: ______________   Lerngruppe: ______________', size=10.5)
+    b.table(['Nr.', 'Name', 'LEK verstanden?', 'Idee', 'Team / Weg', 'Notiz'],
+            [[str(i), '', 'ja  teils  nein', '', '', ''] for i in range(1, 27)],
+            [0.4, 1.3, 1.1, 1.5, 1.2, 1.5], height=8, size=8.5, pad=1)
+    path = OUT / 'gespraechsleitfaden-lek.docx'
+    D.save(path)
+    return path
+
+
 if __name__ == '__main__':
-    for path in [ideenblatt(), protokollblatt(), ergebnisbogen(), lehrgangsuebersicht()]:
+    for path in [ideenblatt(), protokollblatt(), ergebnisbogen(), lehrgangsuebersicht(),
+                 gespraechsleitfaden()]:
         to_pdf(path)
         print('erstellt:', path.name, '+ PDF')
