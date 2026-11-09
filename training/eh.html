@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Holz-Training</title>
+<style>
+:root{
+  --col-slate-dark:#2C3D4C;--col-slate:#3E5668;--col-slate-mid:#6A8599;--col-slate-pale:#D0DCE6;--col-slate-ghost:#EEF3F7;
+  --col-rust-dark:#9E4E22;--col-rust:#D97A4A;--col-rust-mid:#EBA882;--col-rust-pale:#F5DDD1;--col-rust-ghost:#FBF0EB;
+  --col-sage-dark:#4D8B3F;--col-sage:#7DBB6F;--col-sage-mid:#A8D49D;--col-sage-pale:#DDF0D8;--col-sage-ghost:#F0FAF0;
+  --col-warning:#C17B00;--col-warning-pale:#FFF3CC;--col-warning-text:#5C4400;
+  --col-error:#C0392B;--col-error-pale:#FDECEA;--col-error-text:#7A1B14;
+  --col-bg:#F5F4F1;--col-white:#FFFFFF;--col-text:#1E2A35;--col-text-muted:#5A6A78;--col-border:#D4D0C8;
+  --col-disabled-bg:#EBEBEA;--col-disabled-text:#7A7672;--col-focus:#3E5668;--col-shadow:rgba(62,86,104,.10);
+  --holz:#C99A63;--holz-dunkel:#8A5A2B;--holz-hell:#F1DDBF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;background:var(--col-bg);color:var(--col-text);font-size:19px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--col-focus);outline-offset:3px;border-radius:4px}
+header{background:var(--col-slate);color:#fff}
+.bar{max-width:980px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.bar h1{font-size:1.3rem;line-height:1.2}
+.bar .meta{font-size:.72rem;color:var(--col-slate-pale);text-transform:uppercase;letter-spacing:.06em}
+.bar .sp{flex:1}
+.iconbtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:10px;min-height:44px;min-width:44px;padding:6px 12px;font:inherit;font-size:.9rem;cursor:pointer}
+.iconbtn[aria-pressed="true"]{background:#fff;color:var(--col-slate-dark)}
+main{flex:1}
+.wrap{max-width:980px;margin:0 auto;padding:22px 24px 40px}
+.card{background:#fff;border-radius:16px;padding:22px 26px;box-shadow:0 2px 10px var(--col-shadow);margin-bottom:16px}
+h2{font-size:1.55rem;line-height:1.2;margin-bottom:10px}
+h3{font-size:1.15rem;margin-bottom:6px}
+p+p{margin-top:8px}
+.muted{color:var(--col-text-muted)}
+.btn{border:none;border-radius:12px;min-height:52px;min-width:52px;padding:12px 26px;font:inherit;font-weight:700;cursor:pointer;transition:transform .08s,background .2s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--col-rust-dark);color:#fff}.btn-primary:hover{background:#B55E2A}
+.btn-success{background:var(--col-sage-dark);color:#fff}.btn-success:hover{background:#3D7032}
+.btn-secondary{background:#fff;color:var(--col-slate);border:2px solid var(--col-slate)}.btn-secondary:hover{background:var(--col-slate-ghost)}
+.btn:disabled{background:var(--col-disabled-bg);color:var(--col-disabled-text);border-color:var(--col-disabled-bg);cursor:not-allowed}
+.btn-speak{background:var(--col-slate-ghost);color:var(--col-slate);border:2px solid var(--col-slate-pale);border-radius:12px;min-height:48px;padding:8px 16px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-speak.on{background:var(--col-slate);color:#fff;border-color:var(--col-slate)}
+/* Start */
+.hello{display:flex;gap:20px;align-items:center}
+.hello .big{font-size:3.2rem}
+.week{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:6px}
+.tile{background:#fff;border:2px solid var(--col-border);border-radius:16px;padding:16px;text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:190px;box-shadow:0 2px 8px var(--col-shadow);position:relative}
+.tile:hover{border-color:var(--col-slate-mid)}
+.tile .day{font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--col-rust-dark)}
+.tile .emo{font-size:2.2rem}
+.tile b{font-size:1.02rem;line-height:1.25}
+.tile .st{margin-top:auto;font-size:1.1rem;letter-spacing:2px}
+.tile.done{border-color:var(--col-sage-dark);background:var(--col-sage-ghost)}
+.tile.done::after{content:'✓ geschafft';position:absolute;top:10px;right:12px;font-size:.72rem;font-weight:800;color:var(--col-sage-dark)}
+.tile.final{border-style:dashed}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--col-sage-pale);color:#2D5C25;font-weight:700;font-size:.9rem}
+.badge.off{background:var(--col-disabled-bg);color:var(--col-disabled-text)}
+/* Step */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.top .ttl{font-weight:800;color:var(--col-slate)}
+.progress{flex:1;height:12px;background:var(--col-slate-pale);border-radius:6px;overflow:hidden}
+.progress>div{height:100%;background:var(--col-rust);border-radius:6px;transition:width .4s}
+.kind{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:8px}
+.kind.lernen{background:var(--col-slate-pale);color:var(--col-slate-dark)}
+.kind.aufgabe{background:var(--col-rust-pale);color:var(--col-rust-dark)}
+.steprow{display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
+.lerngrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:center}
+.lerngrid.full{grid-template-columns:1fr}
+.lerntext p{font-size:1.12rem}
+.lerntext ul{list-style:none;display:grid;gap:8px;margin-top:6px}
+.lerntext li{background:var(--col-slate-ghost);border-radius:10px;padding:8px 12px}
+.merk{margin-top:14px;background:var(--col-warning-pale);color:var(--col-warning-text);border-left:6px solid var(--col-warning);border-radius:0 12px 12px 0;padding:12px 16px;font-weight:600}
+.merk::before{content:'💡 Merke: '}
+.fig{display:flex;justify-content:center}
+.fig svg{width:100%;max-width:400px;height:auto}
+.frage{font-size:1.2rem;font-weight:700;margin:4px 0 14px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;border:2px solid var(--col-border);border-radius:12px;padding:12px 16px;min-height:56px;font:inherit;font-size:1.05rem;cursor:pointer;color:var(--col-text)}
+.opt:hover{border-color:var(--col-slate-mid)}
+.opt .box{flex:0 0 auto;width:30px;height:30px;border-radius:8px;border:2px solid var(--col-slate-mid);display:grid;place-items:center;font-weight:800}
+.opt.round .box{border-radius:50%}
+.opt.sel{border-color:var(--col-slate);background:var(--col-slate-ghost)}
+.opt.sel .box{background:var(--col-slate);color:#fff;border-color:var(--col-slate)}
+.opt.ok{border-color:var(--col-sage-dark);background:var(--col-sage-pale)}
+.opt.ok .box{background:var(--col-sage-dark);color:#fff;border-color:var(--col-sage-dark)}
+.opt.bad{border-color:var(--col-error);background:var(--col-error-pale)}
+table.data{border-collapse:collapse;margin:4px 0 14px;background:#fff;font-size:1.02rem}
+table.data th,table.data td{border:1px solid var(--col-border);padding:8px 14px;text-align:left}
+table.data th{background:var(--col-slate-ghost)}
+/* Lücke */
+.satz{font-size:1.15rem;line-height:2.4;margin-bottom:4px}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:150px;min-height:44px;padding:4px 14px;margin:0 4px;border:2px dashed var(--col-slate-mid);border-radius:10px;background:var(--col-slate-ghost);vertical-align:middle;font:inherit;font-weight:700;cursor:pointer;color:var(--col-slate-dark)}
+.slot.filled{border-style:solid;background:#fff}
+.slot.ok{border-color:var(--col-sage-dark);background:var(--col-sage-pale)}
+.slot.bad{border-color:var(--col-error);background:var(--col-error-pale)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{background:var(--holz-hell);border:2px solid var(--holz);color:#4A2E12;border-radius:999px;padding:10px 20px;min-height:48px;font:inherit;font-weight:700;cursor:pointer}
+.chip:disabled{opacity:.35;cursor:default}
+/* Ordnen */
+.orderlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.oitem{position:relative;background:#fff;border:2px solid var(--col-border);border-radius:12px;padding:14px 12px 14px 52px;min-height:58px;font:inherit;font-size:1.05rem;text-align:left;cursor:pointer;color:var(--col-text)}
+.oitem .num{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;border:2px dashed var(--col-slate-mid);display:grid;place-items:center;font-weight:800}
+.oitem.picked{border-color:var(--col-slate)}
+.oitem.picked .num{background:var(--col-slate);color:#fff;border:none}
+.oitem.ok{border-color:var(--col-sage-dark);background:var(--col-sage-pale)}
+.oitem.bad{border-color:var(--col-error);background:var(--col-error-pale)}
+/* Zahl */
+.zahlrow{display:flex;align-items:center;gap:12px;font-size:1.15rem}
+.zahlrow input{width:120px;font-size:1.4rem;font-weight:700;text-align:center;padding:10px;border:2px solid var(--col-border);border-radius:12px}
+.zahlrow input:focus-visible{outline:none;border-color:var(--col-slate);box-shadow:0 0 0 3px var(--col-slate-pale)}
+/* Zuordnen */
+.zgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.zcard{border:2px solid var(--col-border);border-radius:14px;padding:10px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.zcard svg{width:100%;height:auto;background:#fff}
+.zcard .lab{font-weight:800;color:var(--col-slate)}
+.zbtns{display:flex;flex-wrap:wrap;gap:6px}
+.zbtn{flex:1 1 auto;border:2px solid var(--col-slate-pale);background:var(--col-slate-ghost);border-radius:10px;min-height:44px;font:inherit;font-size:.95rem;font-weight:700;cursor:pointer;color:var(--col-slate-dark)}
+.zbtn.sel{background:var(--col-slate);color:#fff;border-color:var(--col-slate)}
+.zcard.ok{border-color:var(--col-sage-dark);background:var(--col-sage-ghost)}
+.zcard.bad{border-color:var(--col-error);background:var(--col-error-pale)}
+/* Kette */
+.kette{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.kette .k{background:var(--holz-hell);border:2px solid var(--holz);border-radius:12px;padding:8px 10px;text-align:center;min-width:92px;font-weight:700;font-size:.95rem}
+.kette .k span{display:block;font-size:1.7rem}
+.kette .pf{font-size:1.3rem;color:var(--col-slate-mid)}
+/* Feedback */
+.fb{margin-top:14px;border-radius:0 12px 12px 0;padding:12px 16px;font-size:1.05rem}
+.fb.ok{background:var(--col-sage-pale);border-left:6px solid var(--col-sage-dark);color:#2D5C25}
+.fb.ok::before{content:'✓ ';font-weight:800}
+.fb.bad{background:var(--col-error-pale);border-left:6px solid var(--col-error);color:var(--col-error-text)}
+.fb.bad::before{content:'↻ ';font-weight:800}
+.fb.tipp{background:var(--col-slate-pale);border-left:6px solid var(--col-slate-mid);color:var(--col-text)}
+.fb.tipp::before{content:'💡 ';}
+.actions{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:18px;flex-wrap:wrap}
+.actions .right{display:flex;gap:10px;margin-left:auto}
+/* Abschluss */
+.party{text-align:center;padding:30px 20px}
+.party .emo{font-size:4.5rem;animation:pop .6s ease}
+@keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.stars{font-size:2.4rem;letter-spacing:6px;margin:8px 0}
+.result{display:grid;gap:10px;margin-top:12px;text-align:left}
+.rrow{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:2px solid var(--col-border);border-radius:12px;padding:12px 16px}
+.rrow.ok{border-color:var(--col-sage-dark);background:var(--col-sage-ghost)}
+.rrow.mid{border-color:var(--col-warning);background:var(--col-warning-pale)}
+.rrow.no{border-color:var(--col-error);background:var(--col-error-pale)}
+.conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.conf i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+footer{text-align:center;font-size:.75rem;color:var(--col-text-muted);padding:10px}
+.reset{background:none;border:none;color:var(--col-text-muted);text-decoration:underline;font:inherit;font-size:.8rem;cursor:pointer;min-height:44px}
+@media (max-width:860px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}.lerngrid{grid-template-columns:1fr}.orderlist,.zgrid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.orderlist,.zgrid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div><h1>Dein Holz-Training</h1><div class="meta">WP Technik 7 · Vom Baum zum Holz · Übungswoche</div></div>
+  <div class="sp"></div>
+  <button class="iconbtn" id="autoread" aria-pressed="false" title="Alles automatisch vorlesen">🔊 Automatisch vorlesen</button>
+  <button class="iconbtn" id="home" title="Zur Übersicht">🏠</button>
+</div></header>
+<main><div class="wrap" id="app" aria-live="polite"></div></main>
+<footer>Deine Ergebnisse bleiben nur auf diesem iPad. <button class="reset" id="reset">Alles zurücksetzen</button></footer>
+<div class="conf" id="conf" aria-hidden="true"></div>
+
+<script>
+const DATA = {"id": "eh", "intro": "Den Aufbau vom Stamm kannst du schon sicher. Super! Jetzt trainierst du vier neue Bereiche.", "missions": [{"id": "a2", "emoji": "🎯", "titel": "Ringe-Leser", "untertitel": "Jahresringe zählen und deuten", "abzeichen": "Ringe-Leser", "merksatz": "1 Ring = 1 Jahr. Breiter Ring = viel gewachsen. Den Grund kann man nur vermuten.", "steps": [{"type": "lernen", "titel": "1 Ring = 1 Jahr", "bild": ["ringe", [1, 1, 1, 1, 1, 1, 1], 0], "text": ["Jedes Jahr wächst um den Stamm ein neuer Ring.", "Zähle die Ringe von der Mitte nach außen.", "So weißt du: So alt ist der Baum an dieser Stelle."], "merk": "Ein Ring = ein Jahr."}, {"type": "zahl", "titel": "Zähle die Ringe", "bild": ["ringe", [1, 1, 1, 1, 1, 1, 1], 0], "frage": "Wie alt ist der Baum an dieser Stelle?", "vor": "Alter: etwa", "einheit": "Jahre", "loesung": 7, "erkl": "7 Ringe bedeuten: etwa 7 Jahre alt.", "tipp": "Tippe beim Zählen jeden Ring mit dem Finger an."}, {"type": "lernen", "titel": "Breit oder schmal?", "bild": ["ringe", [1, 1, 1, 1, 0.4, 1, 1, 1], 5], "text": ["<b>Breiter Ring:</b> Der Stamm ist in diesem Jahr viel dicker geworden.", "<b>Schmaler Ring:</b> Der Stamm ist nur wenig dicker geworden.", "Hier ist Ring 5 schmal."], "merk": "Breiter Ring = viel gewachsen. Schmaler Ring = wenig gewachsen."}, {"type": "zahl", "titel": "Genau zählen", "bild": ["ringe", [1, 1, 1, 1, 1, 1, 1, 1, 0.4, 1, 1, 1, 1], 9], "frage": "Wie alt ist der Baum an dieser Stelle?", "vor": "Alter: etwa", "einheit": "Jahre", "loesung": 13, "erkl": "13 Ringe – also etwa 13 Jahre.", "tipp": "Zähle langsam. Fang an der Mitte an."}, {"type": "wahl", "titel": "Ring 9", "bild": ["ringe", [1, 1, 1, 1, 1, 1, 1, 1, 0.4, 1, 1, 1, 1], 9], "frage": "Ring 9 ist schmaler als die anderen. Was zeigt das?", "optionen": ["Der Stamm ist in diesem Jahr weniger dick geworden.", "Der Baum ist in diesem Jahr kleiner geworden.", "Der Baum war in diesem Jahr sicher krank."], "richtig": 0, "erkl": "Ein schmaler Ring zeigt: wenig Dickenwachstum. Warum, wissen wir nicht sicher."}, {"type": "lernen", "titel": "Vermuten statt beweisen", "text": ["Warum ist ein Ring schmal? Dafür gibt es viele mögliche Gründe:"], "liste": ["💧 wenig Wasser", "☀️ wenig Licht", "❄️ Kälte", "🌲 viele Bäume daneben (Konkurrenz)"], "merk": "Am Ring allein sieht man den Grund nicht. Darum sagst du: „Ich vermute …“"}, {"type": "mehr", "titel": "Prüfe die Aussage", "text": ["Ali sagt: „In Jahr 9 war es bestimmt sehr kalt.“"], "frage": "Welche Aussagen stimmen?", "optionen": ["Kälte ist ein möglicher Grund.", "Der schmale Ring beweist, dass es kalt war.", "Auch wenig Wasser oder viel Schatten können der Grund sein.", "Ein schmaler Ring zeigt, wie alt die Blätter waren."], "richtig": [0, 2], "erkl": "Kälte ist möglich – aber nicht bewiesen. Auch andere Gründe sind möglich.", "tipp": "Ein Ring kann etwas zeigen, aber nichts beweisen."}, {"type": "luecke", "titel": "Richtig formulieren", "frage": "Ergänze die Sätze.", "saetze": ["Ich {}, dass es zu wenig Wasser gab.", "Ganz sicher {} ich es nicht."], "woerter": ["vermute", "weiß", "beweise", "sehe"], "loesung": ["vermute", "weiß"], "erkl": "„Ich vermute …“ ist richtig. Ganz sicher weiß man den Grund nicht."}]}, {"id": "a34", "emoji": "🚛", "titel": "Vom Wald ins Sägewerk", "untertitel": "Produktionsweg und Schnittplan", "abzeichen": "Sägewerk-Profi", "merksatz": "Baum → Fällen → Transport → Sägewerk → Einschnitt → Schnittholz. Erst Brettbreite prüfen, dann Ausbeute.", "steps": [{"type": "lernen", "titel": "Vom Baum zum Brett", "bild": ["kette"], "liste": ["🌳 <b>Baum:</b> wächst im Wald.", "🪓 <b>Fällen:</b> Der Baum wird umgesägt.", "🚛 <b>Transport:</b> Der Stamm kommt mit dem LKW weg.", "🏭 <b>Sägewerk:</b> Hier wird das Holz verarbeitet.", "🪚 <b>Einschnitt:</b> Der Stamm wird in Bretter gesägt.", "🪵 <b>Schnittholz:</b> Fertige Bretter und Balken."], "merk": "Erst im Wald (Fällen), dann unterwegs (Transport), dann im Sägewerk (Einschnitt)."}, {"type": "ordnen", "titel": "Die Kette", "frage": "Tippe die Schritte in der richtigen Reihenfolge an.", "items": ["Baum", "Fällen", "Transport", "Sägewerk", "Einschnitt", "Schnittholz"], "erkl": "Baum, Fällen, Transport, Sägewerk, Einschnitt, Schnittholz.", "tipp": "Frag dich: Was muss zuerst passieren, damit der nächste Schritt geht?"}, {"type": "wahl", "titel": "Einschnitt", "frage": "Was passiert beim Einschnitt?", "optionen": ["Der Stamm wird im Sägewerk in Bretter gesägt.", "Der Baum wird im Wald umgesägt.", "Die Bretter werden verkauft."], "richtig": 0, "erkl": "Einschnitt heißt: Im Sägewerk wird der Stamm in Bretter zersägt."}, {"type": "lernen", "titel": "Späne, Verschnitt, Ausbeute", "bild": ["schnitt"], "text": ["Das Sägeblatt ist breit. Beim Sägen wird Holz zu <b>Spänen</b>.", "Die runden Ränder kann man nicht als Brett nutzen. Das ist <b>Verschnitt</b>.", "<b>Ausbeute</b> heißt: So viel vom Stamm wird zu nutzbaren Brettern – zum Beispiel 70 %."], "merk": "Ausbeute = der nutzbare Anteil vom Stamm."}, {"type": "luecke", "titel": "Ergänze", "frage": "Tippe die passenden Wörter in die Lücken.", "saetze": ["Beim Sägen entstehen {}.", "Holz, das nicht zum Brett wird, ist {}."], "woerter": ["Späne", "Verschnitt", "Jahresringe", "Kernholz"], "loesung": ["Späne", "Verschnitt"], "erkl": "Beim Sägen entstehen Späne. Was übrig bleibt, ist Verschnitt."}, {"type": "wahl", "titel": "Was heißt Ausbeute?", "frage": "Ein Plan hat 80 % Ausbeute. Was heißt das?", "optionen": ["80 % vom Stamm werden zu nutzbaren Brettern.", "Es entstehen 80 Bretter.", "80 % vom Stamm werden zu Spänen."], "richtig": 0, "erkl": "Ausbeute ist der Anteil, der als Brett nutzbar ist."}, {"type": "lernen", "titel": "Den richtigen Plan wählen", "text": ["Viel Ausbeute ist gut. Aber zuerst fragst du:", "<b>Sind die Bretter breit genug für mein Möbel?</b>", "Ein Plan mit viel Ausbeute nützt nichts, wenn die Bretter zu schmal sind."], "merk": "Erst die Brettbreite prüfen. Dann die Ausbeute vergleichen."}, {"type": "wahl", "titel": "Plan wählen", "text": ["Du brauchst Bretter, die mindestens <b>15 cm</b> breit sind."], "tabelle": [["Plan", "Ausbeute", "Breite jedes Bretts"], ["A", "75 %", "12 cm"], ["B", "66 %", "16 cm"]], "frage": "Welcher Plan passt?", "optionen": ["Plan A", "Plan B"], "richtig": 1, "erkl": "Plan B: 16 cm ist breit genug. Plan A hat mehr Ausbeute, aber 12 cm ist zu schmal.", "tipp": "Prüfe zuerst die Breite: Welche Bretter sind mindestens 15 cm breit?"}, {"type": "wahl", "titel": "Noch ein Plan", "text": ["Jetzt brauchst du Bretter, die mindestens <b>8 cm</b> breit sind."], "tabelle": [["Plan", "Ausbeute", "Breite jedes Bretts"], ["A", "74 %", "10 cm"], ["B", "82 %", "6 cm"]], "frage": "Welcher Plan passt?", "optionen": ["Plan A", "Plan B"], "richtig": 0, "erkl": "Plan A: 10 cm reicht. Plan B hat mehr Ausbeute – aber 6 cm ist zu schmal.", "tipp": "Mehr Ausbeute ist nicht alles!"}, {"type": "zahl", "titel": "Begründen", "text": ["Bleib bei der letzten Aufgabe (mindestens 8 cm)."], "frage": "Plan A passt, weil seine Bretter … cm breit sind.", "vor": "Breite:", "einheit": "cm", "loesung": 10, "erkl": "Genau: 10 cm ist mindestens 8 cm."}]}, {"id": "a56", "emoji": "🔬", "titel": "Holz-Labor", "untertitel": "Holzproben fair vergleichen", "abzeichen": "Labor-Profi", "merksatz": "Kaum eine Spur = härter. Fair vergleichen: gleich groß und ähnlich trocken. Ich beobachte … also ist das Holz … gut für …", "steps": [{"type": "lernen", "titel": "Der Münztest", "bild": ["muenze"], "text": ["Du drückst eine Münze mit gleichem Druck auf das Holz.", "<b>Weiches Holz:</b> Die Münze hinterlässt eine deutliche Spur.", "<b>Hartes Holz:</b> Die Münze hinterlässt kaum eine Spur."], "merk": "Kaum eine Spur = hart. Deutliche Spur = weich."}, {"type": "wahl", "titel": "Welche ist härter?", "tabelle": [["Probe", "Druckspur"], ["X", "kaum eine Spur"], ["Y", "deutliche Spur"]], "frage": "Welche Probe ist härter?", "optionen": ["Probe X", "Probe Y"], "richtig": 0, "erkl": "Probe X: kaum eine Spur – also härter.", "tipp": "Hartes Holz gibt kaum nach."}, {"type": "luecke", "titel": "Ergänze", "frage": "Tippe die passenden Wörter in die Lücken.", "saetze": ["Bei hartem Holz hinterlässt die Münze {} eine Spur.", "Bei weichem Holz hinterlässt sie eine {} Spur."], "woerter": ["kaum", "deutliche", "blaue", "laute"], "loesung": ["kaum", "deutliche"], "erkl": "Hart: kaum eine Spur. Weich: deutliche Spur."}, {"type": "lernen", "titel": "Fair vergleichen", "text": ["Du willst wissen, welches Holz schwerer ist?", "Dann müssen die Proben <b>gleich groß</b> sein – und <b>ähnlich trocken</b>.", "Eine große Probe wiegt mehr, auch wenn das Holz leicht ist. Nasses Holz wiegt mehr als trockenes."], "merk": "Fair vergleichen: gleich groß und ähnlich trocken."}, {"type": "mehr", "titel": "Ist das fair?", "text": ["Probe M ist doppelt so groß wie Probe N. M wiegt 90 g. N wiegt 50 g."], "frage": "Welche Aussagen stimmen?", "optionen": ["M kann schwerer sein, weil sie größer ist.", "Das beweist: Das Holz von M ist schwerer.", "Für einen fairen Vergleich brauche ich gleich große Proben.", "Man darf nasse und trockene Proben vergleichen."], "richtig": [0, 2], "erkl": "Die Größe ist verschieden – der Vergleich ist nicht fair.", "tipp": "Denk an die zwei Regeln: gleich groß, ähnlich trocken."}, {"type": "lernen", "titel": "Beobachtung → Eigenschaft → Verwendung", "liste": ["Ich <b>beobachte</b>: kaum eine Spur. → Also ist das Holz <b>hart</b>. → Gut für eine <b>Tischplatte</b>.", "Ich <b>beobachte</b>: Der Tropfen zieht schnell ein. → Also nimmt das Holz <b>viel Wasser</b> auf. → Nicht gut für das <b>Bad</b>.", "Ich <b>beobachte</b>: Die Oberfläche ist glatt, ohne Splitter. → Gut für einen <b>Griff</b>."], "merk": "Ich beobachte … Also ist das Holz … Gut für …"}, {"type": "luecke", "titel": "Satz-Baukasten", "text": ["Ein Wassertropfen bleibt lange auf dem Holz stehen."], "frage": "Ergänze den Prüfbericht.", "saetze": ["Also nimmt das Holz {} Wasser auf.", "Das ist gut für ein Brett im {}."], "woerter": ["wenig", "viel", "Badezimmer", "Kühlschrank"], "loesung": ["wenig", "Badezimmer"], "erkl": "Der Tropfen bleibt stehen: Das Holz nimmt wenig Wasser auf. Das passt gut ins Badezimmer."}, {"type": "mehr", "titel": "Was passt zusammen?", "frage": "Welche Aussagen passen?", "optionen": ["Eine glatte Oberfläche ohne Splitter ist gut für einen Griff.", "Holz mit deutlicher Druckspur ist besonders gut für eine stark belastete Werkbank.", "Ein Tropfen, der schnell einzieht, zeigt: Das Holz nimmt viel Wasser auf.", "Helles Holz ist immer weich."], "richtig": [0, 2], "erkl": "Glatt = gut zum Anfassen. Schnell einziehen = viel Wasseraufnahme. Deutliche Spur heißt weich – nicht gut für eine Werkbank.", "tipp": "Prüfe jede Aussage einzeln: Passt die Beobachtung zur Eigenschaft?"}]}, {"id": "a7", "emoji": "💧", "titel": "Holz lebt", "untertitel": "Trocknen, Schwinden, Quellen", "abzeichen": "Holz-Versteher", "merksatz": "Holz gibt Wasser ab → es schwindet. Holz nimmt Wasser auf → es quillt. Darum lässt man Spiel.", "steps": [{"type": "lernen", "titel": "Holz arbeitet", "bild": ["holzlebt"], "text": ["Im Holz ist Wasser.", "Trocknet Holz, gibt es Wasser ab. Es wird <b>leichter</b> und etwas <b>kleiner</b>. Das heißt <b>Schwinden</b>.", "Ist es feucht, nimmt Holz Wasser auf. Es wird <b>größer</b>. Das heißt <b>Quellen</b>."], "merk": "Wasser raus = Schwinden. Wasser rein = Quellen."}, {"type": "wahl", "titel": "Messung", "text": ["Eine Probe wird vor und nach dem Trocknen gemessen."], "tabelle": [["Messwert", "vorher", "nach dem Trocknen"], ["Masse", "90 g", "75 g"], ["Breite", "80 mm", "78 mm"]], "frage": "Warum ist die Probe leichter geworden?", "optionen": ["Sie hat Wasser abgegeben.", "Sie hat Holz verloren.", "Die Waage war kaputt."], "richtig": 0, "erkl": "Beim Trocknen gibt Holz Wasser ab. Darum wird es leichter."}, {"type": "luecke", "titel": "Fachwörter", "frage": "Tippe die passenden Wörter in die Lücken.", "saetze": ["Die Probe ist beim Trocknen kleiner geworden. Das heißt {}.", "Holz, das im feuchten Raum größer wird, {}."], "woerter": ["Schwinden", "quillt", "Wachsen", "schmilzt"], "loesung": ["Schwinden", "quillt"], "erkl": "Kleiner beim Trocknen = Schwinden. Größer durch Feuchtigkeit = Quellen."}, {"type": "lernen", "titel": "Warum Spiel lassen?", "text": ["Im Sommer und Herbst ist die Luft oft feucht. Das Holz quillt.", "Eine Schublade oder Tür kann dann klemmen.", "Darum lässt man beim Bauen etwas Platz. Diesen Platz nennt man <b>Spiel</b>."], "merk": "Spiel = ein bisschen Platz, damit das Holz arbeiten kann."}, {"type": "wahl", "titel": "Fugen im Winter", "text": ["Im Winter ist die Luft in der Wohnung sehr trocken. Zwischen den Brettern des Holzbodens entstehen Fugen."], "frage": "Warum?", "optionen": ["Das Holz schwindet.", "Das Holz quillt.", "Die Bretter wachsen."], "richtig": 0, "erkl": "Trockene Luft: Das Holz gibt Wasser ab und schwindet. Es entstehen Fugen.", "tipp": "Trocken = Wasser raus."}, {"type": "luecke", "titel": "Die klemmende Tür", "text": ["Eine Holztür klemmt im feuchten Herbst."], "frage": "Ergänze die Erklärung.", "saetze": ["Das Holz hat Wasser aufgenommen und {}.", "Der Tischler hätte mehr {} lassen sollen."], "woerter": ["quillt", "schwindet", "Spiel", "Farbe"], "loesung": ["quillt", "Spiel"], "erkl": "Das Holz quillt. Mit genug Spiel hätte die Tür nicht geklemmt."}, {"type": "wahl", "titel": "Holz für dein Möbel", "frage": "Du baust ein Regal für dein Zimmer. Welches Holz nimmst du?", "optionen": ["Gut getrocknetes Holz.", "Möglichst nasses Holz.", "Das ist egal."], "richtig": 0, "erkl": "Nasses Holz trocknet im Zimmer und schwindet. Dann können Fugen oder Risse entstehen."}]}], "final": [{"type": "zahl", "bereich": "a2", "titel": "Jahresringe", "bild": ["ringe", [1, 1, 1, 0.45, 1, 1, 1, 1, 1, 1, 1], 4], "frage": "Wie alt ist der Baum an dieser Stelle?", "vor": "Alter: etwa", "einheit": "Jahre", "loesung": 11, "erkl": "11 Ringe = etwa 11 Jahre."}, {"type": "ordnen", "bereich": "a34", "titel": "Produktionsweg", "frage": "Tippe die Schritte der Reihe nach an.", "items": ["Baum", "Fällen", "Transport", "Sägewerk", "Einschnitt", "Schnittholz"], "erkl": "Baum, Fällen, Transport, Sägewerk, Einschnitt, Schnittholz."}, {"type": "wahl", "bereich": "a56", "titel": "Holzproben", "tabelle": [["Probe", "Druckspur"], ["K", "deutliche Spur"], ["L", "kaum eine Spur"]], "frage": "Welche Probe ist weicher?", "optionen": ["Probe K", "Probe L"], "richtig": 0, "erkl": "Deutliche Spur = weicher. Also Probe K."}, {"type": "luecke", "bereich": "a7", "titel": "Holz arbeitet", "frage": "Ergänze.", "saetze": ["Holz gibt beim Trocknen {} ab.", "Dabei wird es kleiner. Das heißt {}."], "woerter": ["Wasser", "Schwinden", "Quellen", "Luft"], "loesung": ["Wasser", "Schwinden"], "erkl": "Wasser raus = Schwinden."}, {"type": "mehr", "bereich": "a2", "titel": "Jahresringe", "text": ["Mia sagt: „Ring 4 ist schmal. Bestimmt gab es zu viele Bäume daneben.“"], "frage": "Welche Aussagen stimmen?", "optionen": ["Viele Bäume daneben sind ein möglicher Grund.", "Der Ring beweist, dass es zu viele Bäume gab.", "Auch Wasser, Licht oder Temperatur können der Grund sein.", "Ein schmaler Ring zeigt, dass der Baum kleiner wurde."], "richtig": [0, 2], "erkl": "Man kann nur vermuten. Es gibt mehrere mögliche Gründe."}, {"type": "wahl", "bereich": "a34", "titel": "Schnittplan", "text": ["Du brauchst Bretter, die mindestens <b>12 cm</b> breit sind."], "tabelle": [["Plan", "Ausbeute", "Breite jedes Bretts"], ["A", "78 %", "10 cm"], ["B", "70 %", "13 cm"]], "frage": "Welcher Plan passt?", "optionen": ["Plan A", "Plan B"], "richtig": 1, "erkl": "Plan B: 13 cm ist breit genug. Plan A ist zu schmal."}, {"type": "mehr", "bereich": "a56", "titel": "Holzproben", "text": ["Probe P ist nass, Probe Q ist trocken. Beide sind gleich groß. P ist schwerer."], "frage": "Welche Aussagen stimmen?", "optionen": ["P kann schwerer sein, weil Wasser im Holz ist.", "Das beweist: Das Holz von P ist härter.", "Für einen fairen Vergleich sollten beide ähnlich trocken sein.", "Feuchtigkeit spielt beim Wiegen keine Rolle."], "richtig": [0, 2], "erkl": "Wasser macht Holz schwerer. Fair: gleich groß und ähnlich trocken."}, {"type": "wahl", "bereich": "a7", "titel": "Holz arbeitet", "text": ["Ein Holzfenster lässt sich im feuchten Herbst schwer öffnen."], "frage": "Warum?", "optionen": ["Das Holz ist gequollen.", "Das Holz ist geschwunden.", "Das Holz ist geschmolzen."], "richtig": 0, "erkl": "Feuchte Luft: Das Holz nimmt Wasser auf und quillt."}], "bereiche": [{"id": "a2", "emoji": "🎯", "titel": "Jahresringe"}, {"id": "a34", "emoji": "🚛", "titel": "Produktionsweg und Schnittplan"}, {"id": "a56", "emoji": "🔬", "titel": "Holzproben vergleichen"}, {"id": "a7", "emoji": "💧", "titel": "Holz arbeitet"}]};
+const KEY = 'hbg_holztraining_' + DATA.id;
+
+/* ---------- Speicher ---------- */
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+let S = Object.assign({ missions:{}, final:null, auto:false }, load());
+
+/* ---------- Vorlesen (TTS) ---------- */
+const TTS = {
+  voice:null,
+  pick(){
+    if(!('speechSynthesis' in window)) return;
+    const v = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith('de'));
+    this.voice = v.find(x => /anna|petra|helena|katja|google/i.test(x.name)) || v[0] || null;
+  },
+  speak(text){
+    if(!('speechSynthesis' in window) || !text) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/_{2,}|…/g, ' Lücke ').replace(/\s+/g,' '));
+    u.lang = 'de-DE'; u.rate = 0.92; u.pitch = 1;
+    if(this.voice) u.voice = this.voice;
+    speechSynthesis.speak(u);
+  },
+  stop(){ if('speechSynthesis' in window) speechSynthesis.cancel(); }
+};
+if('speechSynthesis' in window){ TTS.pick(); speechSynthesis.onvoiceschanged = () => TTS.pick(); }
+const autoBtn = document.getElementById('autoread');
+function setAuto(v){ S.auto = v; save(); autoBtn.setAttribute('aria-pressed', v ? 'true' : 'false'); if(!v) TTS.stop(); }
+autoBtn.onclick = () => setAuto(!S.auto);
+setAuto(!!S.auto);
+
+/* ---------- Abbildungen ---------- */
+const FIG = {
+  stamm(){
+    const layers = [['Borke',150,'#6B4423'],['Bast',128,'#A0703F'],['Kambium',118,'#7DBB6F'],['Splintholz',112,'#F1DDBF'],['Kernholz',70,'#D2A56C'],['Mark',10,'#6B4423']];
+    let s = '<svg viewBox="0 0 420 320" role="img" aria-label="Baumscheibe mit sechs Schichten">';
+    layers.forEach(([n,r,c]) => { s += `<circle cx="160" cy="160" r="${r}" fill="${c}" stroke="#4A2E12" stroke-width="1.5"/>`; });
+    const mids = {Borke:139,Bast:123,Kambium:115,Splintholz:91,Kernholz:40,Mark:0};
+    const ys = [40,88,136,184,232,280];
+    Object.keys(mids).forEach((n,i) => {
+      const r = mids[n], x0 = 160 + r*0.7071, y0 = 160 - r*0.7071;
+      s += `<circle cx="${x0}" cy="${y0}" r="3" fill="#1E2A35"/><line x1="${x0}" y1="${y0}" x2="322" y2="${ys[i]}" stroke="#1E2A35" stroke-width="1.3"/>`;
+      s += `<text x="328" y="${ys[i]+6}" font-size="17" font-weight="700" fill="#1E2A35">${n}</text>`;
+    });
+    return s + '</svg>';
+  },
+  ringe(widths, mark){
+    let r = 0, s = '<svg viewBox="0 0 420 320" role="img" aria-label="Modell einer Baumscheibe">';
+    const total = widths.reduce((a,b)=>a+b,0), k = 140/total, rs = [];
+    widths.forEach(w => { r += w*k; rs.push(r); });
+    s += `<circle cx="160" cy="160" r="${rs[rs.length-1]}" fill="#F1DDBF"/>`;
+    rs.slice().reverse().forEach(rr => { s += `<circle cx="160" cy="160" r="${rr}" fill="none" stroke="#4A2E12" stroke-width="2"/>`; });
+    s += '<circle cx="160" cy="160" r="3.5" fill="#4A2E12"/>';
+    if(mark){ const m = (rs[mark-1] + (rs[mark-2]||0))/2; s += `<line x1="${160+m}" y1="160" x2="320" y2="160" stroke="#9E4E22" stroke-width="2.5"/><text x="326" y="166" font-size="19" font-weight="800" fill="#9E4E22">Ring ${mark}</text>`; }
+    return s + '</svg>';
+  },
+  kette(){
+    const k = [['🌳','Baum'],['🪓','Fällen'],['🚛','Transport'],['🏭','Sägewerk'],['🪚','Einschnitt'],['🪵','Schnittholz']];
+    return '<div class="kette">' + k.map(([e,t],i)=>`<div class="k"><span aria-hidden="true">${e}</span>${t}</div>` + (i<5?'<span class="pf" aria-hidden="true">→</span>':'')).join('') + '</div>';
+  },
+  schnitt(){
+    let s = '<svg viewBox="0 0 420 300" role="img" aria-label="Schnittplan: Bretter im runden Stamm, Rest ist Verschnitt">';
+    s += '<circle cx="150" cy="150" r="125" fill="#F1DDBF" stroke="#6B4423" stroke-width="6"/>';
+    [[-85,40],[-40,40],[5,40],[50,40]].forEach(([y,h]) => { const w = 2*Math.sqrt(125*125 - Math.max(Math.abs(y),Math.abs(y+h))**2) - 14; s += `<rect x="${150-w/2}" y="${150+y}" width="${w}" height="${h-5}" fill="#C99A63" stroke="#4A2E12" stroke-width="2"/>`; });
+    s += '<text x="290" y="110" font-size="17" font-weight="700" fill="#4A2E12">Brett</text><line x1="286" y1="104" x2="230" y2="124" stroke="#4A2E12" stroke-width="1.5"/>';
+    s += '<text x="290" y="215" font-size="17" font-weight="700" fill="#9E4E22">Verschnitt</text><line x1="286" y1="210" x2="248" y2="232" stroke="#9E4E22" stroke-width="1.5"/>';
+    s += '<text x="290" y="160" font-size="15" fill="#5A6A78">Schnitt = Späne</text>';
+    return s + '</svg>';
+  },
+  muenze(){
+    let s = '<svg viewBox="0 0 420 220" role="img" aria-label="Münztest: weiches Holz mit deutlicher Spur, hartes Holz mit kaum Spur">';
+    s += '<rect x="20" y="70" width="170" height="90" rx="6" fill="#F1DDBF" stroke="#8A5A2B" stroke-width="3"/><ellipse cx="105" cy="115" rx="30" ry="12" fill="#8A5A2B" opacity=".75"/>';
+    s += '<rect x="230" y="70" width="170" height="90" rx="6" fill="#C99A63" stroke="#6B4423" stroke-width="3"/><ellipse cx="315" cy="115" rx="30" ry="12" fill="none" stroke="#6B4423" stroke-width="1.2" opacity=".6"/>';
+    s += '<text x="105" y="55" text-anchor="middle" font-size="17" font-weight="800" fill="#1E2A35">weiches Holz</text><text x="315" y="55" text-anchor="middle" font-size="17" font-weight="800" fill="#1E2A35">hartes Holz</text>';
+    s += '<text x="105" y="195" text-anchor="middle" font-size="16" fill="#1E2A35">deutliche Spur</text><text x="315" y="195" text-anchor="middle" font-size="16" fill="#1E2A35">kaum eine Spur</text>';
+    return s + '</svg>';
+  },
+  holzlebt(){
+    let s = '<svg viewBox="0 0 420 240" role="img" aria-label="Quellen und Schwinden">';
+    s += '<rect x="30" y="60" width="150" height="110" rx="6" fill="#C99A63" stroke="#6B4423" stroke-width="3"/>';
+    s += '<rect x="250" y="70" width="135" height="95" rx="6" fill="#E3C79A" stroke="#6B4423" stroke-width="3"/>';
+    s += '<path d="M190 115 h45" stroke="#2C3D4C" stroke-width="3"/><path d="M228 106 l10 9 -10 9" fill="none" stroke="#2C3D4C" stroke-width="3"/>';
+    s += '<text x="105" y="45" text-anchor="middle" font-size="17" font-weight="800" fill="#1E2A35">feucht</text><text x="317" y="45" text-anchor="middle" font-size="17" font-weight="800" fill="#1E2A35">trocken</text>';
+    [[60,95],[100,130],[140,90],[80,150]].forEach(([x,y]) => { s += `<path d="M${x} ${y-10} q-7 10 0 14 q7 -4 0 -14z" fill="#3E7CB1"/>`; });
+    s += '<text x="210" y="215" text-anchor="middle" font-size="16" fill="#1E2A35">Wasser geht raus → Holz schwindet. Wasser geht rein → Holz quillt.</text>';
+    return s + '</svg>';
+  },
+  riss(v){
+    const g = '<line x1="10" y1="40" x2="250" y2="40" stroke="#B9935F"/><line x1="10" y1="70" x2="250" y2="70" stroke="#B9935F"/><line x1="10" y1="100" x2="250" y2="100" stroke="#B9935F"/>';
+    const c = v===2 ? '<polyline points="10,72 45,64 80,76 115,68 140,73" fill="none" stroke="#2A1A0A" stroke-width="5"/>' : '<polyline points="150,15 135,45 158,70 138,98 150,125" fill="none" stroke="#2A1A0A" stroke-width="5"/>';
+    return `<svg viewBox="0 0 260 140"><rect x="5" y="10" width="250" height="120" fill="#F1DDBF" stroke="#4A2E12" stroke-width="3"/>${g}${c}</svg>`;
+  },
+  ast(v){
+    const x = v===2 ? 215 : 70, y = v===2 ? 40 : 95;
+    let s = `<svg viewBox="0 0 260 140"><rect x="5" y="10" width="250" height="120" fill="#F1DDBF" stroke="#4A2E12" stroke-width="3"/>`;
+    [35,60,85,110].forEach(b => { const d = Math.abs(b-y) < 30 ? (b<y?-14:14) : 0; s += `<path d="M10 ${b} C ${x-50} ${b}, ${x-25} ${b+d}, ${x} ${b+d} S ${x+50} ${b}, 250 ${b}" fill="none" stroke="#B9935F"/>`; });
+    s += `<ellipse cx="${x}" cy="${y}" rx="17" ry="13" fill="#8A5A2B" stroke="#4A2E12" stroke-width="2"/><ellipse cx="${x}" cy="${y}" rx="7" ry="5" fill="#4A2E12"/></svg>`;
+    return s;
+  },
+  verwerfen(v){
+    if(v===2){
+      return '<svg viewBox="0 0 260 140"><line x1="5" y1="120" x2="255" y2="120" stroke="#888" stroke-width="2"/><path d="M15 110 L245 70 L245 88 L15 120 Z" fill="#E3C79A" stroke="#4A2E12" stroke-width="3"/><text x="130" y="30" text-anchor="middle" font-size="14" fill="#5A6A78">von der Seite</text></svg>';
+    }
+    return '<svg viewBox="0 0 260 140"><line x1="5" y1="120" x2="255" y2="120" stroke="#888" stroke-width="2"/><path d="M15 50 Q130 135 245 50 L245 66 Q130 151 15 66 Z" fill="#E3C79A" stroke="#4A2E12" stroke-width="3"/><text x="130" y="30" text-anchor="middle" font-size="14" fill="#5A6A78">von der Seite</text></svg>';
+  }
+};
+function fig(f){
+  if(!f) return '';
+  const [name, ...args] = f;
+  return FIG[name] ? FIG[name](...args) : '';
+}
+
+/* ---------- Hilfen ---------- */
+const $ = s => document.querySelector(s);
+const app = document.getElementById('app');
+const LOB = ['Super gemacht!', 'Stark!', 'Genau richtig!', 'Klasse!', 'Du hast es!', 'Sehr gut!'];
+const MUT = ['Fast! Schau noch einmal genau hin.', 'Noch nicht ganz. Du schaffst das!', 'Probier es nochmal. Lies den Tipp.'];
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+function esc(t){ return String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function confetti(){
+  const c = document.getElementById('conf'); c.innerHTML = '';
+  const cols = ['#D97A4A','#7DBB6F','#3E5668','#C17B00','#C99A63'];
+  for(let i=0;i<60;i++){ const e=document.createElement('i'); e.style.left=Math.random()*100+'vw'; e.style.background=cols[i%5]; e.style.animationDelay=(Math.random()*0.6)+'s'; c.appendChild(e); }
+  setTimeout(()=>c.innerHTML='', 3200);
+}
+function speakText(step){
+  const parts = [];
+  if(step.titel) parts.push(step.titel + '.');
+  (step.text||[]).forEach(t => parts.push(t.replace(/<[^>]+>/g,'')));
+  (step.liste||[]).forEach(t => { const x = t.replace(/<[^>]+>/g,'').trim(); parts.push(/[.!?]$/.test(x) ? x : x + '.'); });
+  if(step.merk) parts.push('Merke: ' + step.merk);
+  if(step.frage) parts.push(step.frage);
+  if(step.tabelle) step.tabelle.slice(1).forEach(r => parts.push(r.join(', ') + '.'));
+  if(step.saetze) step.saetze.forEach(s => parts.push(s.replace(/\{\}/g,' Lücke ')));
+  if(step.optionen && step.type !== 'zuordnen') step.optionen.forEach((o,i) => parts.push('Antwort ' + (i+1) + ': ' + o + '.'));
+  if(step.woerter) parts.push('Wörter: ' + (step._w || step.woerter).join(', ') + '.');
+  if(step.items) parts.push('Karten: ' + (step._o || shuffle(step.items)).join(', ') + '.');
+  return parts.join(' ').replace(/\p{Extended_Pictographic}|\uFE0F/gu, '');
+}
+
+/* ---------- Übersicht ---------- */
+function home(){
+  TTS.stop();
+  const done = DATA.missions.filter(m => S.missions[m.id]?.done).length;
+  let h = `<div class="card"><div class="hello"><div class="big" aria-hidden="true">🌲</div><div>
+    <h2>Hallo! Das ist deine Holz-Woche.</h2>
+    <p>${esc(DATA.intro)}</p>
+    <p class="muted">Jeden Tag eine Mission – etwa 15 Minuten. Am Freitag machst du die Generalprobe. Dann bist du bereit für den Re-Test.</p>
+  </div></div>
+  <div class="actions"><button class="btn-speak" id="sp">🔊 Vorlesen</button><span class="muted">${done} von ${DATA.missions.length} Missionen geschafft</span></div></div>`;
+  h += '<div class="week">';
+  DATA.missions.forEach((m,i) => {
+    const st = S.missions[m.id];
+    const stars = st?.done ? '⭐'.repeat(st.stars) + '☆'.repeat(3-st.stars) : '☆☆☆';
+    h += `<button class="tile ${st?.done?'done':''}" data-m="${i}"><span class="day">${['Montag','Dienstag','Mittwoch','Donnerstag'][i]||''}</span><span class="emo" aria-hidden="true">${m.emoji}</span><b>${esc(m.titel)}</b><span class="muted" style="font-size:.85rem">${esc(m.untertitel)}</span><span class="st" aria-label="Sterne">${stars}</span></button>`;
+  });
+  const f = S.final;
+  h += `<button class="tile final ${f?.bereit?'done':''}" data-final="1"><span class="day">Freitag</span><span class="emo" aria-hidden="true">🏁</span><b>Generalprobe</b><span class="muted" style="font-size:.85rem">Bist du bereit für den Re-Test?</span><span class="st">${f ? (f.bereit ? 'bereit ✓' : 'noch üben') : ''}</span></button>`;
+  h += '</div>';
+  h += '<div class="card" style="margin-top:16px"><h3>Deine Abzeichen</h3><div class="badges">' +
+    DATA.missions.map(m => `<span class="badge ${S.missions[m.id]?.done?'':'off'}">${m.emoji} ${esc(m.abzeichen)}</span>`).join('') +
+    `<span class="badge ${f?.bereit?'':'off'}">🏆 Bereit für den Re-Test</span></div></div>`;
+  app.innerHTML = h;
+  app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => startMission(+b.dataset.m));
+  app.querySelector('[data-final]').onclick = startFinal;
+  $('#sp').onclick = () => TTS.speak('Hallo! Das ist deine Holz-Woche. ' + DATA.intro + ' Jeden Tag eine Mission, etwa 15 Minuten. Am Freitag machst du die Generalprobe.');
+  if(S.auto) TTS.speak('Hallo! Das ist deine Holz-Woche. Wähle eine Mission.');
+  window.scrollTo(0,0);
+}
+
+/* ---------- Mission ---------- */
+let RUN = null;
+function startMission(i){
+  const m = DATA.missions[i];
+  RUN = { mode:'mission', m, steps:m.steps, idx:0, first:0, tasks:m.steps.filter(s=>s.type!=='lernen').length, tries:0 };
+  renderStep();
+}
+function startFinal(){
+  RUN = { mode:'final', steps:DATA.final, idx:0, score:{}, max:{} };
+  DATA.final.forEach(s => { RUN.max[s.bereich] = (RUN.max[s.bereich]||0) + 1; });
+  renderStep();
+}
+
+function renderStep(){
+  TTS.stop();
+  const st = RUN.steps[RUN.idx];
+  RUN.tries = 0; RUN.solved = false;
+  const pct = Math.round(RUN.idx / RUN.steps.length * 100);
+  const name = RUN.mode === 'final' ? '🏁 Generalprobe' : RUN.m.emoji + ' ' + RUN.m.titel;
+  let h = `<div class="top"><span class="ttl">${esc(name)}</span><div class="progress" aria-label="Fortschritt"><div style="width:${pct}%"></div></div><span class="muted">${RUN.idx+1}/${RUN.steps.length}</span></div>`;
+  h += '<div class="card">';
+  const isLern = st.type === 'lernen';
+  h += `<div class="steprow"><div><span class="kind ${isLern?'lernen':'aufgabe'}">${isLern ? '📖 Lernen' : (RUN.mode==='final' ? '✏️ Probe-Aufgabe' : '✏️ Aufgabe')}</span>${st.titel?`<h2>${esc(st.titel)}</h2>`:''}</div><button class="btn-speak" id="sp">🔊 Vorlesen</button></div>`;
+  if(isLern){
+    const f = fig(st.bild);
+    h += `<div class="lerngrid ${f?'':'full'}"><div class="lerntext">${(st.text||[]).map(t=>`<p>${t}</p>`).join('')}${st.liste?'<ul>'+st.liste.map(l=>`<li>${l}</li>`).join('')+'</ul>':''}${st.merk?`<div class="merk">${esc(st.merk)}</div>`:''}</div>${f?`<div class="fig">${f}</div>`:''}</div>`;
+  } else {
+    if(st.bild) h += `<div class="fig" style="margin-bottom:10px">${fig(st.bild)}</div>`;
+    if(st.text) h += st.text.map(t=>`<p>${t}</p>`).join('');
+    if(st.tabelle) h += '<table class="data">' + st.tabelle.map((r,i)=>'<tr>'+r.map(c=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join('')+'</tr>').join('') + '</table>';
+    h += `<p class="frage">${esc(st.frage)}</p>`;
+    h += taskHTML(st);
+    h += '<div id="fb" role="status"></div>';
+  }
+  h += `<div class="actions"><button class="btn btn-secondary" id="back" ${RUN.idx===0?'disabled':''}>← Zurück</button><div class="right">`;
+  if(isLern) h += '<button class="btn btn-primary" id="next">Weiter →</button>';
+  else h += `<button class="btn btn-primary" id="check">Prüfen</button><button class="btn btn-success" id="next" hidden>Weiter →</button>`;
+  h += '</div></div></div>';
+  app.innerHTML = h;
+  bindTask(st);
+  $('#sp').onclick = () => TTS.speak(speakText(st));
+  $('#back').onclick = () => { if(RUN.idx>0){ RUN.idx--; renderStep(); } };
+  $('#next').onclick = nextStep;
+  if($('#check')) $('#check').onclick = () => check(st);
+  if(S.auto) TTS.speak(speakText(st));
+  window.scrollTo(0,0);
+}
+
+function taskHTML(st){
+  switch(st.type){
+    case 'wahl': case 'mehr': {
+      const multi = st.type === 'mehr';
+      const order = st._order || (st._order = shuffle(st.optionen.map((_,i)=>i)));
+      return (multi ? '<p class="muted" style="margin:-8px 0 10px">Mehrere Antworten sind richtig. Tippe alle richtigen an.</p>' : '<p class="muted" style="margin:-8px 0 10px">Nur eine Antwort ist richtig.</p>') +
+        '<div class="opts">' + order.map(i => `<button class="opt ${multi?'':'round'}" data-i="${i}" aria-pressed="false"><span class="box" aria-hidden="true"></span><span>${esc(st.optionen[i])}</span></button>`).join('') + '</div>';
+    }
+    case 'luecke': {
+      let n = 0;
+      const satz = st.saetze.map(s => '<p class="satz">' + esc(s).replace(/\{\}/g, () => `<button class="slot" data-s="${n++}" aria-label="Lücke ${n}">…</button>`) + '</p>').join('');
+      const words = st._w || (st._w = shuffle(st.woerter));
+      return satz + '<div class="chips">' + words.map(w => `<button class="chip" data-w="${esc(w)}">${esc(w)}</button>`).join('') + '</div>';
+    }
+    case 'ordnen': {
+      const items = st._o || (st._o = shuffle(st.items));
+      return '<p class="muted" style="margin:-8px 0 10px">Tippe die Karten der Reihe nach an. Nochmal tippen nimmt sie zurück.</p><div class="orderlist">' + items.map(t => `<button class="oitem" data-t="${esc(t)}"><span class="num" aria-hidden="true"></span>${esc(t)}</button>`).join('') + '</div>';
+    }
+    case 'zahl':
+      return `<div class="zahlrow"><label for="zahl">${esc(st.vor||'Deine Antwort:')}</label><input id="zahl" type="number" inputmode="numeric" autocomplete="off"><span>${esc(st.einheit||'')}</span></div>`;
+    case 'zuordnen':
+      return '<div class="zgrid">' + st.bilder.map((b,i) => `<div class="zcard" data-z="${i}"><span class="lab">Bild ${'ABC'[i]}</span>${fig(b.bild)}<div class="zbtns">${st.optionen.map(o=>`<button class="zbtn" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`).join('') + '</div>';
+  }
+  return '';
+}
+
+function bindTask(st){
+  if(st.type==='wahl' || st.type==='mehr'){
+    app.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if(RUN.solved) return;
+      if(st.type==='wahl') app.querySelectorAll('.opt').forEach(x => { x.classList.remove('sel','bad'); x.setAttribute('aria-pressed','false'); x.querySelector('.box').textContent=''; });
+      b.classList.toggle('sel'); b.classList.remove('bad');
+      const on = b.classList.contains('sel');
+      b.setAttribute('aria-pressed', on); b.querySelector('.box').textContent = on ? '✓' : '';
+    });
+  }
+  if(st.type==='luecke'){
+    const slots = [...app.querySelectorAll('.slot')];
+    app.querySelectorAll('.chip').forEach(c => c.onclick = () => {
+      if(RUN.solved) return;
+      const free = slots.find(s => !s.dataset.v);
+      if(!free) return;
+      free.dataset.v = c.dataset.w; free.textContent = c.dataset.w; free.classList.add('filled'); free.classList.remove('bad'); c.disabled = true;
+    });
+    slots.forEach(s => s.onclick = () => {
+      if(RUN.solved || !s.dataset.v) return;
+      const chip = [...app.querySelectorAll('.chip')].find(c => c.dataset.w === s.dataset.v && c.disabled);
+      if(chip) chip.disabled = false;
+      delete s.dataset.v; s.textContent = '…'; s.classList.remove('filled','bad');
+    });
+  }
+  if(st.type==='ordnen'){
+    RUN.order = [];
+    app.querySelectorAll('.oitem').forEach(b => b.onclick = () => {
+      if(RUN.solved) return;
+      const t = b.dataset.t, k = RUN.order.indexOf(t);
+      if(k >= 0) RUN.order.splice(k,1); else RUN.order.push(t);
+      app.querySelectorAll('.oitem').forEach(x => { const j = RUN.order.indexOf(x.dataset.t); x.classList.toggle('picked', j>=0); x.classList.remove('bad','ok'); x.querySelector('.num').textContent = j>=0 ? j+1 : ''; });
+    });
+  }
+  if(st.type==='zuordnen'){
+    app.querySelectorAll('.zcard').forEach(card => card.querySelectorAll('.zbtn').forEach(b => b.onclick = () => {
+      if(RUN.solved) return;
+      card.querySelectorAll('.zbtn').forEach(x => x.classList.remove('sel')); b.classList.add('sel'); card.dataset.v = b.dataset.o; card.classList.remove('bad');
+    }));
+  }
+  if(st.type==='zahl'){ const z = $('#zahl'); z.addEventListener('keydown', e => { if(e.key==='Enter') check(st); }); }
+}
+
+function check(st){
+  if(RUN.solved) return;
+  let ok = false, filled = true;
+  if(st.type==='wahl'){
+    const s = app.querySelector('.opt.sel'); if(!s){ filled=false; } else ok = +s.dataset.i === st.richtig;
+    if(s && !ok) s.classList.add('bad');
+  }
+  if(st.type==='mehr'){
+    const sel = [...app.querySelectorAll('.opt.sel')].map(b=>+b.dataset.i).sort();
+    if(!sel.length) filled = false;
+    ok = JSON.stringify(sel) === JSON.stringify(st.richtig.slice().sort());
+    if(filled && !ok) app.querySelectorAll('.opt.sel').forEach(b => { if(!st.richtig.includes(+b.dataset.i)) b.classList.add('bad'); });
+  }
+  if(st.type==='luecke'){
+    const slots = [...app.querySelectorAll('.slot')];
+    if(slots.some(s=>!s.dataset.v)) filled = false;
+    else { ok = true; slots.forEach((s,i) => { const r = s.dataset.v === st.loesung[i]; s.classList.toggle('ok', r); s.classList.toggle('bad', !r); if(!r) ok = false; }); }
+  }
+  if(st.type==='ordnen'){
+    if(RUN.order.length < st.items.length) filled = false;
+    else { ok = RUN.order.every((t,i) => t === st.items[i]); app.querySelectorAll('.oitem').forEach(x => { const j = RUN.order.indexOf(x.dataset.t); const r = st.items[j] === x.dataset.t; x.classList.toggle('ok', r); x.classList.toggle('bad', !r); }); }
+  }
+  if(st.type==='zahl'){
+    const v = $('#zahl').value.trim().replace(',', '.'); if(v==='') filled = false; else ok = Number(v) === st.loesung;
+  }
+  if(st.type==='zuordnen'){
+    const cards = [...app.querySelectorAll('.zcard')];
+    if(cards.some(c=>!c.dataset.v)) filled = false;
+    else { ok = true; cards.forEach((c,i) => { const r = c.dataset.v === st.bilder[i].loesung; c.classList.toggle('ok', r); c.classList.toggle('bad', !r); if(!r) ok = false; }); }
+  }
+  const fb = $('#fb');
+  if(!filled){ fb.className = 'fb tipp'; fb.textContent = 'Wähle zuerst eine Antwort aus.'; if(S.auto) TTS.speak(fb.textContent); return; }
+  RUN.tries++;
+  if(RUN.mode === 'final'){
+    RUN.solved = true;
+    RUN.score[st.bereich] = (RUN.score[st.bereich]||0) + (ok?1:0);
+    markSolution(st);
+    fb.className = 'fb ' + (ok?'ok':'tipp');
+    fb.innerHTML = (ok ? rnd(LOB) + ' ' : 'Das war noch nicht richtig. Die richtige Lösung ist jetzt markiert. ') + esc(st.erkl||'');
+    finishCheck(fb); return;
+  }
+  if(ok){
+    RUN.solved = true;
+    if(RUN.tries === 1) RUN.first++;
+    markSolution(st);
+    fb.className = 'fb ok'; fb.innerHTML = rnd(LOB) + ' ' + esc(st.erkl||'');
+    finishCheck(fb);
+  } else if(RUN.tries >= 3){
+    RUN.solved = true;
+    markSolution(st);
+    fb.className = 'fb tipp'; fb.innerHTML = 'Hier ist die Lösung. Lies sie genau durch. ' + esc(st.erkl||'');
+    finishCheck(fb);
+  } else {
+    fb.className = 'fb bad'; fb.innerHTML = rnd(MUT) + (st.tipp ? ' <b>Tipp:</b> ' + esc(st.tipp) : '');
+    if(S.auto) TTS.speak(fb.textContent);
+  }
+}
+function finishCheck(fb){
+  $('#check').hidden = true; $('#next').hidden = false; $('#next').focus();
+  if(S.auto) TTS.speak(fb.textContent);
+}
+function markSolution(st){
+  if(st.type==='wahl') app.querySelectorAll('.opt').forEach(b => { if(+b.dataset.i === st.richtig){ b.classList.add('ok'); b.querySelector('.box').textContent='✓'; } });
+  if(st.type==='mehr') app.querySelectorAll('.opt').forEach(b => { if(st.richtig.includes(+b.dataset.i)){ b.classList.add('ok'); b.querySelector('.box').textContent='✓'; } });
+  if(st.type==='luecke') app.querySelectorAll('.slot').forEach((s,i) => { s.textContent = st.loesung[i]; s.classList.remove('bad'); s.classList.add('ok'); });
+  if(st.type==='ordnen') app.querySelectorAll('.oitem').forEach(x => { const j = st.items.indexOf(x.dataset.t); x.querySelector('.num').textContent = j+1; x.classList.remove('bad'); x.classList.add('ok'); });
+  if(st.type==='zahl'){ $('#zahl').value = st.loesung; }
+  if(st.type==='zuordnen') app.querySelectorAll('.zcard').forEach((c,i) => { c.querySelectorAll('.zbtn').forEach(b => b.classList.toggle('sel', b.dataset.o === st.bilder[i].loesung)); c.classList.remove('bad'); c.classList.add('ok'); });
+}
+
+function nextStep(){
+  if(RUN.idx < RUN.steps.length - 1){ RUN.idx++; renderStep(); return; }
+  if(RUN.mode === 'mission') missionDone(); else finalDone();
+}
+
+function missionDone(){
+  const m = RUN.m, r = RUN.first / RUN.tasks;
+  const stars = r >= 0.85 ? 3 : r >= 0.55 ? 2 : 1;
+  const old = S.missions[m.id];
+  S.missions[m.id] = { done:true, stars: Math.max(stars, old?.stars||0) };
+  save(); confetti();
+  app.innerHTML = `<div class="card party"><div class="emo" aria-hidden="true">${m.emoji}</div><h2>Mission geschafft!</h2>
+    <div class="stars" aria-label="${stars} von 3 Sternen">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    <p>Neues Abzeichen: <b>${esc(m.abzeichen)}</b></p>
+    <p class="muted">${RUN.first} von ${RUN.tasks} Aufgaben hast du beim ersten Versuch gelöst.</p>
+    <div class="merk" style="text-align:left;margin:18px auto 0;max-width:640px">${esc(m.merksatz)}</div>
+    <div class="actions" style="justify-content:center"><button class="btn btn-secondary" id="again">Nochmal üben</button><button class="btn btn-primary" id="go">Zur Übersicht</button></div></div>`;
+  $('#again').onclick = () => startMission(DATA.missions.indexOf(m));
+  $('#go').onclick = home;
+  TTS.speak(('Mission geschafft! Du hast ' + stars + ' Sterne. Neues Abzeichen: ' + m.abzeichen + '. Merke: ' + m.merksatz).replace(/→/g, ', dann '));
+}
+
+function finalDone(){
+  const rows = DATA.bereiche.map(b => {
+    const s = RUN.score[b.id]||0, mx = RUN.max[b.id]||0, q = mx ? s/mx : 0;
+    const cls = q >= 0.66 ? 'ok' : q >= 0.34 ? 'mid' : 'no';
+    const txt = cls==='ok' ? '✓ bereit' : cls==='mid' ? '◐ fast – lies die Merksätze' : '↻ Mission wiederholen';
+    return { b, s, mx, cls, txt };
+  });
+  const bereit = rows.every(r => r.cls !== 'no');
+  S.final = { bereit, datum: new Date().toLocaleDateString('de-DE') }; save();
+  if(bereit) confetti();
+  app.innerHTML = `<div class="card party"><div class="emo" aria-hidden="true">${bereit?'🏆':'💪'}</div>
+    <h2>${bereit ? 'Du bist bereit für den Re-Test!' : 'Fast geschafft – übe noch ein bisschen.'}</h2>
+    <p class="muted">${bereit ? 'Du hast in jedem Bereich gezeigt, was du kannst.' : 'Wiederhole die Mission, bei der ↻ steht. Dann mach die Generalprobe nochmal.'}</p>
+    <div class="result">${rows.map(r => `<div class="rrow ${r.cls}"><span><b>${esc(r.b.emoji)} ${esc(r.b.titel)}</b></span><span>${r.s} von ${r.mx} · ${r.txt}</span></div>`).join('')}</div>
+    <div class="actions" style="justify-content:center"><button class="btn btn-secondary" id="again">Generalprobe nochmal</button><button class="btn btn-primary" id="go">Zur Übersicht</button></div></div>`;
+  $('#again').onclick = startFinal; $('#go').onclick = home;
+  TTS.speak(bereit ? 'Super! Du bist bereit für den Re-Test.' : 'Fast geschafft. Wiederhole die Mission, bei der ein Pfeil steht.');
+}
+
+document.getElementById('home').onclick = home;
+document.getElementById('reset').onclick = () => { if(confirm('Wirklich alles zurücksetzen? Sterne und Abzeichen gehen verloren.')){ S = { missions:{}, final:null, auto:S.auto }; save(); home(); } };
+home();
+</script>
+</body>
+</html>
